@@ -78,7 +78,8 @@ class CommandTests(TestCase):
 
     def test_untrusted_url_and_short_secret_block_before_database(self):
         good=self.settings.dispatch_transport_url
-        for url in ('http://hook.us2.make.com/'+'a'*32, 'https://example.com/'+'a'*32,good+'?token=abc'):
+        for url in ('http://hook.us2.make.com/'+'a'*32, 'https://example.com/'+'a'*32,good+'?token=abc',
+                    'https://hook.us2.make.com:invalid/'+'a'*32):
             self.settings.dispatch_transport_url=url
             with self.assertRaises(ValueError):self.request()
         self.settings.dispatch_transport_url=good;self.settings.dispatch_transport_secret='short'

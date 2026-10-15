@@ -95,7 +95,7 @@ BEGIN
   VALUES(c.id,t.id,message_id,o.id,btrim(p_name),phone,'pending',
    'continuar_atendimento_vendra',request_key,p_actor_id) RETURNING * INTO d;
  INSERT INTO public.audit_log(actor_id,entity_type,entity_id,action,payload)
-  VALUES(p_actor_id,'dispatch',d.id,'dispatch_requested',
+  VALUES(p_actor_id,'dispatch',d.id::text,'dispatch_requested',
    jsonb_build_object('ticket_id',t.id,'opportunity_id',o.id,'origin','portal','queued',false));
  RETURN jsonb_build_object('id',d.id,'created',true,'status',d.status,
   'ticket_id',t.id,'opportunity_id',o.id,'name',d.name,'phone',d.phone,'template_key',d.template_key);

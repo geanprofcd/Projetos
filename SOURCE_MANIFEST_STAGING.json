@@ -1091,7 +1091,7 @@
     },
     {
       "path": "app/services/dispatch_command_service.py",
-      "sha256": "1cffdabf6cee4d99b605607950f905bf472c87d35e9f5944ee0e775229f38c39"
+      "sha256": "6122400222e7f234bc2108a827e4763cc34d64970ed33a43864732364c68a180"
     },
     {
       "path": "app/routers/dispatch_commands.py",
@@ -1107,11 +1107,11 @@
     },
     {
       "path": "tests/test_dispatch_command.py",
-      "sha256": "c43a7481c9cf18031c4d9c6be3baf4168835b72241aa8153c36d41b493fcde44"
+      "sha256": "d092c6bd4dcba7612d312ba492f28c70820667d2a05f2e76f5735b7345743add"
     },
     {
       "path": "sql/09_PREPARAR_COMANDO_DISPARO_STAGING.sql",
-      "sha256": "5bcfbab90342d133e41d57910b2cc923e4b712c33e12de7ceb5ffdd55ea4f6b5"
+      "sha256": "4027cd9e9f3269878eade76de5d76bf526355021772145306c8a7af5959abc3c"
     },
     {
       "path": "sql/10_ROLLBACK_COMANDO_DISPARO_STAGING.sql",

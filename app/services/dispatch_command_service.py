@@ -35,9 +35,13 @@ def _transport():
     if not channel_ready():
         raise ValueError('O envio deste canal está desativado.')
     url = str(settings.dispatch_transport_url or '')
-    parsed = urlsplit(url)
+    try:
+        parsed = urlsplit(url)
+        port = parsed.port
+    except ValueError:
+        raise ValueError('O destino de envio não está configurado corretamente.') from None
     if (parsed.scheme != 'https' or parsed.hostname not in {'hook.us2.make.com', 'hook.eu1.make.com', 'hook.eu2.make.com', 'hook.us1.make.com'}
-        or parsed.username or parsed.password or parsed.port not in (None, 443)
+        or parsed.username or parsed.password or port not in (None, 443)
         or parsed.query or parsed.fragment or not re.fullmatch(r'/[A-Za-z0-9_-]{24,}', parsed.path)):
         raise ValueError('O destino de envio não está configurado corretamente.')
     secret = str(settings.dispatch_transport_secret or '')
