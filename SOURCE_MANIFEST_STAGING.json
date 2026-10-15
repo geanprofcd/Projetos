@@ -2,12 +2,16 @@
   "base_public_blob": "77110a38bc681b1dd8673d9e4b341ff95340a101",
   "files": [
     {
+      "path": ".gitattributes",
+      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992"
+    },
+    {
       "path": ".gitignore",
       "sha256": "675cfb741e32d8c583ff8cbb23cb2e8f4de13a74585ad404248391d34870d463"
     },
     {
       "path": "AGENTS.md",
-      "sha256": "5b1bfc2b6ae449bad633e0d56ba39fab299019901f07002e81e99546dfd2f22d"
+      "sha256": "eb4a7e3ba8de739e3501cf8058bb9f53c685ec0cca82f37776e80e889723c4d7"
     },
     {
       "path": "README.md",
@@ -670,6 +674,10 @@
       "sha256": "e38311a7f2ca044150ea2736c1035a1351802b391aaa3cf4778f09653d3af8de"
     },
     {
+      "path": "docs/COMANDOS_OPERACAO.md",
+      "sha256": "a63d61a9001949a7159b7eb825e013f7e9e6280bb72f9fe14ba54b782ecbb4bf"
+    },
+    {
       "path": "docs/FLUXO_HOMOLOGACAO.md",
       "sha256": "1c4dcbd7631d0ac175b3c6ece0a0be57fe0f47fea439d88ecb5aabf53060ce34"
     },
@@ -1036,10 +1044,6 @@
     {
       "path": "version.json",
       "sha256": "448c5038e2368f0e4aa3653b758252220bb1996ea8f8b71652f3bf2b2741758c"
-    },
-    {
-      "path": ".gitattributes",
-      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992"
     }
   ]
 }

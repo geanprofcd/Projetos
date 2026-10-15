@@ -11,3 +11,5 @@ Leia docs/VALIDACAO_GIT_STAGING.md para o checkpoint vigente. docs/VALIDACAO_ATU
 - Registrar commit aplicado, destino e validacao. Promover somente conjunto homologado com backup, sem mover configuracoes/dados STAGING ao principal.
 - Contas CODEX permanecem ate homologacao total; limpar apenas contas de teste identificadas no ledger autorizado.
 - Nao criar worktree sem necessidade/autorizacao aplicavel. Este checkout e separado do runtime Windows.
+
+- Autorizacao permanente de 14/10/2026: documentar comandos e executa-los autonomamente quando necessarios no escopo autorizado, sem depender de execucao manual pelo usuario. Registrar acao, destino, revisao, validacao e resultado. Ver docs/COMANDOS_OPERACAO.md.
