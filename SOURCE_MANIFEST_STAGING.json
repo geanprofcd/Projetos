@@ -1080,6 +1080,14 @@
     {
       "path": "docs/VALIDACAO_DISPARO_INICIAL_STAGING.md",
       "sha256": "2a751699d267846aca2c43fe8b0ba75254a74a0aa69c51b4b9669126a66b8dfd"
+    },
+    {
+      "path": "tools/validar_staging.ps1",
+      "sha256": "1d99fdc52e35e924e45f3428d939275f1e6f0d4d428a06f46768a121bef82abd"
+    },
+    {
+      "path": "docs/VALIDACAO_EXECUTOR_STAGING.md",
+      "sha256": "c6f1f5258db0a5870814e0ff0616a84cae031b8fd7377ed871ad7fb2b1115ff2"
     }
   ]
 }
