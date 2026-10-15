@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Conversas WhatsApp | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header"><div><span class="eyebrow">WHATSAPP</span><h1>Conversas</h1><p>Mensagens recebidas e respostas com confirmação do WhatsApp.</p></div><a class="button secondary" href="/conversas">Atualizar</a></header>
+<section class="panel"><table class="data-table"><thead><tr><th>Cliente</th><th>Atendimento</th><th>Situação</th><th>Responsável pela resposta</th><th>Atualizado</th></tr></thead><tbody>
+{% for item in conversations %}<tr><td>{{ item.customer_name }}</td><td><a href="/conversas/{{ item.id }}">{{ item.title }}</a></td><td>{{ item.status.replace('_',' ')|capitalize }}</td><td>{{ 'IA' if item.automation_mode == 'ai' else 'Equipe' }}</td><td>{{ item.updated_at|datetime_br }}</td></tr>
+{% else %}<tr><td colspan="5">Nenhuma conversa WhatsApp registrada.</td></tr>{% endfor %}
+</tbody></table><p>Até 100 conversas mais recentes.</p></section>
+{% endblock %}

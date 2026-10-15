@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ ticket.customer_name }} | Conversa WhatsApp{% endblock %}
+{% block content %}
+<header class="page-header"><div><span class="eyebrow">CONVERSA WHATSAPP</span><h1>{{ ticket.customer_name }}</h1><p>{{ ticket.title }} · {{ ticket.status.replace('_',' ')|capitalize }}</p></div><div><a class="button secondary" href="/conversas">Voltar</a> <a class="button secondary" href="/conversas/{{ ticket.id }}">Atualizar conversa</a></div></header>
+<section class="panel staging-form"><h2>Controle do atendimento</h2>
+<p>Resposta sob responsabilidade: <strong>{{ 'IA' if control.mode == 'ai' else 'Equipe humana' }}</strong>.</p>
+{% if not control.enabled %}<p>A automação está desativada neste ambiente.</p>{% elif not control.window_open %}<p>Aguardando uma nova mensagem do cliente para abrir a janela de atendimento.</p>{% endif %}
+{% if error %}<div class="alert error" role="alert">{{ error }}</div>{% endif %}
+{% if can_control and ticket.status not in ['finalizado','cancelado'] %}
+<form method="post" action="/conversas/{{ ticket.id }}/modo"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="version" value="{{ control.control_version }}">
+{% if control.mode == 'ai' %}<button class="button primary" type="submit" name="mode" value="human">Assumir atendimento</button>
+{% else %}<button class="button secondary" type="submit" name="mode" value="ai" {% if not control.enabled or not control.window_open %}disabled{% endif %}>Retomar IA</button>{% endif %}
+</form>
+{% elif not can_control %}<p>Alterações da automação disponíveis para administradores.</p>{% endif %}
+</section>
+<section class="panel"><h2>Mensagens</h2><div class="staging-notes" aria-label="Histórico da conversa WhatsApp">
+{% for message in messages %}<article class="staging-note"><div><strong>{{ 'Cliente' if message.direction == 'inbound' else ('IA' if message.sender_kind == 'ai' else 'Equipe') }}</strong> · <small>{{ message.created_at|datetime_br }}</small>{% if message.direction == 'outbound' %} · <small>{{ {'read':'Lida','delivered':'Entregue','sent':'Enviada','claimed':'Em processamento','pending':'Pendente','failed':'Falhou','cancelled':'Cancelada'}.get(message.delivery_status, 'Aguardando confirmação') }}</small>{% endif %}</div><p style="white-space:pre-wrap;overflow-wrap:anywhere">{{ message.body }}</p></article>
+{% else %}<p>Nenhuma mensagem registrada neste atendimento.</p>{% endfor %}</div><p>Até 100 mensagens mais recentes. Atualize para conferir novas entradas e confirmações.</p></section>
+{% endblock %}

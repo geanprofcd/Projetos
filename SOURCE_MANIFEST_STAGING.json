@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "d482b2af38fd7eea533b1dab475012d0a718600229864ee0d5f48a0db5039721"
+      "sha256": "d078d279cbb9baf5aa9612ece0361d032e4bee1da2a79e8558cc082cbf359166"
     },
     {
       "path": "README.md",
@@ -523,7 +523,7 @@
     },
     {
       "path": "app/templates/base.html",
-      "sha256": "1b4cf84fc717f2d1c60b90eecbdbeee3686304166974154ad41db6f15643b22f"
+      "sha256": "271edcf733e14253d3933b4cb53af757cc89aa23da0d314624ff396934bae9d0"
     },
     {
       "path": "app/templates/customers/detail.html",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "accb6a92edb4fbd736cc2eddfb9175bc0d0f5df46564eebfd75f244b4cc01e83"
+      "sha256": "a8c79c5467c5b450d2078be7f39b4f587cc72916f5f28e1756e06399e25b9a7e"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1099,7 +1099,7 @@
     },
     {
       "path": "app/staging_h1_006h.py",
-      "sha256": "9990c36a033ebf03bdd5fa85f0e7615923ffd2c721764595ae3d12d4697d1ff7"
+      "sha256": "6174aa6cbff2b3b193763ab4232e2681938b129de99d652ce10bc872b618ef71"
     },
     {
       "path": "app/templates/dispatches/command.html",
@@ -1127,7 +1127,31 @@
     },
     {
       "path": "docs/VALIDACAO_INTEGRADA_H1_006I.md",
-      "sha256": "0b0ce14f42d4453cc331985bd4291c900be53a1cfee074d071a2c141286f0a23"
+      "sha256": "639010de46147c1e343da1937dbe618b70768c35bb520582807d861262d63add"
+    },
+    {
+      "path": "app/services/whatsapp_portal_service.py",
+      "sha256": "fd7d429b33317d5a83f4ad53e9484343de93e4e9cb952742ef5873efeaa03257"
+    },
+    {
+      "path": "app/routers/whatsapp_conversations.py",
+      "sha256": "084f2427c903458f96149baf29853a918b68223533dbf421e4cb38675a49518b"
+    },
+    {
+      "path": "app/templates/whatsapp/list.html",
+      "sha256": "bd690ffff84640faf8e9dc85451fe07a3471c131508f11d2522106db8416700d"
+    },
+    {
+      "path": "app/templates/whatsapp/conversation.html",
+      "sha256": "799ab36402683fb21db0535a28a4c4affcef687b221319d3f6ebf633ae796b6f"
+    },
+    {
+      "path": "tests/test_whatsapp_portal.py",
+      "sha256": "80d7c6037258c85f90468ec6ca67c6568817bb84d46a39dc4ec7ec8abc6ba942"
+    },
+    {
+      "path": "docs/VALIDACAO_CONVERSAS_STAGING_H1_006J.md",
+      "sha256": "d0f673e2eecaf8afe33cbdee902ed731049bd152d023ea0ee7aa0c6c5254055c"
     }
   ]
 }

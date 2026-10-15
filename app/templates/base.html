@@ -33,6 +33,7 @@
         {% for href,label,key in [('atendimentos','Atendimentos','tickets'),('clientes','Clientes','customers'),('produtos','Produtos e Serviços','products'),('disparos','Disparos','dispatches'),('indicadores','Indicadores','indicators'),('configuracoes','Configurações','settings'),('integracoes','Integrações','integrations'),('auditoria','Auditoria','audit'),('usuarios','Usuários','users')] %}
         {% if allowed(user, href) %}<a class="{% if active_page == key %}active{% endif %}" href="/{% if href == 'disparos' and vendra_integrated_portal %}disparos/envio{% else %}{{ href }}{% endif %}">{{ label }}</a>{% endif %}
         {% endfor %}
+        {% if vendra_whatsapp_portal and allowed(user, 'atendimentos') %}<a class="{% if active_page == 'conversations' %}active{% endif %}" href="/conversas">Conversas WhatsApp</a>{% endif %}
         {% if vendra_environment == "staging" and allowed(user, "oportunidades") %}<a href="/oportunidades">CRM (homologação)</a>{% endif %}
     </nav>
 </header>
@@ -47,6 +48,7 @@
             {% for href,label,key in [('atendimentos','Atendimentos','tickets'),('clientes','Clientes','customers'),('produtos','Produtos e Serviços','products'),('disparos','Disparos','dispatches'),('indicadores','Indicadores','indicators'),('configuracoes','Configurações','settings'),('integracoes','Integrações','integrations'),('auditoria','Auditoria','audit'),('usuarios','Usuários','users')] %}
             {% if allowed(user, href) %}<a class="nav-link {% if active_page == key %}active{% endif %}" href="/{% if href == 'disparos' and vendra_integrated_portal %}disparos/envio{% else %}{{ href }}{% endif %}">{{ label }}</a>{% endif %}
             {% endfor %}
+            {% if vendra_whatsapp_portal and allowed(user, 'atendimentos') %}<a class="nav-link {% if active_page == 'conversations' %}active{% endif %}" href="/conversas">Conversas WhatsApp</a>{% endif %}
             {% if vendra_environment == "staging" and allowed(user, "oportunidades") %}<a class="nav-link {% if active_page == 'opportunities' %}active{% endif %}" href="/oportunidades">CRM (homologação)</a>{% endif %}
         </nav>
         <div class="sidebar-footer">

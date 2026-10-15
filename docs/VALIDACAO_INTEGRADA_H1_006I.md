@@ -1,5 +1,7 @@
 # H1-006I - Validação integrada e pendências
 
+> Atualização H1-006J: a interface WhatsApp e seus controles foram homologados no STAGING em [VALIDACAO_CONVERSAS_STAGING_H1_006J.md](VALIDACAO_CONVERSAS_STAGING_H1_006J.md). O usuário determinou preservar integralmente UX/UI e design do original: não promover essas telas/menus de teste; integrar o backend às telas comerciais existentes. Railway tem apenas conta autenticada e projeto VENDRA vazio, reservado para o original após homologação; STAGING online somente se indispensável. As pendências abaixo registram o estado da H1-006I.
+
 Estado observado em 15/10/2026, horário de Brasília. Este registro substitui o estado pendente da entrega H1-006H, preservada como histórico. Código de aplicação continua no commit e44d0bbdb360270385119edc41108c7375bd44ac; esta rodada alterou banco STAGING, configurações Make e documentação.
 
 ## Resultados funcionais
