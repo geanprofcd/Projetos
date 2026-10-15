@@ -1048,6 +1048,10 @@
     {
       "path": "version.json",
       "sha256": "448c5038e2368f0e4aa3653b758252220bb1996ea8f8b71652f3bf2b2741758c"
+    },
+    {
+      "path": "docs/PONTO_DE_RETOMADA_H1_006E.md",
+      "sha256": "f7ebcf7b127357a3cae1efcf0c89164df11f9bbd3b8fe66a67b0fc0bb939bb83"
     }
   ]
 }
