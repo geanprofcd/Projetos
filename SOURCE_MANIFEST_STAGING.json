@@ -1052,6 +1052,14 @@
     {
       "path": "docs/PONTO_DE_RETOMADA_H1_006E.md",
       "sha256": "f7ebcf7b127357a3cae1efcf0c89164df11f9bbd3b8fe66a67b0fc0bb939bb83"
+    },
+    {
+      "path": "tools/whatsapp_callbacks_contract_check.py",
+      "sha256": "6c3b3eefb4ead55cc0e7b7a291cc72b3980adb41cc898e5e64c08bf505c344f7"
+    },
+    {
+      "path": "docs/VALIDACAO_AGENTE_CALLBACKS_STAGING.md",
+      "sha256": "d8f637ec5a5117b6432d137755dd7ce113444b10b1d5bc25e19a88610e2aaefa"
     }
   ]
 }
