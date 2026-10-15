@@ -16,7 +16,9 @@ Opcionalmente informar `-Python 'CAMINHO_DO_PYTHON_EXISTENTE'`, `-Saida 'PASTA_D
 
 ## Continuidade
 
-Envio real e delivered do Disparo Inicial continuam comprovados na entrega anterior. Recepção contínua isolada na Meta e comandos reais pelo portal/CRM ainda pendem de integração e testes funcionais. A autenticação informada pelo usuário levou ao Facebook; retornar ao painel e confirmar a existência do aplicativo de teste antes de repetir criação. Não substituir callback original. Original, SQL, serviços e bloqueios de envio permanecem preservados nesta entrega.
+Envio real e delivered do Disparo Inicial continuam comprovados na entrega anterior. Recepção contínua isolada na Meta e comandos reais pelo portal/CRM ainda pendem de integração e testes funcionais. Após a autenticação concluída pelo usuário, a criação do aplicativo VENDRA-STAGING-CODEX foi confirmada no painel: ID 1632601681609213, versão de teste do aplicativo 1588321249479609. Próximo passo: configurar e validar a recepção na cópia, sem substituir callback original. Criar o aplicativo não comprova assinatura do WABA nem recepção. Original, SQL, serviços e bloqueios de envio permanecem preservados nesta entrega.
+
+O usuário esclareceu que o original ainda não está em uso e priorizou concluir os testes para hospedá-lo, deixando isolamento extra para futuras atualizações. Plano revisto: evitar novas cópias e reaproveitar o receptor Make já funcional. Ajuste preparado no REV9 original: callbacks 64/83 para a ponte STAGING validada, filtro de controle de IA antes do módulo 8 e bloqueio constante dos envios 77/75/76 durante a recepção. A aplicação desse ajuste específico depende de esclarecer a regra anterior de não substituir o original; preparação não significa alteração executada. O banco e a pasta originais continuam separados.
 
 - [Validação funcional já obtida](https://github.com/geanprofcd/Projetos/blob/desenvolvimento/vendra-staging/docs/VALIDACAO_DISPARO_INICIAL_STAGING.md)
 - [Código STAGING](https://github.com/geanprofcd/Projetos/tree/desenvolvimento/vendra-staging)
