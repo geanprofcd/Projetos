@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "ecac41f34c101b27d690b73811d0aab58ffe8175044414a5df1a781ae0cc6519"
+      "sha256": "d482b2af38fd7eea533b1dab475012d0a718600229864ee0d5f48a0db5039721"
     },
     {
       "path": "README.md",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "6f4035b4add9a8081832b72aeffe6aac5161e74562d473569b4c8a2893de7c22"
+      "sha256": "accb6a92edb4fbd736cc2eddfb9175bc0d0f5df46564eebfd75f244b4cc01e83"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1123,7 +1123,11 @@
     },
     {
       "path": "docs/VALIDACAO_COMANDO_PORTAL_STAGING.md",
-      "sha256": "5bb61dc3e5302160235f0b606ab5f36de8e9873426e0d1ddd48ecb7d774d8910"
+      "sha256": "bbefec321272881da39c49e8fe0fefd91161d385fa09b407fdac2aaa4c6f69c0"
+    },
+    {
+      "path": "docs/VALIDACAO_INTEGRADA_H1_006I.md",
+      "sha256": "0b0ce14f42d4453cc331985bd4291c900be53a1cfee074d071a2c141286f0a23"
     }
   ]
 }

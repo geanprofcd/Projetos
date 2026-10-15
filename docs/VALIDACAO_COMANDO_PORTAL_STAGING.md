@@ -1,5 +1,7 @@
 # H1-006H — Comando persistente do portal preparado
 
+> Atualização15/10/2026: a autorização foi concedida, SQL09 aplicado somente no STAGING e Disparo Inicial original ajustado. Formulário até WhatsApp e status automático lido aprovados; concorrência, recuperação e repetição sem novo HTTP também aprovadas. O texto abaixo registra a preparação histórica. Estado vigente e limites em [VALIDACAO_INTEGRADA_H1_006I.md](VALIDACAO_INTEGRADA_H1_006I.md).
+
 ## Estado em 15/10/2026
 
 Código aplicado somente na cópia Windows. Portal STAGING da porta 8011 carregado com `app.staging_h1_006h`, mesmo perfil e sessões. Nova tela `/disparos/envio` abre para a conta CODEX-Comercial existente, mostra histórico real com telefones mascarados e datas em Brasília; formulário e botão ficam desativados com o transporte desligado. Navegação Disparos aponta para a nova tela; testes antigos continuam em `/disparos`. Perfil `.env.h1_005b2` preservado byte a byte. Senha descartável da conta CODEX-Comercial foi renovada para o teste de login e guardada somente no diretório privado de evidências. Não foi criada outra conta.
