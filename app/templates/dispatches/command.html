@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Enviar mensagem | VENDRA{% endblock %}
+{% block content %}
+<section class="vendra-preflight">
+  <header><h1>Enviar mensagem</h1><p>Inicie o contato pelo modelo aprovado do WhatsApp. O cliente, o atendimento e a oportunidade serão vinculados ao pedido.</p><a href="/disparos">Testes sem envio</a></header>
+  {% if error %}<div role="alert" class="vendra-preflight-alert">{{ error }}</div>{% endif %}
+  {% if request.query_params.get('resultado') == 'recebido' %}<p role="status">Pedido recebido pelo transporte. Confira abaixo a confirmação do WhatsApp.</p>{% endif %}
+  {% if request.query_params.get('resultado') == 'pendente' %}<p role="status">Pedido registrado. A confirmação do transporte está pendente; confira o histórico antes de tentar novamente.</p>{% endif %}
+  {% if not enabled %}<p>O canal de envio está desativado.</p>{% endif %}
+  <div class="vendra-preflight-form"><form method="post" action="/disparos/envio">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input type="hidden" name="request_id" value="{{ request_id }}">
+    <label for="dispatch-name">Nome do cliente</label>
+    <input id="dispatch-name" name="name" maxlength="160" value="{{ form.get('name','') }}" required {% if not enabled %}disabled{% endif %}>
+    <label for="dispatch-phone">WhatsApp com DDI e DDD</label>
+    <input id="dispatch-phone" name="phone" inputmode="tel" value="{{ form.get('phone','') }}" placeholder="55 + DDD + número" required {% if not enabled %}disabled{% endif %}>
+    <p>Modelo: “Oi, [nome]! Tudo bem? Aqui é o Dario. Posso confirmar uma informação rapidinho?”</p>
+    <button type="submit" {% if not enabled %}disabled{% endif %}>Solicitar envio</button>
+  </form></div>
+  <h2>Pedidos recentes</h2>
+  <table><thead><tr><th>Cliente</th><th>WhatsApp</th><th>Status</th><th>Data</th></tr></thead>
+  <tbody>{% for row in rows %}<tr><td>{{ row.name }}</td><td>{{ row.phone }}</td><td>{{ {'pending':'Pendente','submitted':'Em processamento','sent':'Enviado','delivered':'Entregue','read':'Lido','failed':'Falhou','cancelled':'Cancelado'}.get(row.status,row.status) }}</td><td>{{ row.created_at|datetime_br }}</td></tr>{% else %}<tr><td colspan="4">Nenhum pedido registrado.</td></tr>{% endfor %}</tbody></table>
+</section>
+{% endblock %}

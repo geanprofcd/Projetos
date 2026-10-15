@@ -1,5 +1,6 @@
 from functools import lru_cache
 import json
+import os
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -32,6 +33,10 @@ class Settings(BaseSettings):
     supabase_anon_key: str | None = None
     supabase_service_role_key: str | None = None
     make_webhook_secret: str | None = None
+    dispatch_transport_enabled: bool = False
+    dispatch_transport_url: str | None = None
+    dispatch_transport_secret: str | None = None
+    dispatch_allowed_phones: str = ''
     attachment_bucket: str = "ticket-attachments"
     attachment_max_mb: int = 15
     attachment_video_max_mb: int = 50
@@ -65,7 +70,7 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    return Settings(_env_file=os.environ.get('VENDRA_ENV_FILE', '.env') or None)
 
 
 def installed_version() -> str:

@@ -31,7 +31,7 @@
     },
     {
       "path": "app/core/config.py",
-      "sha256": "74d1fc6e72d54cfb0ad036510613250ff025d3e2e04f1fe39e693e86986f7655"
+      "sha256": "1882da3ebe05fefa9befd2ce8660c29c1e262d3515d2f04157258c3364d715c2"
     },
     {
       "path": "app/core/ui.py",
@@ -359,7 +359,7 @@
     },
     {
       "path": "app/static/css/staging-h1-005b7.css",
-      "sha256": "4877e4934b75ef9cd8e907f894cf05bc9a84dfcb32ca435d988225863e1bbd13"
+      "sha256": "56b00bd24541d6b4c259a7d127351d7411cece4857fc2305c969400ea495dfd5"
     },
     {
       "path": "app/static/css/staging-h1-005b8.css",
@@ -523,7 +523,7 @@
     },
     {
       "path": "app/templates/base.html",
-      "sha256": "e51bc90bd67ff7c70fc36fc6cc00df2169ea9cb85b5c3982dfd6464e8f60cc40"
+      "sha256": "1b4cf84fc717f2d1c60b90eecbdbeee3686304166974154ad41db6f15643b22f"
     },
     {
       "path": "app/templates/customers/detail.html",
@@ -1088,6 +1088,42 @@
     {
       "path": "docs/VALIDACAO_EXECUTOR_STAGING.md",
       "sha256": "1bb89d7f8ef689787598c66e35c0ab48102bc208bc0fc802922f320441816e52"
+    },
+    {
+      "path": "app/services/dispatch_command_service.py",
+      "sha256": "1cffdabf6cee4d99b605607950f905bf472c87d35e9f5944ee0e775229f38c39"
+    },
+    {
+      "path": "app/routers/dispatch_commands.py",
+      "sha256": "b42bc3307b759ef39529b74f36bcaa01c7f597033abebeaaebda4dd54ecfbf28"
+    },
+    {
+      "path": "app/staging_h1_006h.py",
+      "sha256": "9990c36a033ebf03bdd5fa85f0e7615923ffd2c721764595ae3d12d4697d1ff7"
+    },
+    {
+      "path": "app/templates/dispatches/command.html",
+      "sha256": "be5860afc29fc106dae51ee8472857513a5d2a913f225cfac588686cdb8de9c8"
+    },
+    {
+      "path": "tests/test_dispatch_command.py",
+      "sha256": "c43a7481c9cf18031c4d9c6be3baf4168835b72241aa8153c36d41b493fcde44"
+    },
+    {
+      "path": "sql/09_PREPARAR_COMANDO_DISPARO_STAGING.sql",
+      "sha256": "5bcfbab90342d133e41d57910b2cc923e4b712c33e12de7ceb5ffdd55ea4f6b5"
+    },
+    {
+      "path": "sql/10_ROLLBACK_COMANDO_DISPARO_STAGING.sql",
+      "sha256": "14d1a36880302c86a7c646610e3bed09900b6c58984bf63df174139ce53967ec"
+    },
+    {
+      "path": "tools/dispatch_portal_start.py",
+      "sha256": "d635ff52896be0193b1fbb3f5c4620341d7bb1d355f5842eb974cd6e206e3e4f"
+    },
+    {
+      "path": "docs/VALIDACAO_COMANDO_PORTAL_STAGING.md",
+      "sha256": "5bb61dc3e5302160235f0b606ab5f36de8e9873426e0d1ddd48ecb7d774d8910"
     }
   ]
 }

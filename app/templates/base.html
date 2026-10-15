@@ -31,7 +31,7 @@
     <nav class="mobile-nav" aria-label="Navegação principal">
         {% if level_for(user) != 'comum' %}<a href="/">Visão geral</a>{% endif %}
         {% for href,label,key in [('atendimentos','Atendimentos','tickets'),('clientes','Clientes','customers'),('produtos','Produtos e Serviços','products'),('disparos','Disparos','dispatches'),('indicadores','Indicadores','indicators'),('configuracoes','Configurações','settings'),('integracoes','Integrações','integrations'),('auditoria','Auditoria','audit'),('usuarios','Usuários','users')] %}
-        {% if allowed(user, href) %}<a class="{% if active_page == key %}active{% endif %}" href="/{{ href }}">{{ label }}</a>{% endif %}
+        {% if allowed(user, href) %}<a class="{% if active_page == key %}active{% endif %}" href="/{% if href == 'disparos' and vendra_integrated_portal %}disparos/envio{% else %}{{ href }}{% endif %}">{{ label }}</a>{% endif %}
         {% endfor %}
         {% if vendra_environment == "staging" and allowed(user, "oportunidades") %}<a href="/oportunidades">CRM (homologação)</a>{% endif %}
     </nav>
@@ -45,7 +45,7 @@
         <nav class="nav">
             {% if level_for(user) != 'comum' %}<a class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" href="/">Visão geral</a>{% endif %}
             {% for href,label,key in [('atendimentos','Atendimentos','tickets'),('clientes','Clientes','customers'),('produtos','Produtos e Serviços','products'),('disparos','Disparos','dispatches'),('indicadores','Indicadores','indicators'),('configuracoes','Configurações','settings'),('integracoes','Integrações','integrations'),('auditoria','Auditoria','audit'),('usuarios','Usuários','users')] %}
-            {% if allowed(user, href) %}<a class="nav-link {% if active_page == key %}active{% endif %}" href="/{{ href }}">{{ label }}</a>{% endif %}
+            {% if allowed(user, href) %}<a class="nav-link {% if active_page == key %}active{% endif %}" href="/{% if href == 'disparos' and vendra_integrated_portal %}disparos/envio{% else %}{{ href }}{% endif %}">{{ label }}</a>{% endif %}
             {% endfor %}
             {% if vendra_environment == "staging" and allowed(user, "oportunidades") %}<a class="nav-link {% if active_page == 'opportunities' %}active{% endif %}" href="/oportunidades">CRM (homologação)</a>{% endif %}
         </nav>
@@ -65,7 +65,7 @@
     </aside>
     <main id="vendra-main" class="main-content" tabindex="-1">
         {% if vendra_environment == 'staging' %}
-        <div class="vendra-staging-ribbon" role="status"><strong>AMBIENTE DE TESTES</strong><span>Supabase STAGING · Login, Clientes, Atendimentos e CRM transacional, Disparos simulados e Preflight e Contrato transacional isolado (sem envios) · Porta 8011</span></div>
+        <div class="vendra-staging-ribbon" role="status"><strong>AMBIENTE DE TESTES</strong><span>{% if vendra_integrated_portal %}Supabase STAGING · Integrações em homologação · Envio controlado {% if vendra_dispatch_live %}ativado{% else %}desativado{% endif %}{% else %}Supabase STAGING · Login, Clientes, Atendimentos e CRM transacional, Disparos simulados e Preflight e Contrato transacional isolado (sem envios) · Porta 8011{% endif %}</span></div>
         {% endif %}
         {% block content %}{% endblock %}
     </main>
