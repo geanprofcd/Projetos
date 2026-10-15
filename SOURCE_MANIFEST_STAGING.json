@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "eb4a7e3ba8de739e3501cf8058bb9f53c685ec0cca82f37776e80e889723c4d7"
+      "sha256": "ecac41f34c101b27d690b73811d0aab58ffe8175044414a5df1a781ae0cc6519"
     },
     {
       "path": "README.md",
@@ -667,7 +667,7 @@
     },
     {
       "path": "app/whatsapp_callbacks.py",
-      "sha256": "f3c5e91af0e33f1bbb47a650fa9e2971d7728f549dc9b430e97ae6b6f1c6e166"
+      "sha256": "cdeb3834826375887e867e93431860fe6b8c1aa3d83c978c30f8cb3e23bdb5aa"
     },
     {
       "path": "docs/ANALISE_INICIAL.md",
@@ -692,6 +692,10 @@
     {
       "path": "docs/VALIDACAO_ATUAL.md",
       "sha256": "6f4035b4add9a8081832b72aeffe6aac5161e74562d473569b4c8a2893de7c22"
+    },
+    {
+      "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
+      "sha256": "a82cfabac2b423d98ddc0e7c3197aa59a7842490d4566aa6b68be34d926e9851"
     },
     {
       "path": "docs/VALIDACAO_GIT_STAGING.md",
@@ -899,7 +903,7 @@
     },
     {
       "path": "tests/test_whatsapp_control_bridge.py",
-      "sha256": "dfe9458e1efc44b319b1a598de79c917f93c312de674827b23af4e47b62cf8fb"
+      "sha256": "d835ca4873e17c47f868f89944c19b25406f964df131caf965ac6a76f626bf85"
     },
     {
       "path": "tools/ai_conversation_flow_smoke.py",

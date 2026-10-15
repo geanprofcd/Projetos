@@ -13,3 +13,5 @@ Leia docs/VALIDACAO_GIT_STAGING.md para o checkpoint vigente. docs/VALIDACAO_ATU
 - Nao criar worktree sem necessidade/autorizacao aplicavel. Este checkout e separado do runtime Windows.
 
 - Autorizacao permanente de 14/10/2026: documentar comandos e executa-los autonomamente quando necessarios no escopo autorizado, sem depender de execucao manual pelo usuario. Registrar acao, destino, revisao, validacao e resultado. Ver docs/COMANDOS_OPERACAO.md.
+
+- Regra explicita de 14/10/2026: tuneis/cenarios do original pertencem a ambiente testado; para STAGING copiar e trabalhar isoladamente, nunca substituir/redirecionar o original. Copia sob demanda Make 6639761 sem webhook Meta e com envio bloqueado; nao reverter historico autorizado automaticamente.

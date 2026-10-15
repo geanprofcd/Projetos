@@ -17,7 +17,7 @@ from uuid import UUID
 
 from dotenv import dotenv_values
 from fastapi import FastAPI, Header, HTTPException
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, SecretStr, field_validator, model_validator
 
 
 def canonical_phone(value: str) -> str:
@@ -142,7 +142,7 @@ class AIReply(Inbound):
 
 class OutboxBinding(MetaSource):
     provider_message_id: str = Field(min_length=1, max_length=430)
-    claim_token: str = Field(min_length=32, max_length=100, repr=False)
+    claim_token: SecretStr = Field(min_length=32, max_length=100)
     recipient_id: str = Field(min_length=8, max_length=30)
     status: str = Field(default='sent', pattern='^sent$')
 
@@ -267,7 +267,8 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
         item = lookup('whatsapp_outbox', 'phone', outbox_id)
         check_entity_phone(item['phone'], payload.recipient_id)
         return rpc('vendra_whatsapp_bind_v1', {'p_outbox_id': str(outbox_id),
-            'p_provider_message_id': payload.provider_message_id, 'p_claim_token': payload.claim_token})
+            'p_provider_message_id': payload.provider_message_id,
+            'p_claim_token': payload.claim_token.get_secret_value()})
 
     if config.ai_enabled:
         @app.get('/webhooks/make/ai/control/{ticket_id}')
@@ -285,7 +286,14 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
             body = re.sub(r'\s*#[123]\s*$', '', payload.message).strip()
             if not body:
                 raise HTTPException(422, 'Resposta vazia apos remover marcador tecnico.')
-            return rpc('vendra_whatsapp_ai_prepare_v1', {
+            result = rpc('vendra_whatsapp_ai_prepare_v1', {
                 'p_ticket_id': str(payload.ticket_id), 'p_inbound_message_id': str(payload.inbound_message_id),
                 'p_body': body, 'p_expected_version': payload.control_version})
+            if result.get('authorized') is True:
+                outbox = result.get('outbox')
+                if not isinstance(outbox, dict):
+                    raise HTTPException(503, 'Banco nao confirmou a saida autorizada.')
+                # Conferir novamente a reserva: o telefone pode mudar entre leitura e RPC.
+                check_entity_phone(outbox.get('phone'), payload.phone)
+            return result
     return app

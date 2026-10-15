@@ -6,7 +6,7 @@ from uuid import uuid4
 import base64
 import unittest
 from fastapi.testclient import TestClient
-from app.whatsapp_callbacks import BridgeConfig, create_app, load_config
+from app.whatsapp_callbacks import BridgeConfig, OutboxBinding, create_app, load_config
 
 
 class DatabaseStub:
@@ -145,6 +145,27 @@ class ControlBridgeSecurity(unittest.TestCase):
             r = self.client.post(self.bind_url, json=dict(self.binding, **delta), headers=self.headers)
             self.assertIn(r.status_code, (403, 422))
         self.assertFalse(self.db.rpc_calls)
+
+    def test_reserved_phone_rechecked_before_returning_authorization(self):
+        for outbox in ({'phone': '551100000001'}, {'phone': 'invalid'}):
+            self.db.responses['vendra_whatsapp_ai_prepare_v1'] = {'accepted': True,
+                'authorized': True, 'outbox': outbox}
+            r = self.client.post('/webhooks/make/ai/reply', json=self.reply, headers=self.headers)
+            self.assertEqual(r.status_code, 403)
+            self.assertNotIn('authorized', r.json())
+        self.db.responses['vendra_whatsapp_ai_prepare_v1'] = {'accepted': True, 'authorized': True}
+        r = self.client.post('/webhooks/make/ai/reply', json=self.reply, headers=self.headers)
+        self.assertEqual(r.status_code, 503)
+        self.db.responses['vendra_whatsapp_ai_prepare_v1'] = {'accepted': True,
+            'authorized': True, 'outbox': {'phone': '5511900000000'}}
+        r = self.client.post('/webhooks/make/ai/reply', json=self.reply, headers=self.headers)
+        self.assertEqual(r.status_code, 202)
+        self.assertTrue(r.json()['authorized'])
+
+    def test_claim_token_is_masked_in_model_representation(self):
+        model = OutboxBinding(**self.binding)
+        self.assertNotIn(self.binding['claim_token'], repr(model))
+        self.assertEqual(model.claim_token.get_secret_value(), self.binding['claim_token'])
 
     def test_backend_permission_error_is_forbidden_without_diagnostic_leak(self):
         self.db.responses['vendra_whatsapp_bind_v1'] = type('Denied', (Exception,), {'code': '42501'})('private token')
