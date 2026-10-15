@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Usuários | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header"><div><span class="eyebrow">ADMINISTRAÇÃO</span><h1>Usuários</h1><p>Convide sua equipe e controle o acesso às áreas do VENDRA.</p></div></header>
+{% if error %}<div class="users-alert error" role="alert">{{ error }}</div>{% endif %}
+{% if success %}<div class="users-alert" role="status">{{ success }}
+{% if demo_preview %}<p class="users-demo-link"><a href="{{ demo_preview }}">Abrir convite de teste</a></p>{% endif %}</div>{% endif %}
+{% if request.query_params.get('created') %}<div class="users-alert" role="status">Usuário criado com o perfil selecionado.</div>{% endif %}
+{% if request.query_params.get('updated') %}<div class="users-alert" role="status">Permissões atualizadas.</div>{% endif %}
+<div class="users-grid">
+    <section class="panel users-card">
+        <h2>Convidar usuário</h2><p>O convidado define sua própria senha. Convites expiram em 48 horas e só podem ser usados uma vez.</p>
+        <form class="users-form" method="post" action="/usuarios/convidar">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <label>Nome completo<input name="full_name" maxlength="120" required autocomplete="name" placeholder="Nome do colaborador"></label>
+            <label>E-mail<input name="email" type="email" maxlength="254" required autocomplete="email" placeholder="nome@empresa.com"></label>
+            <label>Nível de acesso<select name="access_level" required>
+                {% for key,label in levels.items() %}
+                {% if can_edit_roles or ['comum','comercial','gerencial','administrativo'].index(key) <= ['comum','comercial','gerencial','administrativo'].index(level_for(user)) %}
+                <option value="{{ key }}" {% if key == 'comum' %}selected{% endif %}>{{ label }}</option>
+                {% endif %}
+                {% endfor %}
+            </select></label>
+            <button type="submit" class="button primary full">Enviar convite</button>
+        </form>
+        {% if can_edit_roles %}
+        <details class="users-direct-create"><summary>Cadastrar usuário com senha inicial</summary>
+          <p>Somente administradores. A senha não fica nos registros de auditoria. Prefira convites para criação da própria senha.</p>
+          <form class="users-form" action="/usuarios/criar-direto" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <label>Nome completo<input type="text" name="full_name" required maxlength="120"></label>
+            <label>E-mail<input type="email" name="email" required maxlength="254"></label>
+            <label>Perfil<select name="access_level"><option value="comum">Comum</option><option value="comercial" selected>Comercial</option><option value="gerencial">Gerencial</option><option value="administrativo">Administrativo</option></select></label>
+            <label>Senha inicial<input type="password" name="password" required minlength="12" maxlength="128" autocomplete="new-password"></label>
+            <button type="submit" class="button secondary full">Criar usuário</button>
+          </form>
+        </details>
+        {% endif %}
+        <p><strong>Comum:</strong> sem acesso aos menus. <strong>Comercial:</strong> atendimentos, clientes, produtos e disparos. <strong>Gerencial:</strong> comercial e indicadores. <strong>Administrativo:</strong> todo o sistema.</p>
+    </section>
+    <section class="panel users-card">
+        <h2>Equipe</h2><p>As alterações de perfil são aplicadas aos próximos acessos e solicitações do usuário.</p>
+        <div class="users-list">
+        {% for person in people %}
+            <div class="users-entry">
+                <div><strong>{{ person.full_name }}</strong><small>{{ person.email }} · {{ levels[level_for(person)] }}{% if person.status != 'active' %} · {{ person.status }}{% endif %}</small></div>
+                {% if can_edit_roles and person.id != user.id %}
+                <form class="users-form" method="post" action="/usuarios/{{ person.id }}/permissoes" aria-label="Permissões de {{ person.full_name }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <select name="access_level" aria-label="Nível de acesso">
+                        {% for key,label in levels.items() %}<option value="{{ key }}" {% if level_for(person) == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+                    </select>
+                    <label style="font-weight:400;display:flex;align-items:center;gap:5px"><input type="checkbox" name="can_manage_users" value="true" style="width:auto" {% if person.can_manage_users %}checked{% endif %}> Pode convidar</label>
+                    <button type="submit" class="button secondary">Salvar</button>
+                </form>
+                {% endif %}
+            </div>
+        {% else %}<p>Sem usuários cadastrados.</p>{% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

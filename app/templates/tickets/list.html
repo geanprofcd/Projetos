@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Atendimentos | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header tickets-page-head">
+    <div><span class="eyebrow">CENTRAL</span><h1>Atendimentos</h1><p>Atendimento e operação comercial no mesmo ambiente.</p></div>
+    <div class="header-actions">
+        {% if user.role != 'agronomo' %}<a class="button secondary" href="/oportunidades">Oportunidades</a><a class="button primary" href="/atendimentos/novo">Novo atendimento</a>{% endif %}
+    </div>
+</header>
+
+{% if user.role in ['responsavel','administrador'] %}
+<nav class="ticket-view-tabs" aria-label="Visualização de atendimentos">
+    <a class="ticket-view-tab {% if selected_view == 'lista' %}active{% endif %}" href="/atendimentos?view=lista">Lista</a>
+    <a class="ticket-view-tab {% if selected_view == 'funil' %}active{% endif %}" href="/atendimentos?view=funil{% if selected_funnel %}&funil={{ selected_funnel.id }}{% endif %}">Funil</a>
+</nav>
+{% endif %}
+
+{% if selected_view == 'funil' and user.role in ['responsavel','administrador'] %}
+<div class="kanban-shell" data-kanban-root data-csrf-token="{{ csrf_token }}" data-funnel-id="{{ selected_funnel.id if selected_funnel else '' }}" data-poll-seconds="{{ poll_seconds }}" data-kanban-signature="{{ kanban_signature }}" data-search="{{ kanban_search }}" data-assigned-user="{{ kanban_assigned }}">
+    {% if kanban_conflict %}<div class="alert error kanban-alert">A oportunidade foi alterada por outra ação. O quadro foi recarregado com os dados mais recentes.</div>{% endif %}
+    {% if kanban_deleted %}<div class="alert success kanban-alert"><strong>Card excluído.</strong><span>A oportunidade foi arquivada e retirada do funil, preservando a auditoria.</span></div>{% endif %}
+    <form class="kanban-toolbar" method="get" action="/atendimentos">
+        <input type="hidden" name="view" value="funil">
+        <label>Funil
+            <select name="funil" onchange="this.form.submit()">
+                {% for funnel in funnels %}<option value="{{ funnel.id }}" {% if selected_funnel and funnel.id == selected_funnel.id %}selected{% endif %}>{{ funnel.name }}</option>{% endfor %}
+            </select>
+        </label>
+        <label class="kanban-search">Buscar
+            <input type="search" name="q" value="{{ kanban_search }}" placeholder="Cliente ou oportunidade...">
+        </label>
+        <label>Responsável
+            <select name="responsavel">
+                <option value="">Todos</option>
+                {% for responsible in responsibles %}<option value="{{ responsible.id }}" {% if kanban_assigned == responsible.id %}selected{% endif %}>{{ responsible.full_name }}</option>{% endfor %}
+            </select>
+        </label>
+        <button class="button secondary" type="submit">Filtrar</button>
+        {% if kanban_search or kanban_assigned %}<a class="button secondary" href="/atendimentos?view=funil{% if selected_funnel %}&funil={{ selected_funnel.id }}{% endif %}">Limpar</a>{% endif %}
+    </form>
+
+    {% if selected_funnel %}
+    <div class="kanban-live-row">
+        <div class="live-badge" id="kanbanLiveBadge" title="O funil é atualizado automaticamente"><span class="live-dot"></span><span class="live-label">Funil atualizado automaticamente</span></div>
+    </div>
+    <div class="kanban-board" data-kanban-board>
+        {% include "tickets/_kanban_columns.html" %}
+    </div>
+    <p class="kanban-help">No computador, arraste os cards entre as etapas. Em telas menores, use o seletor “Mover” dentro do card. Alterações feitas pela IA ou por outro usuário aparecem automaticamente.</p>
+    {% else %}
+    <div class="panel kanban-no-funnel"><h2>Nenhum funil ativo configurado</h2><p>Crie um funil e pelo menos uma etapa ativa para usar esta visualização.</p>{% if user.role == 'administrador' %}<a class="button primary" href="/configuracoes/funis/novo">Criar funil</a>{% endif %}</div>
+    {% endif %}
+</div>
+<script src="/static/js/kanban-v0.0.16.js"></script>
+{% else %}
+<div id="ticketsLiveRoot" data-poll-seconds="{{ poll_seconds }}">
+    <div class="ticket-list-toolbar">
+        <div class="filters">
+            <input id="search" type="search" placeholder="Buscar cliente, fazenda ou assunto...">
+            <select id="statusFilter"><option value="">Todos os status</option><option value="novo">Novo</option><option value="em_atendimento">Em atendimento</option><option value="aguardando_cliente">Aguardando cliente</option><option value="aguardando_interno">Aguardando interno</option><option value="aguardando_orcamento">Aguardando orçamento</option><option value="finalizado">Finalizado</option><option value="cancelado">Cancelado</option></select>
+        </div>
+        <div class="live-badge" id="ticketsLiveBadge" title="A fila é atualizada automaticamente"><span class="live-dot"></span><span class="live-label">Fila atualizada automaticamente</span></div>
+    </div>
+    <section class="ticket-list" id="ticketList">
+    {% for ticket in tickets %}
+    <a class="ticket-row" data-ticket-alert-id="{{ ticket.id }}" href="/atendimentos/{{ ticket.id }}" data-status="{{ ticket.status }}" data-search="{{ ticket.customer_name }} {{ ticket.farm_name }} {{ ticket.title }} {{ ticket.crop_name }}">
+        <div class="ticket-avatar">{{ ticket.customer_name[0] }}</div>
+        <div class="ticket-main"><div class="ticket-line"><strong>{{ ticket.customer_name }}</strong><span>#{{ ticket.id }}</span></div><h3>{{ ticket.title }}</h3><div class="lead-milestones"><span>Chegada <b>{{ (ticket_attention.get(ticket.id|string) or {}).get("arrival_date", "—") }}</b></span><span>1ª resposta <b>{{ (ticket_attention.get(ticket.id|string) or {}).get("first_reply_time", "—") }}</b></span></div></div>
+        <div class="ticket-meta"><span class="source">{{ ticket.source }}</span><span class="status status-{{ ticket.status }}">{{ ticket.status.replace('_',' ') }}</span><small>{{ ticket.assigned_name or 'Sem responsável' }}</small></div>
+    </a>
+    {% else %}<div class="ticket-list-empty">Nenhum atendimento encontrado.</div>{% endfor %}
+    </section>
+</div>
+<script src="/static/js/tickets-v0.0.23.js"></script>
+{% endif %}
+{% endblock %}

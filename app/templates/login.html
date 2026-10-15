@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#151b26">
+    <title>Entrar | VENDRA</title>
+    <link rel="stylesheet" href="/static/css/login-vendra-v0.0.1.css">
+</head>
+<body>
+<div class="login-shell">
+    <section class="login-brand-panel" aria-label="VENDRA — Gestão Comercial">
+        <div class="brand-lockup"><span class="brand-mark">V</span><div><strong>VENDRA</strong><small>Gestão Comercial</small></div></div>
+        <div class="hero-copy">
+            <span class="eyebrow">CRM EM EVOLUÇÃO</span>
+            <h1>Atendimento e vendas no mesmo fluxo.</h1>
+            <p>Centralize clientes, conversas e oportunidades em uma estrutura preparada para crescer até um ERP.</p>
+        </div>
+        <div class="hero-grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    </section>
+    <section class="login-panel" aria-label="Acesso interno">
+        <form class="login-card" method="post" action="/login">
+            <span class="eyebrow">ACESSO INTERNO</span>
+            <h2>Bem-vindo</h2>
+            <p>Entre para acessar sua operação comercial.</p>
+            {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+            <label for="email">E-mail</label>
+            <input id="email" type="email" name="email" value="{{ email or '' }}" placeholder="voce@empresa.com" autocomplete="username" required autofocus>
+            <label for="password">Senha</label>
+            <input id="password" type="password" name="password" placeholder="Sua senha" autocomplete="current-password" required>
+            <button class="button primary" type="submit">Entrar</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div>
+        <span class="eyebrow">VISÃO GERAL</span>
+        <h1>Olá, {{ user.full_name.split(' ')[0] }}.</h1>
+        <p>Acompanhe a operação de atendimento e relacionamento comercial.</p>
+    </div>
+    <a class="button primary" href="/atendimentos">Abrir atendimentos</a>
+</header>
+
+<section class="metrics-grid">
+    <article class="metric-card"><span>Atendimentos</span><strong>{{ metrics.total }}</strong><small>na fila atual</small></article>
+    <article class="metric-card"><span>Novos</span><strong>{{ metrics.novos }}</strong><small>aguardando triagem</small></article>
+    <article class="metric-card"><span>Em atendimento</span><strong>{{ metrics.em_atendimento }}</strong><small>com responsável</small></article>
+    <article class="metric-card"><span>Aguardando</span><strong>{{ metrics.aguardando }}</strong><small>cliente ou orçamento</small></article>
+    <article class="metric-card"><span>1ª resposta</span><strong class="metric-duration">{{ metrics.first_response_label }}</strong><small>{{ metrics.first_response_samples }} atendimento(s) medido(s)</small></article>
+    <article class="metric-card"><span>Resolução</span><strong class="metric-duration">{{ metrics.resolution_label }}</strong><small>{{ metrics.resolution_samples }} atendimento(s) finalizado(s)</small></article>
+</section>
+
+{% if commercial %}
+<section class="dashboard-commercial-block">
+    <div class="dashboard-commercial-head"><div><h2>Visão comercial</h2><p>Pipeline atual e resultados dos últimos 30 dias.</p></div><a href="/indicadores">Ver indicadores</a></div>
+    <div class="metrics-grid dashboard-commercial-cards">
+        <article class="metric-card"><span>Pipeline</span><strong class="money-metric">{{ commercial.pipeline_value_label }}</strong><small>{{ commercial.pipeline_count }} oportunidade(s) aberta(s)</small></article>
+        <article class="metric-card"><span>Ganhos</span><strong class="money-metric">{{ commercial.won_value_label }}</strong><small>{{ commercial.won_count }} negócio(s) no período</small></article>
+        <article class="metric-card"><span>Conversão</span><strong>{{ commercial.conversion_label }}</strong><small>somente negócios fechados</small></article>
+        <article class="metric-card"><span>Ticket médio</span><strong class="money-metric">{{ commercial.avg_ticket_label }}</strong><small>vendas ganhas</small></article>
+    </div>
+</section>
+{% endif %}
+
+<section class="panel">
+    <div class="panel-header"><div><h2>Atendimentos recentes</h2><p>Últimas movimentações da central.</p></div><a href="/atendimentos">Ver todos</a></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Cliente</th><th>Assunto</th><th>Cultura</th><th>Canal</th><th>Status</th></tr></thead>
+            <tbody>
+            {% for ticket in metrics.recent %}
+            <tr onclick="window.location='/atendimentos/{{ ticket.id }}'">
+                <td><strong>{{ ticket.customer_name }}</strong><small>{{ ticket.farm_name }}</small></td>
+                <td>{{ ticket.title }}</td>
+                <td>{{ ticket.crop_name }}</td>
+                <td><span class="source">{{ ticket.source }}</span></td>
+                <td><span class="status status-{{ ticket.status }}">{{ ticket.status.replace('_',' ') }}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% block title %}Disparos | VENDRA{% endblock %}
+{% block content %}
+<div class="dispatch-page">
+<header class="page-header dispatch-page-header">
+    <div>
+        <span class="eyebrow">WHATSAPP / MAKE</span>
+        <h1>Disparos</h1>
+        <p>Envie um contato manualmente ou importe uma lista para disparar individualmente ou em fila, sempre um contato por vez para o Make.</p>
+    </div>
+</header>
+
+{% if success %}<div class="alert success"><strong>Concluído.</strong><span>{{ success }}</span></div>{% endif %}
+{% if error %}<div class="alert error"><strong>Atenção.</strong><span>{{ error }}</span></div>{% endif %}
+
+<div class="dispatch-layout">
+    <div class="dispatch-entry-grid">
+        <section class="form-card dispatch-form-card">
+            <div class="form-section-heading">
+                <div>
+                    <span class="eyebrow">DISPARO MANUAL</span>
+                    <h2>Enviar para um cliente</h2>
+                    <p>O conteúdo da mensagem continua configurado no cenário do Make/Meta.</p>
+                </div>
+                <span class="config-state {{ 'is-on' if settings.enabled else 'is-off' }}">{{ 'Ativo' if settings.enabled else 'Inativo' }}</span>
+            </div>
+            <form method="post" action="/disparos" class="registration-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-fields">
+                    <div class="field">
+                        <label for="dispatch-name">Nome do cliente <span class="required">*</span></label>
+                        <input id="dispatch-name" name="name" required maxlength="160" value="{{ (form.name if form else '') or '' }}" placeholder="Ex.: João da Silva">
+                    </div>
+                    <div class="field">
+                        <label for="dispatch-phone">Telefone <span class="required">*</span></label>
+                        <input id="dispatch-phone" name="phone" required inputmode="tel" autocomplete="off" value="{{ (form.phone if form else '') or '' }}" placeholder="+55 87 99999-9999">
+                        <small>Use DDI + DDD + número.</small>
+                    </div>
+                </div>
+                <footer class="form-submit-bar">
+                    <div>
+                        <strong>{{ settings.template_key or 'Mensagem definida no Make' }}</strong>
+                        <span>O VENDRA envia os dados do cliente; o Make escolhe e envia a mensagem/template configurado no Meta.</span>
+                    </div>
+                    <div class="form-actions"><button class="button primary" type="submit" {% if not settings.enabled %}disabled{% endif %}>Disparar</button></div>
+                </footer>
+            </form>
+        </section>
+
+        <section class="form-card dispatch-import-card">
+            <div class="form-section-heading">
+                <div>
+                    <span class="eyebrow">IMPORTAR LISTA</span>
+                    <h2>Carregar nomes e telefones</h2>
+                    <p>O VENDRA identifica as colunas de nome e telefone e monta uma fila visual. Você pode disparar um contato ou iniciar o envio sequencial de todos os contatos prontos.</p>
+                </div>
+                <span class="file-type-badge">{{ supported_imports }}</span>
+            </div>
+            <form method="post" action="/disparos/importar" enctype="multipart/form-data" class="dispatch-upload-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <label class="dispatch-dropzone" for="dispatch-file">
+                    <span class="dispatch-drop-icon">↑</span>
+                    <strong>Selecionar arquivo com tabela</strong>
+                    <small>PDF, Excel, CSV, ODS ou DOCX · até {{ max_upload_mb }} MB · máximo de 5.000 contatos por importação.</small>
+                    <input id="dispatch-file" type="file" name="arquivo" accept=".csv,.xlsx,.xls,.ods,.pdf,.docx" required>
+                </label>
+                <div class="dispatch-upload-note">
+                    <strong>Como funciona</strong>
+                    <span>Procure usar cabeçalhos como <b>Nome</b> e <b>Telefone</b>. Telefones inválidos e repetidos serão exibidos na lista, mas não poderão ser disparados.</span>
+                </div>
+                <button class="button secondary" type="submit">Importar e revisar</button>
+            </form>
+        </section>
+    </div>
+
+    {% if not settings.enabled %}<p class="sync-note">Ative e configure o canal em <a href="/configuracoes#dispatches">Configurações → Disparos</a>.</p>{% endif %}
+
+    <section class="panel dispatch-import-panel" id="lista-importada">
+        <div class="panel-header dispatch-list-header">
+            <div>
+                <span class="eyebrow">LISTA PARA DISPAROS</span>
+                <h2>Contatos importados</h2>
+                {% if selected_batch %}<p class="dispatch-selected-filename" title="{{ selected_batch.filename }}">{{ selected_batch.filename }} · importada em {{ selected_batch.created_at|datetime_br }}</p>{% else %}<p>Importe um arquivo para montar sua lista.</p>{% endif %}
+            </div>
+            {% if import_batches %}
+            <form method="get" action="/disparos" class="dispatch-list-picker">
+                <label for="dispatch-list-select">Lista</label>
+                <select id="dispatch-list-select" name="list" onchange="this.form.submit()">
+                    {% for batch in import_batches %}<option value="{{ batch.id }}" title="{{ batch.filename }}" {% if selected_batch and batch.id == selected_batch.id %}selected{% endif %}>{{ batch.filename[:48] }}{% if batch.filename|length > 48 %}…{% endif %} · {{ batch.valid_count }} aptos</option>{% endfor %}
+                </select>
+            </form>
+            {% endif %}
+        </div>
+        {% if selected_batch %}
+        <div class="dispatch-import-summary">
+            <div><strong>{{ selected_batch.total_count }}</strong><span>linhas</span></div>
+            <div><strong>{{ selected_batch.valid_count }}</strong><span>aptos</span></div>
+            <div><strong>{{ selected_batch.invalid_count }}</strong><span>inválidos</span></div>
+            <div><strong>{{ selected_batch.duplicate_count }}</strong><span>duplicados</span></div>
+        </div>
+        <div class="dispatch-bulk-bar" data-bulk-panel data-bulk-status="{{ bulk_state.status }}" data-progress-url="/disparos/listas/{{ selected_batch.id }}/progresso.json">
+            <div class="dispatch-bulk-copy">
+                <strong>Fila de disparos</strong>
+                {% if bulk_state.status in ['queued','running'] %}
+                <span data-bulk-message>Enviando {{ bulk_state.processed }} de {{ bulk_state.total }} contato(s), um por vez para o Make.</span>
+                {% elif bulk_state.status == 'completed' %}
+                <span data-bulk-message>Última fila concluída: {{ bulk_state.processed }} contato(s) processados.</span>
+                {% elif bulk_state.status == 'completed_with_errors' %}
+                <span data-bulk-message>Fila concluída com {{ bulk_state.failed }} falha(s). Os demais contatos foram processados.</span>
+                {% elif bulk_state.status == 'interrupted' %}
+                <span data-bulk-message>A fila anterior foi interrompida. Você pode continuar os contatos que ainda estão prontos.</span>
+                {% else %}
+                <span data-bulk-message>{{ ready_count }} contato(s) pronto(s) para envio.</span>
+                {% endif %}
+                <div class="dispatch-bulk-progress" {% if bulk_state.status not in ['queued','running'] %}hidden{% endif %}>
+                    <span data-bulk-progress style="width:{{ bulk_state.percent }}%"></span>
+                </div>
+            </div>
+            <form method="post" action="/disparos/listas/{{ selected_batch.id }}/enviar-todos" class="dispatch-bulk-form" data-ready-count="{{ ready_count }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="button primary dispatch-all-button" type="submit" {% if not settings.enabled or ready_count == 0 or bulk_state.status in ['queued','running'] %}disabled{% endif %}>Enviar todos{% if ready_count %} ({{ ready_count }}){% endif %}</button>
+            </form>
+        </div>
+        {% for warning in selected_batch.warnings or [] %}<div class="integration-note">{{ warning }}</div>{% endfor %}
+        <div class="table-wrap">
+            <table class="data-table dispatch-import-table">
+                <thead><tr><th>Linha</th><th>Nome</th><th>Telefone</th><th>Status</th><th>Disparo</th></tr></thead>
+                <tbody>
+                {% for item in import_items %}
+                <tr class="dispatch-import-row is-{{ item.status }}">
+                    <td>{{ item.row_number or '—' }}</td>
+                    <td><strong>{{ item.name or 'Nome não identificado' }}</strong>{% if item.last_error %}<small class="dispatch-error">{{ item.last_error }}</small>{% endif %}</td>
+                    <td><code>{{ item.phone or item.phone_raw or '—' }}</code></td>
+                    <td><span class="dispatch-status is-{{ item.status }}">{{ item.status_label }}</span></td>
+                    <td class="dispatch-list-action">
+                        {% if item.status == 'ready' %}
+                        <form method="post" action="/disparos/listas/{{ selected_batch.id }}/contatos/{{ item.id }}/disparar">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <button class="button primary mini dispatch-contact-button" type="submit" {% if not settings.enabled %}disabled{% endif %}>Disparar</button>
+                        </form>
+                        {% elif item.status in ['failed','cancelled'] %}
+                        <form method="post" action="/disparos/listas/{{ selected_batch.id }}/contatos/{{ item.id }}/disparar">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <button class="button secondary mini" type="submit" {% if not settings.enabled %}disabled{% endif %}>Tentar novamente</button>
+                        </form>
+                        {% elif item.dispatch_id %}
+                        <span class="dispatch-done">Solicitado</span>
+                        {% else %}
+                        <span class="dispatch-disabled">Não disponível</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}<tr><td colspan="5"><div class="empty">Nenhum contato encontrado nessa lista.</div></td></tr>{% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="dispatch-manual-note">O botão “Enviar todos” cria uma fila e encaminha apenas os contatos com status Pronto, um por vez para o Make. Inválidos, duplicados e contatos já solicitados são ignorados.</p>
+        {% else %}
+        <div class="empty dispatch-list-empty">Nenhuma lista importada ainda. Use o formulário acima para começar.</div>
+        {% endif %}
+    </section>
+
+    <section class="panel dispatch-history">
+        <div class="panel-header"><div><span class="eyebrow">HISTÓRICO</span><h2>Últimos disparos</h2></div></div>
+        <div class="table-wrap">
+            <table class="data-table dispatch-table">
+                <thead><tr><th>Cliente</th><th>Telefone</th><th>Status</th><th>Meta/Provedor</th><th>Solicitado em</th><th></th></tr></thead>
+                <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td><strong>{{ row.name }}</strong>{% if row.ticket_id %}<small><a href="/atendimentos/{{ row.ticket_id }}">Abrir atendimento #{{ row.ticket_id }}</a></small>{% elif row.customer_id %}<small>Cliente {{ row.customer_id }}</small>{% endif %}</td>
+                    <td><code>{{ row.phone }}</code></td>
+                    <td><span class="dispatch-status is-{{ row.status }}">{{ row.status_label }}</span>{% if row.last_error %}<small class="dispatch-error">{{ row.last_error }}</small>{% endif %}</td>
+                    <td>{{ row.provider_message_id or '—' }}</td>
+                    <td>{{ row.created_at|datetime_br }}</td>
+                    <td>{% if row.status in ['failed','cancelled'] %}<form method="post" action="/disparos/{{ row.id }}/reenviar"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button secondary mini" type="submit">Reenviar</button></form>{% endif %}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6"><div class="empty">Nenhum disparo realizado ainda.</div></td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<script src="/static/js/dispatches-v0.0.11.js"></script>
+{% endblock %}

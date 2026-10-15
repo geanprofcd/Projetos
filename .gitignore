@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+.vendra-data/
+runtime/
+updates/
+.pytest_cache/
+*.log
+
+output/
+callback_backup_*/
+*.bak
+*.exe
+*.zip

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Atendimentos internos | VENDRA STAGING{% endblock %}
+{% block content %}
+<header class="page-header"><div><span class="eyebrow">HOMOLOGAÇÃO • SOMENTE INTERNO</span><h1>Atendimentos</h1><p>Registros no Supabase-STAGING, sem envio ao WhatsApp.</p></div><a class="button primary" href="/atendimentos/novo">Novo atendimento</a></header>
+<section class="panel" style="padding:1.25rem"><div class="staging-table-wrap"><table class="staging-table"><thead><tr><th>Cliente</th><th>Assunto</th><th>Status</th><th>Prioridade</th><th>Chegada</th><th></th></tr></thead><tbody>
+{% for ticket in tickets %}<tr><td>{{ ticket.customer_name }}</td><td>{{ ticket.title }}</td><td>{{ ticket.status.replace('_',' ') }}</td><td>{{ ticket.priority }}</td><td>{{ ticket.created_at|date_br }}</td><td><a href="/atendimentos/{{ ticket.id }}">Abrir</a></td></tr>
+{% else %}<tr><td colspan="6">Nenhum atendimento interno cadastrado no STAGING.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Auditoria | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div>
+        <span class="eyebrow">RASTREABILIDADE</span>
+        <h1>Auditoria</h1>
+        <p>Alterações operacionais relevantes registradas pelo backend.</p>
+    </div>
+</header>
+<section class="panel">
+    <div class="panel-header"><div><h2>Eventos recentes</h2><p>Últimos 100 registros disponíveis.</p></div></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Data</th><th>Ator</th><th>Entidade</th><th>Ação</th><th>Detalhes</th></tr></thead>
+            <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.created_at|datetime_br }}</td>
+                <td><strong>{{ row.actor_name }}</strong></td>
+                <td>{{ row.entity_type }} · {{ row.entity_id }}</td>
+                <td><span class="audit-action">{{ row.action.replace('_',' ') }}</span></td>
+                <td><code class="json-preview">{{ row.payload }}</code></td>
+            </tr>
+            {% else %}<tr><td colspan="5" class="empty-cell">Nenhum evento de auditoria nesta execução.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

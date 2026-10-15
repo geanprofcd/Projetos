@@ -1,0 +1,49 @@
+/* VENDRA 0.0.24 — revisão transversal de UX, navegação, foco e responsividade. */
+:root{--vendra-focus:#3157d5;--vendra-radius:12px;--vendra-elevation:0 3px 18px rgba(18,32,55,.045)}
+html{scroll-behavior:smooth}body{overflow-x:hidden}
+.vendra-skip-link{position:fixed;top:-90px;left:16px;z-index:99999;background:#0b1932;color:#fff;padding:11px 14px;border-radius:9px;font-weight:700}
+.vendra-skip-link:focus{top:12px}
+:where(a,button,input,select,textarea,[role="button"]):focus-visible{outline:3px solid var(--vendra-focus);outline-offset:3px}
+:where(button,input,select,textarea){accent-color:#3157d5}
+:where(button,.button,a){-webkit-tap-highlight-color:transparent}
+button:disabled,.button:disabled{cursor:not-allowed;opacity:.55}
+.main-content{min-width:0;padding:clamp(16px,2.2vw,32px)}
+.page-header{gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.page-header h1,.ticket-detail-head h1{font-size:clamp(22px,2.25vw,30px);line-height:1.15;letter-spacing:-.02em}
+.page-header p{line-height:1.5;max-width:76ch}
+.sidebar{padding:22px 15px}.nav{margin-top:26px;gap:4px}
+.nav-link{padding:10px 12px;border-radius:9px;transition:background-color .14s ease,color .14s ease}
+.nav-link.active{background:#273958;color:#fff;font-weight:750;box-shadow:inset 3px 0 #94b7ff}
+.nav-link:hover{background:rgba(255,255,255,.14)}
+.panel,.metric-card,.ticket-list,.chat-panel,.context-panel{box-shadow:var(--vendra-elevation)}
+.button{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:8px;line-height:1.2}
+:is(.filters,.users-form,.template-dialog,form) :is(input,select,textarea){max-width:100%;line-height:1.35}
+:is(.filters,.users-form,.template-dialog) :is(input,select,textarea):focus-visible{border-color:#3157d5}
+.table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+table th{white-space:nowrap;font-size:11px;letter-spacing:.02em}
+table td{vertical-align:middle}
+table tbody tr:hover{background:#f4f7ff}
+.ticket-workspace .messages{scrollbar-gutter:stable;overscroll-behavior:contain}
+.ticket-workspace .chat-panel,.ticket-workspace .context-panel{min-width:0}
+.ticket-workspace .bubble{overflow-wrap:anywhere;word-break:normal}
+.ticket-workspace .chat-head{gap:9px}
+.ticket-workspace .context-panel dl dd{overflow-wrap:anywhere}
+.lead-alert-root{z-index:1500}
+.vendra-staging-ribbon{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff5da;border:1px solid #edc76b;border-radius:10px;color:#65450b;margin-bottom:16px;padding:10px 13px;font-size:12px}
+.vendra-staging-ribbon strong{letter-spacing:.07em;font-size:11px}
+@media(max-width:950px){.main-content{padding:18px}.page-header{align-items:flex-start}}
+@media(max-width:700px){
+ .main-content{padding:12px}
+ .page-header{margin-bottom:14px}
+ .page-header h1{font-size:23px}
+ .button,.filters input,.filters select{min-height:44px}
+ .filters{gap:8px}
+ .panel-header{padding:14px 16px;flex-wrap:wrap;gap:8px}
+ .metric-card{padding:16px}
+ .metric-card strong{font-size:27px}
+ .ticket-workspace .messages{padding:12px}
+ .ticket-workspace .message{max-width:92%}
+ .ticket-workspace .chat-panel{border-radius:12px}
+ .vendra-staging-ribbon{align-items:flex-start;flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}

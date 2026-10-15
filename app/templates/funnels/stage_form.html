@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Editar etapa | VENDRA{% endblock %}
+{% block content %}
+<div class="form-page">
+<header class="page-header form-page-header"><div><a class="back" href="/configuracoes/funis/{{ funnel.id }}">← {{ funnel.name }}</a><span class="eyebrow">CONFIGURAÇÕES · CRM</span><h1>Editar etapa</h1><p>Altere o nome, a cor ou a disponibilidade desta etapa.</p></div></header>
+{% if error %}<div class="alert error form-alert">{{ error }}</div>{% endif %}
+<form method="post" class="registration-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><section class="form-card"><div class="form-section-heading"><div class="form-section-number">1</div><div><h2>{{ stage.name }}</h2><p>Posição atual: {{ stage.position }}.</p></div></div><div class="form-fields"><div class="field"><label for="name">Nome</label><input id="name" name="name" required maxlength="120" value="{{ stage.name }}"></div><div class="field color-field"><label for="color">Cor da etapa</label><input id="color" type="color" name="color" value="{{ stage.color }}"></div><div class="field field-half"><label for="is-active">Status</label><select id="is-active" name="is_active"><option value="true" {% if stage.is_active %}selected{% endif %}>Ativa</option><option value="false" {% if not stage.is_active %}selected{% endif %}>Inativa</option></select></div></div></section><footer class="form-submit-bar"><div><strong>Preservação de histórico</strong><span>A etapa é inativada, nunca excluída nesta fase.</span></div><div class="form-actions"><a class="button secondary" href="/configuracoes/funis/{{ funnel.id }}">Cancelar</a><button class="button primary" type="submit">Salvar etapa</button></div></footer></form>
+</div>
+{% endblock %}

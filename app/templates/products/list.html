@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Produtos e Serviços | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div><span class="eyebrow">CATÁLOGO COMERCIAL</span><h1>Produtos e Serviços</h1><p>Cadastre os itens que formarão o valor das oportunidades comerciais.</p></div>
+    {% if can_edit %}<a class="button primary" href="/produtos/novo">Novo item</a>{% endif %}
+</header>
+
+{% if request.query_params.get('created') %}<div class="alert success catalog-alert">Item cadastrado com sucesso.</div>{% endif %}
+{% if request.query_params.get('updated') %}<div class="alert success catalog-alert">Item atualizado com sucesso.</div>{% endif %}
+
+<form class="filters catalog-filters" method="get" action="/produtos">
+    <input type="search" name="q" value="{{ query }}" placeholder="Buscar por nome, código, categoria ou descrição...">
+    <select name="kind" aria-label="Tipo">
+        <option value="">Todos os tipos</option>
+        {% for value, label in kinds.items() %}<option value="{{ value }}" {% if kind == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+    <select name="status" aria-label="Status">
+        <option value="all" {% if status_filter == 'all' %}selected{% endif %}>Todos</option>
+        <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Ativos</option>
+        <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>Inativos</option>
+    </select>
+    <button class="button secondary" type="submit">Filtrar</button>
+    {% if query or kind or status_filter != 'all' %}<a class="button secondary" href="/produtos">Limpar</a>{% endif %}
+</form>
+
+<section class="panel">
+<div class="table-wrap">
+<table>
+<thead><tr><th>Item</th><th>Tipo</th><th>Categoria</th><th>Unidade</th><th>Preço padrão</th><th>Status</th>{% if can_edit %}<th></th>{% endif %}</tr></thead>
+<tbody>
+{% for product in products %}
+<tr>
+    <td><strong>{{ product.name }}</strong><small>{{ product.code or 'Sem código' }}{% if product.description %} · {{ product.description }}{% endif %}</small></td>
+    <td><span class="catalog-kind catalog-kind-{{ product.kind }}">{{ product.kind_label }}</span></td>
+    <td>{{ product.category or '—' }}</td>
+    <td>{{ product.unit or '—' }}</td>
+    <td><strong>{{ product.default_price_label }}</strong></td>
+    <td><span class="status {% if product.is_active %}status-em_atendimento{% else %}status-cancelado{% endif %}">{{ 'ativo' if product.is_active else 'inativo' }}</span></td>
+    {% if can_edit %}<td><a class="table-link" href="/produtos/{{ product.id }}/editar">Editar</a></td>{% endif %}
+</tr>
+{% else %}
+<tr><td colspan="{{ 7 if can_edit else 6 }}"><div class="empty">Nenhum produto ou serviço encontrado.</div></td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<div class="catalog-note"><strong>Regra da v0.1:</strong> o preço padrão serve como ponto de partida. Quando as oportunidades forem implementadas, cada item preservará o preço negociado no momento da inclusão; mudanças futuras no catálogo não alterarão o histórico.</div>
+{% endblock %}

@@ -1,0 +1,953 @@
+{
+  "sequence": [
+    "VENDRA_BASE_H1_005B8",
+    "VENDRA_STAGING_H1_005B8_CONTRATO_ISOLADO",
+    "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+    "VENDRA_STAGING_H1_005B9_HOTFIX_FEEDBACK_F5",
+    "VENDRA_STAGING_H1_005B9_HOTFIX_CONFLITO_VERSAO",
+    "VENDRA_STAGING_H1_005B9_HOTFIX_PT409",
+    "VENDRA_STAGING_H1_005B9_HOTFIX_PT409_CRM_SIMULACOES"
+  ],
+  "files": {
+    "requirements.txt": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8af45fa9f83e153528b2402ee18f5cfddd3a90350e3ea76bc75045fe087f787f"
+    },
+    "version.json": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "448c5038e2368f0e4aa3653b758252220bb1996ea8f8b71652f3bf2b2741758c"
+    },
+    "migrations/014_vendra_user_invitations.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "89f626bad5c1c157d59eaa178edf86f54260460ba64ff36fc069aec1a451c1b7"
+    },
+    "tests/test_h1_005b5.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "68239d6f26ee22022ea8137b4d7d53e81ef3b8e7a7b21ff6d98335061e9152af"
+    },
+    "tests/test_h1_005b2.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "1ee60ae58d18775bfb2e4d605abe69decd55975629a80cf92010e6982507f860"
+    },
+    "tests/test_h1_005b6.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "3fdee385d0ef35ed90a4138f5ce571139f614cbf5eda57547f8ed5fea479f5fc"
+    },
+    "tests/test_h1_005b4.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "5dc6407c7aac6005a020f067d4f4b00fca4b97b070e6ecf214011bb347a5817c"
+    },
+    "tests/test_h1_005b1.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0ac0c36893cc430072050c63c25493827d19d764774831e92417e77bfddcec0d"
+    },
+    "tests/test_h1_005b3.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8261c43c773adba9c5b5383ad8893e24ed2cc77c5201ef9a4d5168a542341818"
+    },
+    "tests/test_h1_005b7.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7c6eca501ffdcde853baeea878be8234e435d7356ed3f8c34c454eefe09c8bc1"
+    },
+    "tests/smoke_isolado.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0ac0b5f60120f965aaf6f2eb833de555dd669b7babf183fe47f4e4a8adf3bd34"
+    },
+    "sql/01_APLICAR_H1_005B6_SOMENTE_STAGING.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "3ccd2c871350e6332efa131f5e857a43f8f213303a4e050a32f8d83973e6f5c7"
+    },
+    "sql/VALIDAR_H1_005B7_SOMENTE_LEITURA.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "2863c7c7d04cac1c8d5c0c6e7ac375e7878156e66ad910c9cae3c2e60530f6fe"
+    },
+    "sql/02_VALIDAR_FUNCOES_SOMENTE_LEITURA.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8a00df97023973e677a40463a0893ad5269a26c151d1b5ecbecd77122316129d"
+    },
+    "sql/03_VALIDAR_FLUXO_SOMENTE_LEITURA.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e959e586a63202268e6cadc10b7ab19280c0cf8a2db4148d8bbe8503dbb1ba5b"
+    },
+    "sql/02_VALIDAR_H1_005B6_LEITURA.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "978e4451de7d139f772cb06c06d0d94f6c18bb192dfd29466a1ad2d0eed33ea3"
+    },
+    "sql/01_APLICAR_RPC_H1_005B4_STAGING.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "c2da7c2736dcd8cee8814d9dd7d1221d8ac7b1b3d29eb45bf295fddc5c43ce20"
+    },
+    "app/staging_h1_005b6.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "c05c1583de2d0836d3d316459fdf6efe988e078f26d1f50728072702511e5dda"
+    },
+    "app/main.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bb018b092b8d821c138040eec1022faf827599eeaf1067d281d7a8b7f5c66767"
+    },
+    "app/staging_h1_005b3.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "9cfa3bc9471589c3b29d71f805bb2b6b977e604dfc4cd47c784f62a8084ba4bd"
+    },
+    "app/staging_h1_005b4.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "2153558bad8126395dd1b6a5f7dd8eadfea9008833bb44e7c8cfead5cc7fb0b3"
+    },
+    "app/staging_h1_005b7.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8b66d6a6242e6731bcceabca0acf2cd14dcfa464cb8c841f67941ecaaf2c153b"
+    },
+    "app/staging_h1_005b2.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "f08d4446d4fc1dd13f0ca2a5931bd188d48a6e22c3d89ef124278ec9805cc23d"
+    },
+    "app/__init__.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/staging_h1_005b5.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "ed29f381a374ab256fdb5d461f3cf49c2ac3b42549bdcf9053469b9e3cbf6c61"
+    },
+    "tools/project_command.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4fec9a85a8b5b602f5f913118f357ea4173f54986f3fd427a01c2fc9fde895be"
+    },
+    "tools/staging_setup.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "cc59b7e08a61e1037945dc147bf29a3345911994650e2d43904745db79f40118"
+    },
+    "tools/whatsapp_bridge_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8883d65f9ed572676b91a764b34fea02a54d4fac8e8d864df65c291adcd87abe"
+    },
+    "tools/indicators_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "10a468e4842c8b8cba9eba9b1d53feeec104c34080f24e3f5638b3cf67b7a845"
+    },
+    "tools/message_formatting_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "f33339b2e41a8c45172354029fd1c5190647259c66f03d8d4cbae589a25f11cd"
+    },
+    "tools/ticket_detail_polish_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d783714c1f7f878293dd2aac3a9dff7b00ded51dc0dd68314abfb2476096ee30"
+    },
+    "tools/opportunities_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bfe907f6397e7e1bfd3ef269207af9d43e6e0407b56917278fb440fc769ed13e"
+    },
+    "tools/ai_routing_defaults_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bbdc3ad10c2eb6e08b6a2ef70cee8aa5964db4eef071ee587813757a93c19fd4"
+    },
+    "tools/attention_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "2500cad61a73ced1ccea337fd15aaf05f65f627df31fad6a59e123e032bf589f"
+    },
+    "tools/preflight_staging.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "24ef1c35ca8c762ab999bc976372205a31ae997c0870b1c637f2b4cef2a0a1e7"
+    },
+    "tools/staging_guard.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "cff85093ce794ad572e7726c484a4f1ed56d47ed871b9b473b5caa1c0659354b"
+    },
+    "tools/visual_check_offline_022.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d57efeb815c4a53bc2cb95cf7120b957dafbd343721fc8575f9416eeaf49ca12"
+    },
+    "tools/dispatch_bulk_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "71519d3b1ccbb77e15c052c9d79f4f634d0807b25db55ae353b8d11462375096"
+    },
+    "tools/ai_conversation_flow_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a0d551297151d3ef89cf295a4341bdbd6d3d6d5454156e68e691c50cb111e814"
+    },
+    "tools/products_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "73a6eb15ad2ce58dd6dfe46f632319f1f082b7eb75fed296b1dc73584634067f"
+    },
+    "tools/staging_bootstrap_admin.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8944a7dd2025c874b506ea3465f23c3765957c1ab671830d499a6e0cffa68864"
+    },
+    "tools/provider_status_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "834232babb2eebbdf4552658ff135f617f79a7223884e52a55571229b59b014f"
+    },
+    "tools/environment_runner.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e454bbb81e3f6c7d3e20ccba12c9699d81ee81e4ac2fc3341487f5f68df221f4"
+    },
+    "tools/dispatches_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "52c42d5a1fdf9c73bc83ab340af40ce3ada964d5b64589c519cf5be76b37e833"
+    },
+    "tools/dispatch_new_lead_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "ff62d7937f439b4da289a0ea7e760c7aaacf2617cf5c0800ec29d69949748a32"
+    },
+    "tools/staging_runtime.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "404ae4a4abaad4a30e319f6f72b0d99539eb91cbc063cd61fad151ce3407a82b"
+    },
+    "tools/ai_handoff_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0853aef53c69d76cf526e483fe58e336385c9268f57d7d6c11261d231ebf1800"
+    },
+    "tools/ai_make_meta_bridge_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d7066e8e70b31548d4a82985191e2a14dad8a918e1c6fe17d65d60b6986ecd6a"
+    },
+    "tools/staging_start.py": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "4b9d4b3975e4733bc937244bbb82715e89bd90f0a7d577573eaa592ff752078a"
+    },
+    "tools/templates_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "f5694db54c2d5b69b71bb1306ce7980d238bcb45deadbccc5dbb9d65f1181ded"
+    },
+    "tools/integration_diagnostics_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bceb96317223cdfbdfbbe6bcf5ec2f183da9d85a1706c82d1bab0cdd43c5bfde"
+    },
+    "tools/whatsapp_window_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "068d22e7087295227cb5a99a2dc4c92adb6d3cfb651e2e7c4f6ac6d864cb1f18"
+    },
+    "tools/users_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7c88bc6aada46437f65a3fd0ff7a10c67179d6cb61f4b3cb84f5f2112eb1238a"
+    },
+    "tools/dispatch_import_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a1a6e43ce0f1b4121f69bc22f18bad765783d258921e56091e86ad55b129c5fe"
+    },
+    "tools/kanban_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "885c5db8149700ce8ed386964bc4c028f56388b333c48b897835f7301552ce19"
+    },
+    "tools/provision_dario.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "1e0a5a8e97c789049ca138a1a6700110d79ecb88d11c163cecc0c94e865784dd"
+    },
+    "tools/funnels_smoke.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7bd4f25e09d7737a616f9ad4418407d13882c2423dcce0d8cd3835e88f968dd9"
+    },
+    "sql/drafts/VENDRA_FUNNELS_CANDIDATE.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0c439a4d076aac43080fefb4601bb5495e0e80bb1f1df519f87a85fc8b90f49a"
+    },
+    "sql/drafts/VENDRA_DISPATCH_IMPORTS_CANDIDATE.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "b029d883dd6cfbb515aab04981521518af2b59aaa6620efb45299f88ed62e09e"
+    },
+    "sql/drafts/VENDRA_AI_DISPATCHES_CANDIDATE.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "de0883a0d97bca002e2b374a4eebdd692170235aed01780f41dae6bca32edc4c"
+    },
+    "sql/drafts/VENDRA_OPPORTUNITIES_CANDIDATE.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "b308416ecf367f6d5faa4a516c64814fdbad6614605fdca248616366a1890d79"
+    },
+    "sql/drafts/VENDRA_PRODUCTS_CANDIDATE.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "3f8bfa70b96c78ab2c28e30626af93d72da96bbdb53f3136da7cab2b9b299eac"
+    },
+    "sql/migrations/001_initial.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "df653da7e75784c51212ce9be9e9eefc0be77d2d9aff8991a41e073505738a1b"
+    },
+    "sql/migrations/005_admin_integration_settings.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "313ab865baacd14e59c9e01728a7f8386ae3b4acad1b5b7680b68231fd4cb4d9"
+    },
+    "sql/migrations/002_operational_core.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d642fbe7936554e7fdf81d56df0dc394145eab5926f6eda17ef250851aa66a42"
+    },
+    "sql/migrations/006_video_attachments.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d4c4bc3adfd78e037289770f1d63094d3db20cad9d9640b14373a760fd721b04"
+    },
+    "sql/migrations/004_whatsapp_outbox_observability.sql": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "159efb8851547f863e4217b477fa70b70d650d2a08179c3f53d19fe3f548bd7d"
+    },
+    "app/db/supabase.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "684dc23c23d9a75b3fc82c24aa501aed182da81f87278747eddf9087154785c6"
+    },
+    "app/db/__init__.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/dependencies/auth.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0a1b4aa6fc3dbcfcaab50a3f54fb383e6944248e286e2b3e2d7f8e18fb75cbe0"
+    },
+    "app/dependencies/__init__.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/core/ui.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "56afe929a6eb7014a1db3e87772f360da751c7d10ec862138beeb0373090b486"
+    },
+    "app/core/__init__.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/core/config.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "74d1fc6e72d54cfb0ad036510613250ff025d3e2e04f1fe39e693e86986f7655"
+    },
+    "app/routers/customers.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "27601fa034f07cdf886481b96d3d67c18ffb0d6b94b3d5d94d6f6401a7be2dd5"
+    },
+    "app/routers/staging_attendance.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "ef0b0ff3555fcb6640c6a17b52ad648a6ca1ae2ed0401a0bcd72cb2460f5e4ca"
+    },
+    "app/routers/dispatches.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "62825b9acd2168068e6f062a5347a655793fc3f0c6cf1ee5ee66083e5e210295"
+    },
+    "app/routers/staging_customers.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "553452c374660ae6749a8fe9b9f56925174d7ed9062b46fb62bf14cd8c145c9e"
+    },
+    "app/routers/staging_crm.py": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409_CRM_SIMULACOES",
+      "sha256": "d3c947dbde782c341baed8dec354453ea1dfde2cb6990a9d927dcfa934959888"
+    },
+    "app/routers/dashboard.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "2037554b8274f5f484142058a18e13a5cb317e0077c7e75234aa2b0044fef616"
+    },
+    "app/routers/tickets.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e5645675031541a3188bbc1e30894de4db5dc9815ea63d5ad74a538b5a463c92"
+    },
+    "app/routers/indicators.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a30024d0dc1c1e7a7a7f844763b5cf6e57c3ea0be81324fcdd446328a2ecc736"
+    },
+    "app/routers/operations.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "6a263d052e769cadf1927499726eb47cf0b0421ddcff44e0455ed0d003c5a61d"
+    },
+    "app/routers/integrations.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "35dea8e79df22de59e4ab650bbfec49c8312284a67507d25b3259ddd80cf64d5"
+    },
+    "app/routers/auth.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "515c6a876474393efabf8bc8e313d9884487135872f485fb51218795a3818cfa"
+    },
+    "app/routers/meta_templates.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "53b02b220efe61078d8a80a08c74c72773787e6ff589e5916aed0262215e2e36"
+    },
+    "app/routers/staging_dispatch_lifecycle.py": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409_CRM_SIMULACOES",
+      "sha256": "1d8da53cf2839564aca1ee1b664d35280ec57cbe12acfaa9ec47d99f1238077d"
+    },
+    "app/routers/funnels.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a3844cd7612a808fd04101497a224c95f19d17c2d0bd6cee6bdabb417d5d49ce"
+    },
+    "app/routers/products.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "b0e1d83922b69b63b5bb39fcdb5738ebbf35e5034c26ed5166d00229761f79e5"
+    },
+    "app/routers/users.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4c219b832dffb2bc0e6b945e5f49749a21f51e4046e9eb7bc8ade67b7e07affb"
+    },
+    "app/routers/staging_dispatch_preview.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "f0dfc35217bce4888bc733aef882cbe3c0033b03222a73a835c558279fb058c6"
+    },
+    "app/routers/opportunities.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "baa4d1cf04f009eaabd92984f3efa8a25a4992285f029c0e29893994c8d6b562"
+    },
+    "app/routers/staging_delivery_preflight.py": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "a330520931ff4c40dffa592472ada29ee1086d7e71b37a66688a2737c0b75370"
+    },
+    "app/routers/__init__.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/templates/base.html": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "e51bc90bd67ff7c70fc36fc6cc00df2169ea9cb85b5c3982dfd6464e8f60cc40"
+    },
+    "app/templates/login.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "b21eb202ff8c827e34bcadcd16776d405f0adc45695d4bde21e297a4b7cf2026"
+    },
+    "app/templates/dashboard.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "fc0fc4830492eed94cd5ad13751750a9995f3aa030facf539b4f08f4e73571e3"
+    },
+    "app/templates/access_home.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8a0f3c15239b7836d99f081c00f289c6b865c4f3c3fbbd924d12ebfa621e84af"
+    },
+    "app/templates/indicators.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "cdaf8a8a5bee20c4d8773447ad783a9c8ef6e99d04ac5dce426923437dea5b00"
+    },
+    "app/services/product_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7fa7aeb67450a962a0d69fb2ee24c0f8d2b0c7a5487aab55d2fcf463a8cfb4f7"
+    },
+    "app/services/metrics_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "886f5fd68e4421914af4b7904ca9873f43eb207d4c968de4137a3bbe8d31d090"
+    },
+    "app/services/integration_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "99e942a33ea1aed39ab6b591e6a368e8fdaab6cfbcada957499c8e4cffdce32e"
+    },
+    "app/services/demo_store.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "afe881eaff28de7e23a4e20099855685da44e8949ce860cda0999756dc591d1f"
+    },
+    "app/services/auth_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "666ff91f0c16f13b8f978c9080e435b11eeccf0dfd8a901ac11d70a0acb3fac3"
+    },
+    "app/services/metadata_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "3ddef1f9832f1e7f4f83997bb96b06e9aee581cb778cb780decb006e8485fc65"
+    },
+    "app/services/integration_diagnostics_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "63dc12d6ea9dba0eb90bbec02424ceac63abe5230d675d5e974d0a8d0f1be75f"
+    },
+    "app/services/user_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bda233d133adbe4a265d17e1fea4b0e6529ee17029caf5a0b0d923097e6e7aec"
+    },
+    "app/services/meta_template_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8f8aeffcc65e18efe8efaacf90a21fd09996e35f9f6d107b726a4703a397ba60"
+    },
+    "app/services/ticket_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bcbf8bb3a0698f28509ce1ec6c2ce4f1bd16bb047661108ded897fb25a9abc0e"
+    },
+    "app/services/whatsapp_window_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "fb03d62fadf0098859a9d84009caa7ff5a71f6a590f9749c63d1cb0179413371"
+    },
+    "app/services/access_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "32e29147faacb8bc2a0ad6d4b694e602af5d489ca69aa927b77245d967dc2749"
+    },
+    "app/services/opportunity_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "b71249054c5cb812473c18370088765953fafe0da30878d52fbc30f11f292bb5"
+    },
+    "app/services/staging_crm_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "83c4c3b52b34d38ea846395156a2bf9d1cda194aee0ec85c1de7934882518a36"
+    },
+    "app/services/staging_dispatch_lifecycle_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d87b54b8f208f3460bf2f55471cf3321ce7afc94d6dfac64b059b6c21219a98a"
+    },
+    "app/services/dispatch_import_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "44f46e09709ba3fb313a1326bcc661923ccd9c07075cf4dfffa7694cbfa61d7e"
+    },
+    "app/services/automation_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "281e1ea49b2bcfa653fb60a134c12960a579f74eb7ab76e76f5b6cfd2aa8d416"
+    },
+    "app/services/ticket_attention_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "28aba7e910587f42bc04bd7ae1d631684dd0a267d65964efc8c8904dc607734f"
+    },
+    "app/services/audit_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a609da02fddd446df53476b3fb428c2fe8429ea7971cd095105781f003c72d47"
+    },
+    "app/services/staging_delivery_preflight_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "f335ab4132db61b1b4ebeb05e715cfc8d9e2f052e70c4e77b32c7ea5a912b7ae"
+    },
+    "app/services/message_formatting_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "520ffb0812b9af67d07c06b2713d77738cb643d2f7ae1c5c260ec06ebe3c19d9"
+    },
+    "app/services/dispatch_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d30503755cc0b4113499bd6da5d99e1051c6bb309b764e2f36f9a25fc99e848e"
+    },
+    "app/services/staging_dispatch_preview_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4a6a8b166d9514cd91d48b4ef15a443641d3ae715d1603058d9e4c67299163cd"
+    },
+    "app/services/customer_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0d5e5279e22b27a2b873af0b82917f956e21c01d937872cd8ff2bdcb7a47db74"
+    },
+    "app/services/attachment_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "c2e95870ce390e7a9646f0d1446418ad6964fb4f5b600f937408870d652c2d94"
+    },
+    "app/services/whatsapp_provider_catalog.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "405c5af62c6b3753c1f553cf470ba20bc2964a0e59ba956631f3e3bc0cc3eba4"
+    },
+    "app/services/staging_attendance_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "ab278fdf38e2426b9550afe10f9c2a51cbe60b3d2ce75aa98c170ef83b98c728"
+    },
+    "app/services/__init__.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/services/commercial_metrics_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4e43db23afb0bd0747c3ddf0c68222c24c9895dc93a200ae3c6acb3c14672672"
+    },
+    "app/services/outbox_wake_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a321f516d6d0b89432677726ee599e637d006434ed397bdb636fe35e4ade925f"
+    },
+    "app/services/ai_routing_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bc158c4367ba59c60d4ac4360d78d3c5391ec62e45e472a6647e665b492c8cc3"
+    },
+    "app/services/admin_settings_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a2dcc63ed790b5bca7db05341954c707e26e854161a71b9337d9d87f6e6dc9a4"
+    },
+    "app/services/funnel_service.py": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "081942141404c4c44e213226b283a1be87a089079fd68a25e535eaaf1e6455ae"
+    },
+    "app/static/css/vendra-v0.0.24.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0464aafa440e8eeaf5b8cf38359e353f8c42b1147ca1110c38c9608ed1682dbc"
+    },
+    "app/static/css/login-vendra-v0.0.1.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "2537c708280c6957b2f10bf738192940952b83b5ec512687a838e9d4a4bf0ee4"
+    },
+    "app/static/css/vendra-v0.0.5.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "9476c00ea852bf5ed4fbea0111592aeffd2a58e1200a358435ed1f97c77b8279"
+    },
+    "app/static/css/vendra-v0.0.25.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4e45f081a6ad57debb8914330ae4f84b1f1f44fbd281e1ca61b1daded1ce2934"
+    },
+    "app/static/css/vendra-v0.0.7.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "f253dd2efa888e6337cbbeac9b157fb08097e3e774fc5836b2b9376f3aba2340"
+    },
+    "app/static/css/vendra-v0.0.10.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "2a5bcf9e1d0dce08c80df258831a51084d154b0fd4a32239158ffa9b2468fa94"
+    },
+    "app/static/css/staging-h1-005b4.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bc72805ab0fb3a82d488d6fb97f843683e1d7c82799db3f9872ea89f3f49d2d6"
+    },
+    "app/static/css/vendra-v0.0.9.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "23121c81809ac00949662f352c3a9113f0087ee1c76abed8badaef1506c2dd77"
+    },
+    "app/static/css/app-v0.5.0.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0efd50d3d3feff4a77c37afa7b32285ec87eaec5ae051c9b433d3209a7f40f62"
+    },
+    "app/static/css/vendra-v0.0.18.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7c0980dc4e5c88e1e26d0a867054b11c6b02f1ff62443cd940213af304dffcd6"
+    },
+    "app/static/css/staging-h1-005b3.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4aa394e06e8047ad4a46798e90123b3c84d4f18caa19c702c1ad141105b35128"
+    },
+    "app/static/css/vendra-v0.0.1.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "6cadb1bf90e105cb42029609fa12ec9f45b8993958216d12962e1f81c643c8d6"
+    },
+    "app/static/css/app-v0.5.1.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8fa8111a781255cf9fddc948abfea933571c2fdac5709d1ee1f9400a46e5efca"
+    },
+    "app/static/css/app-v0.5.5.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "90001c2c211650f87eb926167cab0b85eed3d138020bd0e01114c44fac4a2455"
+    },
+    "app/static/css/vendra-v0.0.2.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "6cadb1bf90e105cb42029609fa12ec9f45b8993958216d12962e1f81c643c8d6"
+    },
+    "app/static/css/vendra-v0.0.23.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "c8754a3b874323ac71d23f3bd0f3e9bf843fb4664bbba89747c1600c518c0c20"
+    },
+    "app/static/css/login-v0.2.1.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "beb3c5a8f7358e7894088edebeb75d112330ed2ad65fad1f5ee6119542c49eaf"
+    },
+    "app/static/css/vendra-v0.0.4.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "1d0842c8b6a4c3cbffe717df83b8a284c2055371de4f66edb64f7449063e7a95"
+    },
+    "app/static/css/vendra-v0.0.16.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bd9452df8ca65a169528c66e66cf570539d2c00eb80fd2442f237cae33762635"
+    },
+    "app/static/css/staging-h1-005b7.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4877e4934b75ef9cd8e907f894cf05bc9a84dfcb32ca435d988225863e1bbd13"
+    },
+    "app/static/css/vendra-v0.0.11.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4dc4346b838c18b9c258538cb17c52749a21da33a9d3b92b5637aefbdbaa3d2f"
+    },
+    "app/static/css/vendra-v0.0.3.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "16ec2b8811a644e7a80fe02851cf172fb349138752e2e82eeb3fef8638eca338"
+    },
+    "app/static/css/app-v0.5.4.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "91a27ecdc2949cf1f4b83fe4e974fe0978dc2eaa146073773302ce89989b776f"
+    },
+    "app/static/css/vendra-v0.0.8.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "62bae252a319cf93f3a580205805c33b270cf8d5c228413c4bab9233a68ef165"
+    },
+    "app/static/css/vendra-v0.0.21.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "066a10f1bb8393e42b8c1961a5bbf4d73b48f500f8359ef37d2802d4d3224e7c"
+    },
+    "app/static/css/vendra-v0.0.14.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "033dc594ee9a02c8134a6295558f5610736a3fc83900d46a416acf7ad96e0d20"
+    },
+    "app/static/css/vendra-v0.0.12.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "ba3fa3b78a8ec3107e1de02489cd05f19f9c8a1d68fbd93c808386e9b98f9aaf"
+    },
+    "app/static/css/vendra-v0.0.20.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "acebb97a1b46b8bc95c1e364d3c3e7898ca97e83c51199e995409d5bd1742b9d"
+    },
+    "app/static/css/staging-h1-005b6.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "74428fcc0857eed83ed3bdd027a439f24e65ab63aafbee82e6ef1b8953921f8e"
+    },
+    "app/static/css/indicators-v0.0.6.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "1a97908d9c14c3c48a5df2fd7a11cfb3b35233f83fc4adf2241566ca50be6dfe"
+    },
+    "app/static/css/staging-h1-005b5.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a84c1a43177ea3201482f5f1fb5b1d65a3d634b535886689ed2449b1859dbf2a"
+    },
+    "app/static/css/vendra-v0.0.22.css": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0158e26370bcad3699583c190e5157ad0e7e5e5305807c331504851b70223c90"
+    },
+    "app/static/js/dispatches-v0.0.11.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d55d6d1826b86904c8ff69fd6f0c41c19e85f96cca32f02024275550b63ec7e0"
+    },
+    "app/static/js/ticket-detail-v0.0.21.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e078740a3c3ca21de901a994ee25c0bb5df4cc53e5b941f140f53d2c3f903da0"
+    },
+    "app/static/js/lead-alerts-v0.0.25.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "795dd6583fde4b331b9f5b6a50abe45be322865329c4573ce41d559a32342d08"
+    },
+    "app/static/js/ticket-detail-v0.5.0.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "84d878d236ad848bd82ea58515eacbc23a7db285caebca5e3ea20bdf63dffa70"
+    },
+    "app/static/js/lead-alerts-v0.0.23.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "9af0a54da0a51efaaa67b02ff2466e0df1a8d399f61053bc052b973b707d3e31"
+    },
+    "app/static/js/meta-templates-v0.0.22.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8156b43b7cd2b3a690e0bcc73c368bfb0d92cd456b59afd38115f417929c2d2b"
+    },
+    "app/static/js/ticket-detail-v0.0.14.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4458fe042e209182463c28b115864b1377058812bce243b68888523fbacdc58b"
+    },
+    "app/static/js/tickets-v0.0.23.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a5658137a32ef2263a920fe3c99a6ea907b6e4cfe9790f01ac9d01ade959a1c7"
+    },
+    "app/static/js/tickets-v0.4.0.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "5025d781e08335c5bc2973b70349c87cba0c6f743aa536d61e2ecb772db8b4bb"
+    },
+    "app/static/js/kanban-v0.0.10.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "af1d3d9466541134ca1373ac957743d72284f1ce0232db7b2ecf8b142c81be3c"
+    },
+    "app/static/js/ticket-detail-v0.5.5.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4068433c472bbb2357115c8fa54ae5954b7b48a2a6edc763e4aea93b0d4c1106"
+    },
+    "app/static/js/kanban-v0.0.5.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "a705b009bc6abef76765d28697ba352f604306fe95c848e9ac1ea26dcad168ba"
+    },
+    "app/static/js/ticket-detail-v0.0.18.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0054f9302308dbf2423ec5585ec2e9e930327aa5613030214f3cad1a3b0b2e5f"
+    },
+    "app/static/js/kanban-v0.0.16.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e421b4e3ea261effdb972b95b24470aa365a4fc69c537217c058381134194d52"
+    },
+    "app/static/js/login-carousel-v0.2.1.js": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "da445a0f0c73d257d0693456090e0d9d8a4394933561803fdec4d6a1b75d316c"
+    },
+    "app/templates/tickets/form.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7c9f357a965755c1f688ed3382238a33c5d0f25e859d59f90d8fd61a4b8a0209"
+    },
+    "app/templates/tickets/list.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "5abf02e98e719ce3e036f793cb49c1eb36e3debb80211321b00958de55e027bc"
+    },
+    "app/templates/tickets/_kanban_columns.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "34a502e10f046dffa40632b6d29e7622655d6d967029c40e527c03f2218c5f0d"
+    },
+    "app/templates/tickets/detail.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bd08bacbe1784bbcb74f6d5665fef051e6673548d4cd88f4f47f2024309e7ac4"
+    },
+    "app/templates/funnels/stage_form.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d433eee3f708d2324396c2715c2eede066817ddb30d963af56fc8ba262b42792"
+    },
+    "app/templates/funnels/form.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "0b178c8970272b7a961d4146a28c90f662f093559054d99c0005415da64b86ac"
+    },
+    "app/templates/funnels/list.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7dc66147054266f93978760f1075dba2420eda195969d3916e6b4877b724fb9a"
+    },
+    "app/templates/funnels/detail.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "997430948a05f267bcdb3d84cebfc6e03ef119cee51816b6f8127252ab1df81d"
+    },
+    "app/templates/products/form.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e565bf62644c4928ebb2bf3941fac42c753966200385d7f7991bb0cb4a6f9d91"
+    },
+    "app/templates/products/list.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "45e6f72169dfd3a72ffd341594a8f6746db510ae2fd7a77f877af27012663c4f"
+    },
+    "app/templates/customers/form.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "e68dd2b2036780a853c8c0bf61e47ec2636037371d4ac888ae9017d7c2a6889f"
+    },
+    "app/templates/customers/list.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "6c17782ed36919bb5a1c0de3e3d8dcc2260c8b4bbd5792d7cd287ace0024530e"
+    },
+    "app/templates/customers/farm_form.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "f9371bec77c6d371b4968b27d504bfb0b1922329ee93774c6822b48afcad6a02"
+    },
+    "app/templates/customers/detail.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "04c3c4b6a59edf746ceaee382fe0fbffdc1c0a5c121e062732b0442317443994"
+    },
+    "app/templates/dispatches/list.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7231c11673a02481c49b812606db3d2add068cf157ecc2e09a27ca0d4417b75b"
+    },
+    "app/templates/users/index.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7803448140f9635264c2771cf70e0d3591a5f4826558970956058ae0be52963e"
+    },
+    "app/templates/users/accept.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "56fe7fd0a8ee59e1f23540b3387bd59cd69815809b1df3958764f85c1af1f71b"
+    },
+    "app/templates/staging/ticket_new.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "045f95f3c05b3405c0c8e50508bbd451edab773d7adef4d6486b83154f931753"
+    },
+    "app/templates/staging/dispatch_lifecycle.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "141f396d81a7122cacbd9b7aebb58deb9ad373955d08d8677de72f581fb62556"
+    },
+    "app/templates/staging/ticket_detail.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bb42a2ff64e2ec0979a0c6b1affae371a4fd61faf8d07b108e3029747b7639d2"
+    },
+    "app/templates/staging/delivery_preflight.html": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "68601953d8e52b48d9dc60ed59a87bec547cf2db7410130fcc75fd183272cc26"
+    },
+    "app/templates/staging/crm_edit.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "b8797620a6abad89c6c563b5470d2784b856785a5a751dd015b2b73f0d91332e"
+    },
+    "app/templates/staging/tickets_list.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "4f390bafbfb3fc8b303b91187b46b3b199b13586f55a3ec2e947656bef9a6560"
+    },
+    "app/templates/staging/dispatch_preview.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "8ca057a93e9d9f8981ce52670490ca9dacf49b695b741ccfca660059e086a2f7"
+    },
+    "app/templates/staging/crm_read_only.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "6bcc7a807981e048eb0445c528fc57641b5b01510f19476f4b2d8e4a8c721bf0"
+    },
+    "app/templates/opportunities/form.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "5fb2f7d42c1859ac92877bc8600b5dc24da0ec24db1e9e9935b34d4295335ab9"
+    },
+    "app/templates/opportunities/list.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "bc24f07e5ccc351f8abe4c33a92de266254cb88fe5aba3bcaf5022338377a94e"
+    },
+    "app/templates/opportunities/detail.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "7941ae52c8e22c271dfb3cea21d3225c739e72d46ab02744ea25f046db5fc8a1"
+    },
+    "app/templates/operations/audit.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "c235650596f975ecbfa26da4e98ac3b847ca37a9fc3fc285a8927df427ffa6df"
+    },
+    "app/templates/operations/integrations.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "090569eadb1de988c2ced7ea83f339651cec8350eec055c2830151a56509c4c7"
+    },
+    "app/templates/operations/settings.html": {
+      "package": "VENDRA_BASE_H1_005B8",
+      "sha256": "d5568e3a9ee8691b766899312c6fd4e9f9011c973fd8290e65ff52aea67eae56"
+    },
+    "tests/test_h1_005b8.py": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "8c655f4814d4875cdf401d544b103b78a9c318d1ec69dc26e69f0f7a3d493777"
+    },
+    "sql/01_APLICAR_H1_005B8_SOMENTE_STAGING.sql": {
+      "package": "VENDRA_STAGING_H1_005B8_CONTRATO_ISOLADO",
+      "sha256": "8dac692630eac4cc78173757ca02ad75166c8d97dc55fe9b8c7cd2f5d3196072"
+    },
+    "sql/03_ROLLBACK_LOGICO_H1_005B8_SOMENTE_STAGING.sql": {
+      "package": "VENDRA_STAGING_H1_005B8_CONTRATO_ISOLADO",
+      "sha256": "14db8dd3211c8a7718a2004bd8abc8748c2b8f56e3a16a2a7696a46a37b108b5"
+    },
+    "sql/02_VALIDAR_H1_005B8_SOMENTE_LEITURA.sql": {
+      "package": "VENDRA_STAGING_H1_005B8_CONTRATO_ISOLADO",
+      "sha256": "25f78d3a97acee980d9f93653f7bc1a11b65c9292b2fb40d3b790b2915ce4251"
+    },
+    "app/staging_h1_005b8.py": {
+      "package": "VENDRA_STAGING_H1_005B8_CONTRATO_ISOLADO",
+      "sha256": "893c1774ca92ad3b771e561135a674bd1a3f33c4a97dc896d4eb177fcec1580c"
+    },
+    "tools/staging_h1_005b8_db_smoke.py": {
+      "package": "VENDRA_STAGING_H1_005B8_CONTRATO_ISOLADO",
+      "sha256": "462cab61ad2f9cad5405b316780a3a6b6db5230b12761d535fea021a41e6d8f5"
+    },
+    "app/routers/staging_transport_contract.py": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409",
+      "sha256": "5c1c08ce79317aaf210608feddba556a1118532c032d8ee244f6117777b2ce03"
+    },
+    "app/services/staging_transport_contract_service.py": {
+      "package": "VENDRA_STAGING_H1_005B8_CONTRATO_ISOLADO",
+      "sha256": "f89031741fa5d405636244f0f4e038bad937a24bcdb047d8343b3f49b86dbbcd"
+    },
+    "app/static/css/staging-h1-005b8.css": {
+      "package": "VENDRA_STAGING_H1_005B8_CONTRATO_ISOLADO",
+      "sha256": "da072c4a51e83495b019652564998975c82e2a33383d94821e04e6ef3a8e6c37"
+    },
+    "app/templates/staging/transport_contract.html": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_CONFLITO_VERSAO",
+      "sha256": "cee4069f93e0e64bdfc61dc7708176b12d67fb1a4f3ab69540466aa53838d385"
+    },
+    "tests/test_h1_005b9.py": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "d067102c177145f0f7804f2057b3434976e8b05a68821976f88fc4cdacbdcef7"
+    },
+    "sql/01_DIAGNOSTICO_LEITURA_H1_005B9.sql": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "da2ba3ab8252433473f0ce4f47f964db97b256eb3c4fe34fa72ac07158fcf058"
+    },
+    "app/staging_h1_005b9.py": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "df00a2d7fe59755ab87ddc72e600e6a2d3e25883b411c5aac08bdf9272609e0a"
+    },
+    "app/static/css/staging-h1-005b9.css": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "fc917333cffe6f2f3b36c321597bde695ab7bd11c1df2eb4bb7b70ca6af9311e"
+    },
+    "app/static/js/staging-h1-005b9.js": {
+      "package": "VENDRA_STAGING_H1_005B9_UX_GOVERNANCA_SEM_ENVIO",
+      "sha256": "0bbb00005773da25f6a4235637452ddc605b7c92e654cd8add7073f3b27b1573"
+    },
+    "tests/test_h1_005b9_flash.py": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_FEEDBACK_F5",
+      "sha256": "e60d0fc70116c68da110c03e8bd78879918e48c8a949984ed422bc1ce9a1026e"
+    },
+    "app/static/js/staging-h1-005b9-flash.js": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_CONFLITO_VERSAO",
+      "sha256": "3cd4c7a5b657d363bbcff61567a0ade0dd75ab8ffa8eb2f9b634d6c8b8e71f00"
+    },
+    "tests/test_h1_005b9_conflict_hotfix.py": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_CONFLITO_VERSAO",
+      "sha256": "ab0fe4ee5c262fc4b843f73a5ab6ec5db74412aec55e582d20ac47c9108bfa5f"
+    },
+    "tests/test_h1_005b9_pt409.py": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409",
+      "sha256": "0d481d2b781d46f4198ad77530884dec6b7a5545f76377ca91ff0ec7c1214a9f"
+    },
+    "sql/03_CORRIGIR_PT409_STAGING.sql": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409",
+      "sha256": "ab9b6b2a9000ee68abe7d979e02137b4fe4566a91650840b998993573501d466"
+    },
+    "sql/04_VALIDAR_PT409_LEITURA.sql": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409",
+      "sha256": "34aba073662fb6a8fc2e4c438581689e8752fe233cfe8de521886d706f5f42c9"
+    },
+    "tests/test_h1_005b9_pt409_legacy.py": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409_CRM_SIMULACOES",
+      "sha256": "0ac4a87a396e12d7c1fe7fef3b5dfb19853dd54d4e5a742e2de1e25af7371792"
+    },
+    "sql/06_VALIDAR_PT409_LEGADOS_LEITURA.sql": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409_CRM_SIMULACOES",
+      "sha256": "c1c4c948e8f55868876b654bb3c7391a20ffe0e063c43bf57f0fee395346fa10"
+    },
+    "sql/05_CORRIGIR_PT409_LEGADOS_SOMENTE_STAGING.sql": {
+      "package": "VENDRA_STAGING_H1_005B9_HOTFIX_PT409_CRM_SIMULACOES",
+      "sha256": "a89b8843a47a444a5db675c3c1ac71c24d0a7f92f30e6ef8f746059465984e70"
+    },
+    "app/services/local_credentials_service.py": {
+      "package": "VENDRA_v0.0.7z / Windows - Copia / vendra_starter (Google Drive)",
+      "sha256": "5ffd9893ba501f358c0c7ac44c18a9a30f60759714f23cbc5a7a10652e8de6e2"
+    }
+  }
+}

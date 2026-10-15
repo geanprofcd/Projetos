@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar cliente' if customer and customer.id else 'Novo cliente' }} | VENDRA{% endblock %}
+{% block content %}
+<div class="form-page">
+    <header class="page-header form-page-header">
+        <div>
+            <a class="back" href="{{ '/clientes/' ~ customer.id if customer and customer.id else '/clientes' }}">← Voltar</a>
+            <span class="eyebrow">CLIENTE</span>
+            <h1>{{ 'Editar cliente' if customer and customer.id else 'Novo cliente' }}</h1>
+            <p>{{ 'Atualize os dados cadastrais e de contato do cliente.' if customer and customer.id else 'Cadastre o cliente com os dados necessários para atendimento e histórico.' }}</p>
+        </div>
+    </header>
+
+    {% if error %}<div class="alert error form-alert" role="alert">{{ error }}</div>{% endif %}
+
+    <form method="post" class="registration-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">1</div>
+                <div><h2>Identificação</h2><p>Informações principais para localizar e reconhecer o cliente.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field field-full">
+                    <label for="customer-name">Nome completo ou razão social <span class="required">*</span></label>
+                    <input id="customer-name" name="name" value="{{ customer.name if customer else '' }}" required maxlength="160" autocomplete="name" placeholder="Ex.: João da Silva ou Fazenda Exemplo Ltda.">
+                    <small>Use o nome pelo qual o cliente deve ser identificado na central.</small>
+                </div>
+                <div class="field">
+                    <label for="company-name">Empresa / nome comercial</label>
+                    <input id="company-name" name="company_name" value="{{ customer.company_name if customer else '' }}" maxlength="160" autocomplete="organization" placeholder="Ex.: Grupo Santa Clara">
+                </div>
+                <div class="field">
+                    <label for="document">CPF / CNPJ</label>
+                    <input id="document" name="document" value="{{ customer.document if customer else '' }}" inputmode="numeric" autocomplete="off" placeholder="Somente quando necessário">
+                </div>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">2</div>
+                <div><h2>Contato</h2><p>Dados usados para comunicação e identificação em canais externos.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field">
+                    <label for="phone">Telefone</label>
+                    <input id="phone" name="phone" value="{{ customer.phone if customer else '' }}" inputmode="tel" autocomplete="tel" placeholder="+55 65 99999-9999">
+                    <small>Preferencialmente o número utilizado no WhatsApp.</small>
+                </div>
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input id="email" type="email" name="email" value="{{ customer.email if customer else '' }}" autocomplete="email" placeholder="nome@empresa.com">
+                </div>
+            </div>
+        </section>
+
+        {% if customer and customer.id %}
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">3</div>
+                <div><h2>Situação do cadastro</h2><p>Controle se o cliente permanece disponível para novos atendimentos.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field field-half">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="active" {% if customer.status == 'active' %}selected{% endif %}>Ativo</option>
+                        <option value="inactive" {% if customer.status == 'inactive' %}selected{% endif %}>Inativo</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <footer class="form-submit-bar">
+            <div><strong>{{ 'Salvar alterações do cliente' if customer and customer.id else 'Concluir cadastro do cliente' }}</strong><span>Revise os dados antes de salvar.</span></div>
+            <div class="form-actions">
+                <a class="button secondary" href="{{ '/clientes/' ~ customer.id if customer and customer.id else '/clientes' }}">Cancelar</a>
+                <button class="button primary" type="submit">{{ 'Salvar alterações' if customer and customer.id else 'Salvar cliente' }}</button>
+            </div>
+        </footer>
+    </form>
+</div>
+{% endblock %}

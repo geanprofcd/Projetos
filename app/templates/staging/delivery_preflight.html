@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Prontidão WhatsApp (sem envio) | VENDRA STAGING<script src="/static/js/staging-h1-005b9.js" defer></script>
+{% endblock %}
+{% block content %}
+<section class="vendra-preflight">
+  <header>
+    <p class="vendra-preflight-eyebrow">H1-005B7 · Ambiente STAGING</p>
+    <h1>Prontidão de integração WhatsApp</h1>
+    <p>Validação de dados e contrato de envio futuro. <strong>Nenhum WhatsApp é enviado; nenhuma fila é alimentada.</strong></p>
+    <a href="/disparos/simulacoes">← Voltar às simulações H1-005B6</a> <a href="/disparos/contrato">Contrato H1-005B8 →</a>
+  </header>
+  {% if problem %}<div class="vendra-preflight-alert" role="alert">{{ problem }}</div>{% endif %}
+  {% if status %}
+  <div class="vendra-preflight-card">
+    <h2>Segurança da execução</h2>
+    <div class="vendra-preflight-metrics">
+      <div><span>Disparos reais</span><strong>{{ status.counts.dispatches }}</strong></div>
+      <div><span>Outbox real</span><strong>{{ status.counts.whatsapp_outbox }}</strong></div>
+      <div><span>Mensagens reais</span><strong>{{ status.counts.messages }}</strong></div>
+      <div><span>Simulações registradas</span><strong>{{ status.counts.staging_dispatch_simulations }}</strong></div>
+    </div>
+    {% if status.real_queue_clean %}
+    <p class="vendra-preflight-ok">Filas reais vazias nesta verificação. Transportador externo e worker permanecem desligados.</p>
+    {% else %}
+    <p class="vendra-preflight-alert">Foram encontrados registros em tabelas de envio real. Criação de planos bloqueada: investigar antes de continuar.</p>
+    {% endif %}
+    <p><strong>Envio real autorizado?</strong> Não. Faltam template aprovado, consentimento verificável, integração Meta/Make, worker e testes adicionais.</p>
+  </div>
+  {% endif %}
+  {% if error %}<div class="vendra-preflight-alert" role="alert">{{ error }}</div>{% endif %}
+  {% if result_notice %}<div class="vendra-preflight-ok" role="status">Validacao concluida sem envio. Para visualizar a mensagem, utilize esta pagina com JavaScript habilitado.</div>{% endif %}
+  {% if error_notice %}<div class="vendra-preflight-alert" role="alert">Nao foi possivel validar. Confira os dados e o STAGING.</div>{% endif %}
+  <div id="vendra-b9-error" class="vendra-preflight-alert" role="alert" hidden></div>
+  <div class="vendra-preflight-form">
+    <h2>Montar plano de envio futuro (dry-run)</h2>
+    <p>Este plano existe somente nesta resposta do navegador. Não cria auditoria, disparo, mensagem ou item na fila.</p>
+    <form method="post" action="/disparos/prontidao/plano" id="vendra-b9-preflight-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label for="pf-opp">Oportunidade aberta</label>
+      <select name="opportunity_id" id="pf-opp" required {% if not status or not status.real_queue_clean %}disabled{% endif %}>
+        <option value="">Selecione uma oportunidade</option>
+        {% for item in candidates %}<option value="{{ item.id }}" {% if selected == item.id %}selected{% endif %}>{{ item.title }} · {{ item.customer_name }}</option>{% endfor %}
+      </select>
+      <label for="pf-content">Texto de teste (não é template aprovado pela Meta)</label>
+      <textarea name="content" id="pf-content" maxlength="1024" required rows="4" placeholder="Olá, {{ '{{nome}}' }}!" {% if not status or not status.real_queue_clean %}disabled{% endif %}>{{ content or '' }}</textarea>
+      <p>Variáveis permitidas: <code>{% raw %}{{nome}}, {{empresa}}, {{oportunidade}}, {{funil}}, {{etapa}}{% endraw %}</code>.</p>
+      <button type="submit" {% if not status or not status.real_queue_clean %}disabled{% endif %}>Validar plano — sem gravar ou enviar</button>
+    </form>
+  </div>
+  <div id="vendra-b9-result" class="vendra-preflight-card vendra-preflight-result" role="status" aria-live="polite" hidden>
+    <h2>Plano validado — envio bloqueado</h2>
+    <p><strong>Oportunidade:</strong> <span data-key="opportunity_title"></span></p>
+    <p><strong>Cliente:</strong> <span data-key="customer_name"></span> · <strong>Telefone mascarado:</strong> <span data-key="phone_masked"></span></p>
+    <div class="vendra-preflight-msg" data-key="rendered_message"></div>
+    <p><strong>Referência de idempotência:</strong> <code data-key="idempotency_reference"></code></p>
+    <p><strong>Destino:</strong> <span data-key="destination"></span> · <strong>Estado:</strong> <span data-key="delivery_state"></span></p>
+    <p><strong>Modelo Meta aprovado?</strong> Não verificado · <strong>Consentimento?</strong> Não verificado</p>
+    <p><strong>Nenhum envio. Nenhum enfileiramento. Nenhuma persistência.</strong></p>
+  </div>
+  {% if plan %}
+  <div class="vendra-preflight-card vendra-preflight-result" role="status">
+    <h2>Plano validado — envio bloqueado</h2>
+    <p><strong>Oportunidade:</strong> {{ plan.opportunity_title }}</p>
+    <p><strong>Cliente:</strong> {{ plan.customer_name }} · <strong>Telefone mascarado:</strong> {{ plan.phone_masked }}</p>
+    <div class="vendra-preflight-msg">{{ plan.rendered_message }}</div>
+    <p><strong>Referência de idempotência:</strong> <code>{{ plan.idempotency_reference }}</code></p>
+    <p><strong>Destino:</strong> {{ plan.destination }} · <strong>Estado:</strong> {{ plan.delivery_state }}</p>
+    <p><strong>Modelo Meta aprovado?</strong> Não verificado · <strong>Consentimento?</strong> Não verificado</p>
+    <p><strong>Nenhum envio. Nenhum enfileiramento. Nenhuma persistência.</strong></p>
+  </div>
+  {% endif %}
+</section>
+<script src="/static/js/staging-h1-005b9.js" defer></script>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Contrato isolado H1-005B8 | VENDRA STAGING{% endblock %}
+{% block content %}
+<section class="vendra-preflight vendra-transport">
+  <header>
+    <p class="vendra-preflight-eyebrow">H1-005B8 · STAGING · sem transporte real</p>
+    <h1>Contrato transacional isolado</h1>
+    <p>Valide concorrência, idempotência, travamento otimista, falhas e limite de tentativas. <strong>Nunca envia WhatsApp, nunca alimenta as filas reais.</strong></p>
+    <a href="/disparos/prontidao">← Voltar à prontidão H1-005B7</a>
+  </header>
+  {% if problem %}<div role="alert" class="vendra-preflight-alert">{{ problem }}</div>{% endif %}
+  {% if status %}
+  <div class="vendra-preflight-card">
+    <h2>Proteções ativas</h2>
+    <p><strong>Transportador:</strong> BLOQUEADO · <strong>Meta/Make/worker:</strong> desligados · <strong>Consentimento e template:</strong> não verificados.</p>
+    <p>Disparos reais: <strong>{{ status.counts.dispatches }}</strong> · Outbox: <strong>{{ status.counts.whatsapp_outbox }}</strong> · Mensagens: <strong>{{ status.counts.messages }}</strong></p>
+    <p class="vendra-preflight-ok">Os registros abaixo são apenas de homologação. Nenhuma mensagem ou telefone é armazenado no contrato.</p>
+  </div>
+  {% endif %}
+  {% if notice %}<div role="status" class="vendra-preflight-ok" data-vendra-b9-flash>Operacao simulada registrada com sucesso. Nenhum envio realizado.</div>
+  <script src="/static/js/staging-h1-005b9-flash.js" defer></script>{% endif %}
+  {% if warning %}<div role="alert" class="vendra-preflight-alert" data-vendra-b9-flash>{{ warning }}</div>
+  <script src="/static/js/staging-h1-005b9-flash.js" defer></script>{% endif %}
+  {% if error %}<div role="alert" class="vendra-preflight-alert">{{ error }}</div>{% endif %}
+  {% if status and status.real_queue_clean %}
+  <div class="vendra-preflight-form">
+    <h2>Preparar contrato sem envio</h2>
+    <form method="post" action="/disparos/contrato/preparar">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label for="tc-opp">Oportunidade aberta</label>
+      <select id="tc-opp" name="opportunity_id" required>
+        <option value="">Escolha uma oportunidade</option>
+        {% for item in candidates %}<option value="{{ item.id }}">{{ item.title }} · {{ item.customer_name }}</option>{% endfor %}
+      </select>
+      <label for="tc-content">Texto utilizado apenas no cálculo de referência</label>
+      <textarea id="tc-content" name="content" maxlength="1024" rows="3" placeholder="Olá, {{ '{{nome}}' }}!" required></textarea>
+      <p>Variáveis: <code>{% raw %}{{nome}}, {{empresa}}, {{oportunidade}}, {{funil}}, {{etapa}}{% endraw %}</code>. Sem persistência do texto ou telefone.</p>
+      <button type="submit">Registrar contrato de homologação — SEM ENVIO</button>
+    </form>
+  </div>
+  <div class="vendra-life-register vendra-transport-list">
+    <h2>Contratos de homologação</h2>
+    {% if not items %}<p>Nenhum contrato registrado.</p>{% endif %}
+    {% for item in items %}
+    <article class="vendra-life-item">
+      <div class="vendra-life-item-title"><strong>{{ item.title }}</strong><span class="vendra-life-state">{{ item.state_label }}</span></div>
+      <p>Referência: <code>{{ item.reference }}</code> · Tentativas simuladas: <strong>{{ item.attempt_count }}/3</strong> · Versão: <strong>{{ item.lock_version }}</strong></p>
+      {% if item.last_failure_code %}<p>Motivo controlado: {{ item.last_failure_code }}</p>{% endif %}
+      <div class="vendra-life-actions">
+        {% set actions = {'blocked':[('lease','Simular captura (sem envio)'),('cancel','Cancelar')],
+           'leased':[('validate_no_send','Concluir validação sem envio'),('fail','Simular falha'),('expire','Verificar expiração da reserva')],
+           'failed':[('retry','Preparar nova tentativa'),('cancel','Cancelar')]} %}
+        {% for action,label in actions.get(item.state,[]) %}
+        <form method="post" action="/disparos/contrato/{{ item.id }}/acao">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="lock_version" value="{{ item.lock_version }}">
+          <input type="hidden" name="action" value="{{ action }}">
+          <button type="submit">{{ label }}</button>
+        </form>
+        {% endfor %}
+      </div>
+      {% if item.state == 'leased' %}<p>Reserva simulada até {{ item.lease_until }}. Expiração só é aceita após o prazo.</p>{% endif %}
+      {% if item.state in ('validated','dead_letter','cancelled') %}<p>Estado terminal; nenhuma mensagem foi entregue.</p>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

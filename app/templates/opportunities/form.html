@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Nova oportunidade | VENDRA{% endblock %}
+{% block content %}
+<div class="form-page">
+<header class="page-header form-page-header"><div><a class="back" href="{{ '/atendimentos/' ~ ticket.id if ticket else ('/clientes/' ~ selected_customer.id if selected_customer else '/oportunidades') }}">← Voltar</a><span class="eyebrow">CRM COMERCIAL</span><h1>Nova oportunidade</h1><p>Crie uma negociação vinculada a cliente, atendimento, funil e etapa.</p></div></header>
+{% if error %}<div class="alert error form-alert">{{ error }}</div>{% endif %}
+<form method="post" class="registration-form" id="opportunityCreateForm"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<section class="form-card"><div class="form-section-heading"><div class="form-section-number">1</div><div><h2>Cliente e atendimento</h2><p>Se nenhum atendimento for informado, o VENDRA criará um atendimento interno para esta negociação.</p></div></div><div class="form-fields">
+<div class="field field-full"><label for="title">Título da oportunidade <span class="required">*</span></label><input id="title" name="title" required maxlength="180" value="{{ draft.title or '' }}" placeholder="Ex.: Implantação CRM"></div>
+<div class="field"><label for="customer_id">Cliente <span class="required">*</span></label>{% if selected_customer %}<input type="hidden" name="customer_id" value="{{ selected_customer.id }}"><input value="{{ selected_customer.name }}" disabled>{% else %}<select id="customer_id" name="customer_id" required><option value="">Selecione...</option>{% for customer in customers %}<option value="{{ customer.id }}" {% if draft.customer_id==customer.id %}selected{% endif %}>{{ customer.name }}</option>{% endfor %}</select>{% endif %}</div>
+<div class="field"><label for="ticket_id">Atendimento relacionado</label>{% if ticket %}<input type="hidden" name="ticket_id" value="{{ ticket.id }}"><input value="#{{ ticket.id }} · {{ ticket.title }}" disabled>{% else %}<input id="ticket_id" name="ticket_id" value="{{ draft.ticket_id or '' }}" placeholder="Opcional — deixe vazio para criar atendimento interno"><small>Use o ID de um atendimento do mesmo cliente ou deixe vazio.</small>{% endif %}</div>
+</div></section>
+<section class="form-card"><div class="form-section-heading"><div class="form-section-number">2</div><div><h2>Funil e responsabilidade</h2><p>A oportunidade nasce aberta e entra na etapa escolhida.</p></div></div><div class="form-fields">
+<div class="field"><label for="funnel_id">Funil <span class="required">*</span></label><select id="funnel_id" name="funnel_id" required><option value="">Selecione...</option>{% for funnel in funnels %}<option value="{{ funnel.id }}" {% if draft.funnel_id==funnel.id %}selected{% endif %}>{{ funnel.name }}</option>{% endfor %}</select></div>
+<div class="field"><label for="stage_id">Etapa <span class="required">*</span></label><select id="stage_id" name="stage_id" required>{% for funnel in funnels %}{% for stage in funnel.stages %}{% if stage.is_active %}<option value="{{ stage.id }}" data-funnel="{{ funnel.id }}" {% if draft.stage_id==stage.id %}selected{% endif %}>{{ funnel.name }} · {{ stage.name }}</option>{% endif %}{% endfor %}{% endfor %}</select></div>
+<div class="field"><label for="assigned_user_id">Responsável</label><select id="assigned_user_id" name="assigned_user_id"><option value="">Sem responsável</option>{% for responsible in responsibles %}<option value="{{ responsible.id }}" {% if draft.assigned_user_id==responsible.id %}selected{% endif %}>{{ responsible.full_name }}</option>{% endfor %}</select></div>
+<div class="field"><label for="expected_close_date">Previsão de fechamento</label><input id="expected_close_date" type="date" name="expected_close_date" value="{{ draft.expected_close_date or '' }}"></div>
+</div></section>
+<footer class="form-submit-bar"><div><strong>Valor inicial R$ 0,00</strong><span>O valor será formado exclusivamente pelos produtos/serviços adicionados depois.</span></div><div class="form-actions"><a class="button secondary" href="/oportunidades">Cancelar</a><button class="button primary" type="submit">Criar oportunidade</button></div></footer>
+</form></div>
+<script>
+(function(){const funnel=document.getElementById('funnel_id'), stage=document.getElementById('stage_id'); if(!funnel||!stage)return; function sync(){let first=null; [...stage.options].forEach(o=>{const ok=o.dataset.funnel===funnel.value; o.hidden=!ok; o.disabled=!ok; if(ok&&!first)first=o;}); if(stage.selectedOptions.length && stage.selectedOptions[0].disabled && first) stage.value=first.value;} funnel.addEventListener('change',sync); sync();})();
+</script>
+{% endblock %}

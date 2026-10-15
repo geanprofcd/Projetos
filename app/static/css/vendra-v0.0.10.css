@@ -1,0 +1,75 @@
+/* VENDRA 0.0.10 — correção responsiva de Disparos + Kanban dinâmico */
+
+/* Regra estrutural: páginas novas devem ocupar toda a largura útil do conteúdo. */
+.main-content{max-width:none;min-width:0}
+.dispatch-page{width:100%;min-width:0;max-width:100%}
+.dispatch-page-header>div{max-width:920px}
+
+/* Disparos: remove o grid externo legado que espremia os dois formulários. */
+.dispatch-layout{display:flex!important;flex-direction:column;align-items:stretch;gap:18px;width:100%;min-width:0}
+.dispatch-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;width:100%;min-width:0;align-items:stretch}
+.dispatch-entry-grid>.form-card{min-width:0;width:100%;height:auto}
+.dispatch-form-card{position:static!important;top:auto!important}
+.dispatch-import-card{height:auto!important}
+.dispatch-entry-grid .form-section-heading{justify-content:space-between;min-width:0}
+.dispatch-entry-grid .form-section-heading>div:first-child{min-width:0;max-width:720px}
+.dispatch-entry-grid .form-section-heading p{max-width:660px}
+.file-type-badge{flex:0 0 auto;max-width:270px;white-space:normal;overflow-wrap:anywhere}
+.dispatch-form-card .registration-form{height:100%}
+.dispatch-form-card .form-fields{grid-template-columns:repeat(2,minmax(190px,1fr));align-items:start}
+.dispatch-form-card .form-submit-bar{margin:0 20px 20px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:18px}
+.dispatch-form-card .form-submit-bar>div:first-child{min-width:0}
+.dispatch-import-card .dispatch-upload-form{padding-bottom:20px}
+.dispatch-import-card .dispatch-dropzone,.dispatch-import-card .dispatch-upload-note,.dispatch-import-card .dispatch-upload-form>.button{margin-left:20px;margin-right:20px}
+.dispatch-import-card .dispatch-upload-form>.button{justify-self:start;min-width:180px}
+.dispatch-import-panel,.dispatch-history{width:100%;min-width:0;margin-top:0}
+.dispatch-import-panel .table-wrap,.dispatch-history .table-wrap{width:100%;max-width:100%}
+.dispatch-list-header{gap:18px;flex-wrap:wrap}
+.dispatch-list-header>div:first-child{min-width:280px;flex:1}
+.dispatch-list-picker{flex:0 1 360px;min-width:min(270px,100%)}
+
+/* Kanban: cada etapa cresce verticalmente conforme recebe novos cards. */
+.kanban-toolbar{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));align-items:end}
+.kanban-toolbar .kanban-search{grid-column:auto}
+.kanban-toolbar>.button{min-height:41px;align-self:end;text-align:center}
+.kanban-board{align-items:flex-start}
+.kanban-column{display:flex;flex-direction:column;align-self:flex-start;height:max-content;max-height:none;overflow:visible}
+.kanban-column-head{flex:0 0 auto}
+.kanban-dropzone{display:flex;flex-direction:column;gap:9px;min-height:84px;height:auto;max-height:none;padding:0 10px 11px;overflow:visible}
+.kanban-card{position:relative;margin:0;flex:0 0 auto;overflow:visible}
+.kanban-empty{margin:0}
+
+/* Zona invisível no canto: o X só aparece quando o ponteiro chega ao canto. */
+.kanban-card-delete-zone{position:absolute;z-index:8;top:-1px;right:-1px;width:42px;height:42px;display:flex;align-items:flex-start;justify-content:flex-end;padding:5px;pointer-events:auto}
+.kanban-card-delete-zone form{margin:0}
+.kanban-card-delete{width:26px;height:26px;border:1px solid #f0b8b8;border-radius:999px;background:#fff;color:#b42318;display:grid;place-items:center;padding:0;font-size:18px;font-weight:800;line-height:1;cursor:pointer;opacity:0;transform:scale(.82);pointer-events:none;box-shadow:0 4px 12px rgba(180,35,24,.12);transition:opacity .12s ease,transform .12s ease,background .12s ease,color .12s ease}
+.kanban-card-delete-zone:hover .kanban-card-delete,.kanban-card-delete:focus-visible{opacity:1;transform:scale(1);pointer-events:auto}
+.kanban-card-delete:hover{background:#b42318;color:#fff;border-color:#b42318}
+.kanban-card-delete:focus-visible{outline:3px solid rgba(180,35,24,.18);outline-offset:2px}
+.kanban-card-link{position:relative;z-index:1;padding-right:38px}
+
+/* Adaptação progressiva sem comprimir conteúdo. */
+@media(max-width:1180px){
+  .dispatch-entry-grid{grid-template-columns:1fr}
+  .dispatch-form-card .registration-form{height:auto}
+  .file-type-badge{max-width:220px}
+}
+@media(max-width:900px){
+  .dispatch-form-card .form-fields{grid-template-columns:1fr 1fr}
+  .dispatch-list-picker{flex-basis:100%;width:100%}
+  .kanban-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .dispatch-entry-grid{gap:14px}
+  .dispatch-entry-grid .form-section-heading{flex-direction:column}
+  .dispatch-form-card .form-fields{grid-template-columns:1fr}
+  .dispatch-form-card .form-submit-bar{margin:0 14px 14px;grid-template-columns:1fr;padding:14px}
+  .dispatch-form-card .form-submit-bar .form-actions,.dispatch-form-card .form-submit-bar .button{width:100%}
+  .dispatch-import-card .dispatch-dropzone,.dispatch-import-card .dispatch-upload-note,.dispatch-import-card .dispatch-upload-form>.button{margin-left:14px;margin-right:14px}
+  .dispatch-import-card .dispatch-upload-form>.button{width:calc(100% - 28px);justify-self:stretch}
+  .kanban-toolbar{grid-template-columns:1fr}
+  .kanban-column{flex-basis:88vw;min-width:88vw}
+}
+@media(hover:none){
+  .kanban-card-delete{opacity:.78;transform:scale(.92);pointer-events:auto}
+}

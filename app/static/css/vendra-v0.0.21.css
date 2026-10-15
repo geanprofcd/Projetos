@@ -1,0 +1,42 @@
+/* 0.0.21 — conversar primeiro: barras operacionais mínimas, conversa maior */
+.ticket-detail-head{margin-bottom:0}
+.ticket-workspace{margin-top:12px}
+.ticket-workspace .chat-head{padding:10px 14px;min-height:54px}
+.ticket-workspace .chat-head .avatar.large{width:34px;height:34px;font-size:13px}
+.ticket-workspace .chat-head-main{gap:9px}
+.ticket-workspace .chat-head-main strong{font-size:14px}
+.ticket-workspace .live-badge{border:0;background:transparent;padding:4px;font-size:0}
+.ticket-workspace .live-dot{width:7px;height:7px}
+.ticket-workspace .ai-control-bar,.ticket-workspace .whatsapp-window-bar{flex-direction:row;align-items:center;gap:8px;padding:6px 12px;min-height:36px}
+.ticket-workspace .ai-control-copy,.ticket-workspace .whatsapp-window-copy{align-items:center;gap:7px}
+.ticket-workspace .ai-control-dot,.ticket-workspace .whatsapp-window-dot{width:7px;height:7px;margin-top:0;box-shadow:none}
+.ticket-workspace .ai-control-copy>div,.ticket-workspace .whatsapp-window-copy>div{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:8px}
+.ticket-workspace .ai-control-copy strong,.ticket-workspace .whatsapp-window-copy strong{font-size:11px;line-height:1.2}
+.ticket-workspace .ai-control-copy small,.ticket-workspace .whatsapp-window-copy small{display:inline;font-size:10px;line-height:1.2;margin:0}
+.ticket-workspace .ai-control-bar .button,.ticket-workspace .whatsapp-window-bar .button{padding:5px 10px;border-radius:7px;font-size:10px;min-height:26px;width:auto!important;white-space:nowrap}
+.ticket-workspace .whatsapp-window-bar.is-closed{background:#fff8ed}
+.ticket-workspace .composer{padding:10px 12px}
+.ticket-workspace .composer textarea{min-height:56px;padding:10px}
+.ticket-workspace .context-panel{padding:16px 14px}
+.ticket-workspace .context-panel h3{font-size:14px;margin:0 0 10px}
+.ticket-workspace .context-panel dt{margin-top:9px}
+.ticket-workspace .context-panel hr{margin:15px 0}
+.ticket-workspace .context-panel .ticket-commercial-summary{padding-bottom:0}
+.ticket-workspace .context-panel .ticket-commercial-summary h3{font-size:15px;line-height:1.35}
+.ticket-workspace .context-panel .commercial-open{padding:8px;font-size:12px}
+.access-welcome{padding:38px;max-width:760px}.access-welcome h1{font-size:24px}.access-welcome p{color:#64748b}
+.users-grid{display:grid;grid-template-columns:minmax(280px,1fr) minmax(0,1.8fr);gap:18px;align-items:start}
+.users-card{padding:24px}.users-card h2{margin:0 0 6px;font-size:18px}.users-card p{color:#64748b;font-size:13px;line-height:1.5}
+.users-form{display:grid;gap:12px}.users-form label{display:grid;gap:5px;font-size:12px;font-weight:700}
+.users-form input,.users-form select{padding:10px 12px;border:1px solid #d9dee9;border-radius:9px;background:white;width:100%}
+.users-list{display:grid;gap:8px}.users-entry{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid #e2e6ed;border-radius:11px;padding:10px 12px}
+.users-entry strong,.users-entry small{display:block}.users-entry small{color:#64748b}.users-entry select{max-width:145px;padding:8px;border-radius:8px;border:1px solid #d9dee9}
+.users-alert{padding:11px 14px;border-radius:9px;border:1px solid #d9dee9;background:#f8fafc;font-size:13px}.users-alert.error{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+.users-demo-link{word-break:break-all;font-size:12px;margin:8px 0}
+@media(max-width:980px){.users-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.ticket-workspace .whatsapp-window-bar,.ticket-workspace .ai-control-bar{flex-direction:row;padding:7px 9px}.ticket-workspace .ai-control-copy small{display:none}.ticket-workspace .chat-head{padding:9px}.ticket-workspace .chat-panel{min-height:480px}}
+/* Ganho vertical no workspace sem prejudicar rolagem das mensagens. */
+.ticket-detail-head .back{margin-bottom:6px}
+.ticket-detail-head h1{font-size:25px;margin:3px 0}
+.ticket-workspace{height:min(900px,calc(100dvh - 170px));min-height:570px}
+@media(max-width:980px){.ticket-workspace{height:auto;min-height:0}}

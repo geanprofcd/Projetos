@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block title %}Integrações | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div>
+        <span class="eyebrow">MAKE · IA · META · WHATSAPP</span>
+        <h1>Integrações</h1>
+        <p>Central de conectividade, contratos e diagnóstico do canal de atendimento híbrido.</p>
+    </div>
+</header>
+
+{% if success %}<div class="alert success-block">{{ success }}</div>{% endif %}
+{% if error %}<div class="alert error-block">{{ error }}</div>{% endif %}
+
+<section class="integration-status-grid integration-status-grid-wide">
+    <article class="metric-card status-card">
+        <span>Modo atual</span>
+        <strong class="status-value">{{ readiness.mode|upper }}</strong>
+        <small>{% if readiness.mode == 'demo' %}Execução local para desenvolvimento{% else %}Backend conectado ao ambiente configurado{% endif %}</small>
+    </article>
+    <article class="metric-card status-card">
+        <span>IA de atendimento</span>
+        <strong class="status-value status-text-{{ 'ok' if channels.ai.enabled else 'warning' }}">{{ 'ATIVA' if channels.ai.enabled else 'INATIVA' }}</strong>
+        <small>{{ channels.ai.assistant_name }} · {{ channels.ai.tickets_ai }} IA / {{ channels.ai.tickets_human }} humano</small>
+    </article>
+    <article class="metric-card status-card">
+        <span>Disparos</span>
+        <strong class="status-value status-text-{{ 'ok' if channels.dispatches.enabled and channels.dispatches.webhook_configured else 'warning' }}">{{ 'PRONTO' if channels.dispatches.enabled and channels.dispatches.webhook_configured else 'CONFIGURAR' }}</strong>
+        <small>{{ channels.dispatches.submitted }} processado{{ '' if channels.dispatches.submitted == 1 else 's' }} · {{ channels.dispatches.failed }} falha{{ '' if channels.dispatches.failed == 1 else 's' }}</small>
+    </article>
+    <article class="metric-card status-card">
+        <span>Fila WhatsApp</span>
+        <strong class="status-value status-text-{{ 'warning' if counts.failed else 'ok' }}">{{ counts.pending }} pendente{{ '' if counts.pending == 1 else 's' }}</strong>
+        <small>{{ counts.failed }} falha{{ '' if counts.failed == 1 else 's' }} · {{ counts.sent }} processada{{ '' if counts.sent == 1 else 's' }}</small>
+    </article>
+</section>
+
+{% if readiness.errors %}
+<div class="alert error-block"><strong>Verificações que precisam de atenção</strong><ul>{% for item in readiness.errors %}<li>{{ item }}</li>{% endfor %}</ul></div>
+{% endif %}
+
+<section class="panel integration-flow-panel">
+    <div class="panel-header"><div><h2>Fluxo operacional recomendado</h2><p>O VENDRA deve participar da decisão antes e depois da geração da IA.</p></div></div>
+    <div class="integration-flow">
+        <div class="flow-node"><span>1</span><strong>Meta</strong><small>Mensagem do cliente</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><span>2</span><strong>Make</strong><small>Normaliza o evento</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><span>3</span><strong>VENDRA</strong><small>Persiste + autoriza IA</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><span>4</span><strong>IA</strong><small>Gera resposta se autorizada</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><span>5</span><strong>VENDRA</strong><small>Revalida + registra + roteia</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><span>6</span><strong>Make / Meta</strong><small>HTTP envia a resposta</small></div>
+    </div>
+    <div class="integration-note"><strong>Regra de segurança:</strong> a resposta da IA passa primeiro pelo VENDRA com <code>control_version</code>. Se autorizada, o retorno inclui a saída reservada para o mesmo cenário Make enviar via HTTP ao Meta; se um humano assumiu durante o processamento, a resposta antiga é bloqueada.</div>
+    <div class="integration-route-rule">
+        <div><strong>Filtro obrigatório no Make</strong><span>Depois de registrar a entrada no VENDRA, continue para a IA somente quando <code>automation.route_to_ai = true</code>.</span></div>
+        <div><strong>Handoff por conversa</strong><span>O botão <b>Desconectar IA</b> atua só no ticket aberto. O cliente continua chegando pelo Meta/Make e a mensagem continua aparecendo no atendimento.</span></div>
+        <div><strong>Resposta da IA</strong><span>Envie a saída para <code>POST /webhooks/make/ai/reply</code> com <code>delivery_mode=inline_make</code> e <code>route_code</code>. O VENDRA persiste, revalida, move o lead no funil e devolve a saída reservada para o HTTP do Meta.</span></div>
+    </div>
+</section>
+
+<section class="panel" id="diagnosticos">
+    <div class="panel-header integration-heading-actions">
+        <div><h2>Diagnóstico de conectividade</h2><p>Testes voluntários para conferir se os Custom Webhooks configurados no Make estão acessíveis.</p></div>
+        <div class="integration-test-actions">
+            <form method="post" action="/integracoes/testar/ia">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="button secondary" type="submit" {% if not channels.ai.control_webhook_configured %}disabled{% endif %}>Testar webhook da IA</button>
+            </form>
+            <form method="post" action="/integracoes/testar/disparos">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="button secondary" type="submit" {% if not channels.dispatches.webhook_configured %}disabled{% endif %}>Testar webhook de Disparos</button>
+            </form>
+        </div>
+    </div>
+    <p class="integration-safe-test">Os testes enviam <code>event=vendra.integration.test</code> e <code>test_only=true</code>. Não enviam telefone, texto comercial ou mensagem ao cliente. O cenário Make deve tratar esse evento apenas como diagnóstico.</p>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Quando</th><th>Canal</th><th>Status</th><th>HTTP</th><th>Resposta / erro</th></tr></thead>
+            <tbody>
+            {% for row in diagnostics %}
+            <tr>
+                <td>{{ row.created_at|datetime_br }}</td>
+                <td><strong>{{ (row.event_type or '').replace('diagnostic.','') }}</strong></td>
+                <td><span class="delivery delivery-{{ row.status or 'failed' }}">{{ row.status or '—' }}</span></td>
+                <td>{{ row.status_code or '—' }}</td>
+                <td class="cell-wide">{{ row.error_message or row.response or 'Sem corpo de resposta.' }}</td>
+            </tr>
+            {% else %}<tr><td colspan="5" class="empty-cell">Nenhum teste executado nesta instalação.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="panel integration-contract">
+    <div class="panel-header"><div><h2>Contratos Make ↔ VENDRA</h2><p>URLs e payloads de referência para montar ou revisar o cenário real.</p></div></div>
+    <div class="contract-stack">
+        {% for key, item in contracts.items() %}
+        <details class="contract-detail" {% if loop.first %}open{% endif %}>
+            <summary><span class="contract-method">{{ item.method }}</span><code>{{ item.path }}</code></summary>
+            <div class="contract-body">
+                <small>URL</small><code class="contract-url">{{ item.url }}</code>
+                <small>Exemplo</small><pre>{{ item.payload }}</pre>
+                {% if item.response %}<small>Resposta esperada / decisão do VENDRA</small><pre>{{ item.response }}</pre>{% endif %}
+            </div>
+        </details>
+        {% endfor %}
+    </div>
+    <div class="integration-note"><strong>Autenticação do bridge:</strong> os endpoints Make protegidos usam o segredo configurado no VENDRA. Não coloque token da Meta ou chave da IA no frontend nem em payload de diagnóstico.</div>
+</section>
+
+<section class="panel" id="saidas">
+    <div class="panel-header"><div><h2>Fila de saída do WhatsApp</h2><p>Respostas humanas e da IA autorizada continuam registradas na mesma fila; no fluxo inline, o item fica reservado ao cenário Make que está enviando ao Meta.</p></div></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Criado</th><th>Telefone</th><th>Mensagem</th><th>Status</th><th>Tentativas</th><th>Último erro</th><th></th></tr></thead>
+            <tbody>
+            {% for row in outbox %}
+            <tr>
+                <td>{{ row.created_at|datetime_br }}</td>
+                <td><strong>{{ row.phone }}</strong><small>Ticket {{ row.ticket_id }}</small></td>
+                <td class="cell-wide">{{ (row.body or 'Mensagem com anexo')[:120] }}</td>
+                <td><span class="delivery delivery-{{ row.status }}">{{ row.status }}</span></td>
+                <td>{{ row.attempt_count or 0 }}</td>
+                <td class="cell-error">{{ row.last_error or '—' }}</td>
+                <td>{% if row.status == 'failed' %}<form method="post" action="/integracoes/outbox/{{ row.id }}/reprocessar"><button class="button mini" type="submit">Reprocessar</button></form>{% endif %}</td>
+            </tr>
+            {% else %}<tr><td colspan="7" class="empty-cell">Nenhuma mensagem na fila de saída.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="panel panel-spaced">
+    <div class="panel-header"><div><h2>Eventos recentes de integração</h2><p>Entrada WhatsApp, respostas da IA, diagnósticos e demais eventos rastreáveis.</p></div></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Evento</th><th>ID externo</th><th>Status</th><th>Atendimento</th><th>Processado</th></tr></thead>
+            <tbody>
+            {% for row in events %}
+            <tr>
+                <td>{{ row.event_type or 'message.inbound' }}</td>
+                <td><code>{{ row.external_id or '—' }}</code></td>
+                <td><span class="delivery delivery-{{ row.status or 'processed' }}">{{ row.status or 'processed' }}</span></td>
+                <td>{{ row.entity_id or row.ticket_id or '—' }}</td>
+                <td>{{ (row.processed_at or row.created_at)|datetime_br }}</td>
+            </tr>
+            {% else %}<tr><td colspan="5" class="empty-cell">Nenhum evento recebido nesta execução.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Novo atendimento | VENDRA{% endblock %}
+{% block content %}
+<div class="form-page form-page-wide">
+    <header class="page-header form-page-header">
+        <div>
+            <a class="back" href="/atendimentos">← Atendimentos</a>
+            <span class="eyebrow">ATENDIMENTO</span>
+            <h1>Novo atendimento</h1>
+            <p>Registre a solicitação com contexto suficiente para classificação, distribuição e continuidade.</p>
+        </div>
+    </header>
+
+    {% if error %}<div class="alert error form-alert" role="alert">{{ error }}</div>{% endif %}
+
+    <form method="post" class="registration-form" id="ticketForm">
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">1</div>
+                <div><h2>Solicitação</h2><p>Identifique o assunto e quem está solicitando o atendimento.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field field-full">
+                    <label for="ticket-title">Assunto <span class="required">*</span></label>
+                    <input id="ticket-title" name="title" value="{{ form.title or '' }}" required maxlength="200" placeholder="Ex.: Suspeita de ferrugem na soja">
+                    <small>Use um título curto e objetivo que permita reconhecer o caso na fila.</small>
+                </div>
+                <div class="field">
+                    <label for="customerSelect">Cliente <span class="required">*</span></label>
+                    <select name="customer_id" id="customerSelect" required>
+                        <option value="">Selecione o cliente...</option>
+                        {% for customer in customers %}<option value="{{ customer.id }}" {% if (form.customer_id or selected_customer) == customer.id %}selected{% endif %}>{{ customer.name }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="farmSelect">Propriedade</label>
+                    <select name="farm_id" id="farmSelect">
+                        <option value="">Sem propriedade definida</option>
+                        {% for farm in farms %}<option value="{{ farm.id }}" {% if (form.farm_id or selected_farm) == farm.id %}selected{% endif %}>{{ farm.name }}</option>{% endfor %}
+                    </select>
+                    <small>Atualizada automaticamente ao selecionar o cliente.</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">2</div>
+                <div><h2>Contexto do atendimento</h2><p>Classifique o atendimento para facilitar busca, roteamento e análise posterior.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field">
+                    <label for="crop-id">Cultura</label>
+                    <select id="crop-id" name="crop_id"><option value="">Não informada</option>{% for crop in crops %}<option value="{{ crop.id }}" {% if form.crop_id == crop.id %}selected{% endif %}>{{ crop.name }}</option>{% endfor %}</select>
+                </div>
+                <div class="field">
+                    <label for="category-id">Categoria</label>
+                    <select id="category-id" name="category_id"><option value="">Não classificada</option>{% for category in categories %}<option value="{{ category.id }}" {% if form.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">3</div>
+                <div><h2>Triagem e distribuição</h2><p>Defina prioridade, origem e responsável inicial. Esses dados podem ser ajustados depois.</p></div>
+            </div>
+            <div class="form-fields form-fields-three">
+                <div class="field">
+                    <label for="assigned-user">Responsável</label>
+                    <select id="assigned-user" name="assigned_user_id"><option value="">Sem responsável</option>{% for responsible in responsibles %}<option value="{{ responsible.id }}" {% if form.assigned_user_id == responsible.id %}selected{% endif %}>{{ responsible.full_name }}</option>{% endfor %}</select>
+                </div>
+                <div class="field">
+                    <label for="ticket-status">Status inicial</label>
+                    <select id="ticket-status" name="status"><option value="novo">Novo</option><option value="em_atendimento" {% if form.status == 'em_atendimento' %}selected{% endif %}>Em atendimento</option></select>
+                </div>
+                <div class="field">
+                    <label for="ticket-priority">Prioridade</label>
+                    <select id="ticket-priority" name="priority"><option value="baixa" {% if form.priority == 'baixa' %}selected{% endif %}>Baixa</option><option value="normal" {% if not form.priority or form.priority == 'normal' %}selected{% endif %}>Normal</option><option value="alta" {% if form.priority == 'alta' %}selected{% endif %}>Alta</option><option value="urgente" {% if form.priority == 'urgente' %}selected{% endif %}>Urgente</option></select>
+                </div>
+                <div class="field">
+                    <label for="ticket-source">Origem</label>
+                    <select id="ticket-source" name="source"><option value="interno" {% if not form.source or form.source == 'interno' %}selected{% endif %}>Interno</option><option value="portal" {% if form.source == 'portal' %}selected{% endif %}>Portal</option><option value="whatsapp" {% if form.source == 'whatsapp' %}selected{% endif %}>WhatsApp</option></select>
+                </div>
+            </div>
+        </section>
+
+        <footer class="form-submit-bar">
+            <div><strong>Criar atendimento</strong><span>O registro ficará disponível imediatamente na fila interna.</span></div>
+            <div class="form-actions">
+                <a class="button secondary" href="/atendimentos">Cancelar</a>
+                <button class="button primary" type="submit">Criar atendimento</button>
+            </div>
+        </footer>
+    </form>
+</div>
+<script>
+(() => {
+  const customer = document.getElementById('customerSelect');
+  const farm = document.getElementById('farmSelect');
+  if (!customer || !farm) return;
+  customer.addEventListener('change', async () => {
+    const id = customer.value;
+    farm.innerHTML = '<option value="">Sem propriedade definida</option>';
+    if (!id) return;
+    farm.disabled = true;
+    try {
+      const response = await fetch(`/clientes/${encodeURIComponent(id)}/propriedades.json`, {headers: {'Accept': 'application/json'}});
+      if (!response.ok) throw new Error('Falha ao carregar propriedades');
+      const rows = await response.json();
+      rows.forEach(row => {
+        const option = document.createElement('option');
+        option.value = row.id;
+        option.textContent = row.name;
+        farm.appendChild(option);
+      });
+      if (rows.length === 1) farm.value = rows[0].id;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      farm.disabled = false;
+    }
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,302 @@
+:root {
+    --surface: #ffffff;
+    --text: #172019;
+    --muted: #69736c;
+    --line: #dfe6df;
+    --brand: #246a43;
+    --brand-dark: #174b30;
+    --hero: #153c27;
+    --shadow: 0 16px 42px rgba(25, 51, 34, .09);
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body { margin: 0; }
+button, input { font: inherit; }
+
+.login-body {
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow-x: hidden;
+    background: #f2f5f1;
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.login-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 58%) minmax(400px, 42%);
+    min-height: 100vh;
+    min-height: 100svh;
+}
+
+.login-hero {
+    position: relative;
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow: hidden;
+    background: var(--hero);
+    color: #fff;
+}
+
+.login-carousel {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--hero);
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.carousel-viewport {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(0, 0, 0);
+    transition: transform 720ms cubic-bezier(.22, .72, .2, 1);
+    will-change: transform;
+}
+
+.carousel-slide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #1a452e;
+}
+
+.carousel-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.015);
+}
+
+.carousel-slide:nth-child(1) img { object-position: 50% 50%; }
+.carousel-slide:nth-child(2) img { object-position: 51% 50%; }
+.carousel-slide:nth-child(3) img { object-position: 48% 50%; }
+
+.carousel-shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(8, 39, 23, .88) 0%, rgba(8, 39, 23, .66) 47%, rgba(8, 39, 23, .27) 100%),
+        linear-gradient(0deg, rgba(8, 35, 22, .28) 0%, rgba(8, 35, 22, 0) 44%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 760px);
+    min-height: 100vh;
+    min-height: 100svh;
+    margin: 0 auto;
+    padding: clamp(44px, 7vh, 76px) clamp(38px, 7vw, 84px) 118px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: absolute;
+    top: clamp(42px, 8vh, 76px);
+    left: clamp(38px, 7vw, 84px);
+}
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: #eef8f0;
+    color: #1b5f39;
+    font-weight: 850;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+}
+
+.brand-copy strong,
+.brand-copy span { display: block; }
+.brand-copy strong { font-size: 16px; line-height: 1.1; }
+.brand-copy span { margin-top: 3px; font-size: 12px; color: rgba(255,255,255,.72); }
+
+.hero-copy { max-width: 650px; }
+.hero-copy h1 {
+    margin: 0 0 22px;
+    font-size: clamp(38px, 4vw, 55px);
+    line-height: 1.06;
+    letter-spacing: -.035em;
+    text-shadow: 0 3px 24px rgba(0,0,0,.20);
+}
+.hero-copy p {
+    max-width: 620px;
+    margin: 0;
+    font-size: clamp(16px, 1.35vw, 19px);
+    line-height: 1.62;
+    color: rgba(245, 252, 247, .94);
+    text-shadow: 0 2px 14px rgba(0,0,0,.22);
+}
+
+.carousel-controls {
+    position: absolute;
+    left: clamp(38px, 7vw, 84px);
+    bottom: clamp(28px, 6vh, 50px);
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.carousel-arrow {
+    width: 40px;
+    height: 40px;
+    padding: 0 0 3px;
+    border: 1px solid rgba(255,255,255,.62);
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: rgba(8, 39, 23, .34);
+    color: #fff;
+    font-size: 27px;
+    line-height: 1;
+    cursor: pointer;
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    transition: background .18s ease, transform .18s ease, border-color .18s ease;
+}
+.carousel-arrow:hover { background: rgba(8,39,23,.68); transform: translateY(-1px); }
+.carousel-arrow:focus-visible { outline: 3px solid rgba(255,255,255,.55); outline-offset: 3px; }
+
+.carousel-dots { display: flex; align-items: center; gap: 8px; }
+.carousel-dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,.52);
+    cursor: pointer;
+    transition: width .22s ease, background .22s ease, transform .18s ease;
+}
+.carousel-dot:hover { transform: scale(1.12); }
+.carousel-dot.is-active { width: 30px; background: #fff; }
+.carousel-dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+.login-panel {
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: clamp(28px, 5vw, 64px);
+    background: #f2f5f1;
+}
+
+.login-card {
+    width: min(100%, 420px);
+    padding: 34px 32px 32px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.eyebrow {
+    color: #55745f;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+.login-card h2 { margin: 8px 0 5px; font-size: 31px; line-height: 1.1; }
+.login-card > p { margin: 0 0 27px; color: var(--muted); font-size: 16px; line-height: 1.45; }
+.login-card label { display: block; margin: 15px 0 6px; font-size: 12px; font-weight: 750; }
+.login-card input {
+    width: 100%;
+    min-height: 49px;
+    padding: 12px 13px;
+    border: 1px solid #d8dfd8;
+    border-radius: 10px;
+    outline: none;
+    background: #fff;
+    color: var(--text);
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.login-card input:focus { border-color: #276d47; box-shadow: 0 0 0 3px rgba(39,109,71,.11); }
+.login-card input::placeholder { color: #828983; }
+
+.button {
+    min-height: 45px;
+    border: 1px solid var(--brand);
+    border-radius: 10px;
+    padding: 11px 16px;
+    cursor: pointer;
+    font-weight: 750;
+}
+.button.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.button.primary:hover { background: var(--brand-dark); border-color: var(--brand-dark); }
+.button.full { width: 100%; margin-top: 20px; }
+.button:focus-visible { outline: 3px solid rgba(36,106,67,.22); outline-offset: 3px; }
+
+.alert { margin-bottom: 12px; padding: 11px 12px; border-radius: 10px; font-size: 13px; }
+.alert.error { background: #fff0f0; color: #9a3030; }
+
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+@media (max-width: 980px) {
+    .login-layout { grid-template-columns: 1fr; }
+    .login-hero, .hero-content { min-height: 48svh; }
+    .hero-content { padding: 94px 34px 82px; justify-content: flex-end; }
+    .brand { top: 30px; left: 34px; }
+    .hero-copy h1 { max-width: 780px; font-size: clamp(32px, 6vw, 48px); }
+    .hero-copy p { font-size: 16px; }
+    .carousel-controls { left: 34px; bottom: 24px; }
+    .login-panel { min-height: 52svh; padding: 34px 20px; }
+}
+
+@media (max-width: 600px) {
+    .login-hero, .hero-content { min-height: 50svh; }
+    .hero-content { padding: 82px 24px 74px; }
+    .brand { top: 24px; left: 24px; }
+    .brand-mark { width: 36px; height: 36px; }
+    .hero-copy h1 { margin-bottom: 14px; font-size: 31px; }
+    .hero-copy p { font-size: 14px; line-height: 1.5; }
+    .carousel-controls { left: 24px; bottom: 20px; }
+    .carousel-arrow { width: 36px; height: 36px; }
+    .login-panel { padding: 28px 18px; }
+    .login-card { padding: 28px 24px 25px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-track, .carousel-dot, .carousel-arrow { transition: none; }
+}

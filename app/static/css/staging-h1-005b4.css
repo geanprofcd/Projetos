@@ -1,0 +1,4 @@
+.staging-inline {display:flex;gap:.45rem;align-items:center;flex-wrap:wrap}
+.staging-inline select {max-width:220px;min-width:125px}
+.staging-form textarea {min-height:80px}
+@media(max-width:760px){.staging-inline select {max-width:100%}.staging-inline {min-width:185px}}

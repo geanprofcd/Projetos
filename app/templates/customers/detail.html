@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ customer.name }} | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div><a class="back" href="/clientes">← Voltar</a><span class="eyebrow">CLIENTE</span>
+    <h1>{{ customer.name }}</h1><p>Cadastro e histórico de relacionamento.</p></div>
+  <a class="button secondary" href="/clientes/{{ customer.id }}/editar">Editar cliente</a>
+</header>
+<section class="panel section-gap">
+  <div class="panel-header"><div><h2>Dados do cliente</h2><p>Informações principais do cadastro.</p></div></div>
+  <div class="table-wrap"><table><tbody>
+    <tr><th>Telefone</th><td>{{ customer.phone or '—' }}</td></tr>
+    <tr><th>E-mail</th><td>{{ customer.email or '—' }}</td></tr>
+    <tr><th>Empresa</th><td>{{ customer.company_name or '—' }}</td></tr>
+    <tr><th>Documento</th><td>{{ customer.document or '—' }}</td></tr>
+    <tr><th>Status</th><td>{{ 'Ativo' if customer.status == 'active' else 'Inativo' }}</td></tr>
+  </tbody></table></div>
+</section>
+<section class="panel section-gap">
+ <div class="panel-header"><div><h2>Atendimentos</h2><p>Conversas vinculadas ao cliente.</p></div></div>
+ <div class="table-wrap"><table><thead><tr><th>Assunto</th><th>Status</th><th></th></tr></thead><tbody>
+ {% for ticket in tickets %}
+  <tr><td>{{ ticket.title }}</td><td>{{ ticket.status }}</td><td><a class="table-link" href="/atendimentos/{{ ticket.id }}">Abrir</a></td></tr>
+ {% else %}<tr><td colspan="3"><div class="empty compact">Nenhum atendimento vinculado.</div></td></tr>{% endfor %}
+ </tbody></table></div>
+</section>
+<section class="panel section-gap">
+ <div class="panel-header"><div><h2>Histórico comercial</h2><p>Oportunidades relacionadas a este cliente.</p></div></div>
+ <div class="table-wrap"><table><thead><tr><th>Oportunidade</th><th>Etapa</th><th>Status</th><th></th></tr></thead><tbody>
+ {% for opportunity in opportunities %}
+  <tr><td>{{ opportunity.title }}</td><td>{{ opportunity.stage_name or '—' }}</td><td>{{ opportunity.status_label or opportunity.status }}</td><td><a class="table-link" href="/oportunidades/{{ opportunity.id }}">Abrir</a></td></tr>
+ {% else %}<tr><td colspan="4"><div class="empty compact">Nenhuma oportunidade vinculada.</div></td></tr>{% endfor %}
+ </tbody></table></div>
+</section>
+{% endblock %}

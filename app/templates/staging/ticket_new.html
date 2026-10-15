@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Novo atendimento | VENDRA STAGING{% endblock %}
+{% block content %}
+<header class="page-header"><div><span class="eyebrow">STAGING • NÃO ENVIA MENSAGENS</span><h1>Novo atendimento interno</h1></div></header>
+<section class="panel staging-form"><form method="post" action="/atendimentos/novo">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+{% if error %}<p class="alert error" role="alert">{{ error }}</p>{% endif %}
+<label>Cliente ativo<select name="customer_id" required><option value="">Selecione um cliente...</option>{% for c in customers %}<option value="{{ c.id }}" {% if selected and selected.customer_id==c.id %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select></label>
+<label>Assunto<input name="title" maxlength="180" required value="{{ selected.title if selected else '' }}" placeholder="Ex.: Atendimento inicial de homologação"></label>
+<label>Prioridade<select name="priority">{% for v in priorities %}<option value="{{ v }}" {% if selected and selected.priority==v %}selected{% endif %}>{{ v|capitalize }}</option>{% endfor %}</select></label>
+<div class="staging-actions"><button class="button primary" type="submit">Criar no STAGING</button><a class="button secondary" href="/atendimentos">Cancelar</a></div>
+</form></section>
+{% endblock %}

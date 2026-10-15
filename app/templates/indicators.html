@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Indicadores | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header indicators-page-head">
+    <div>
+        <span class="eyebrow">GESTÃO COMERCIAL</span>
+        <h1>Indicadores</h1>
+        <p>Pipeline atual e resultados fechados no período selecionado.</p>
+    </div>
+    <a class="button secondary" href="/atendimentos?view=funil">Abrir funil</a>
+</header>
+
+<form class="indicator-filters" method="get" action="/indicadores">
+    <label>De<input type="date" name="inicio" value="{{ indicators.period_start }}"></label>
+    <label>Até<input type="date" name="fim" value="{{ indicators.period_end }}"></label>
+    <label>Funil<select name="funil"><option value="">Todos</option>{% for funnel in indicators.funnels %}<option value="{{ funnel.id }}" {% if indicators.selected_funnel_id == funnel.id %}selected{% endif %}>{{ funnel.name }}</option>{% endfor %}</select></label>
+    <label>Responsável<select name="responsavel"><option value="">Todos</option>{% for responsible in indicators.responsibles %}<option value="{{ responsible.id }}" {% if indicators.selected_assigned_user_id == responsible.id %}selected{% endif %}>{{ responsible.name }}</option>{% endfor %}</select></label>
+    <button class="button secondary" type="submit">Aplicar</button>
+    <a class="button secondary" href="/indicadores">Últimos 30 dias</a>
+</form>
+
+<section class="indicator-note">
+    <strong>Regra de leitura:</strong> pipeline usa oportunidades abertas no estado atual. Receita, conversão e ticket médio usam apenas negócios fechados como <b>ganhos</b> no período. Oportunidade aberta não é venda.
+</section>
+
+<section class="metrics-grid commercial-indicator-cards">
+    <article class="metric-card emphasis"><span>Pipeline atual</span><strong class="money-metric">{{ indicators.pipeline_value_label }}</strong><small>{{ indicators.pipeline_count }} oportunidade(s) aberta(s)</small></article>
+    <article class="metric-card"><span>Ganhos no período</span><strong class="money-metric">{{ indicators.won_value_label }}</strong><small>{{ indicators.won_count }} negócio(s) ganho(s)</small></article>
+    <article class="metric-card"><span>Perdidos no período</span><strong>{{ indicators.lost_count }}</strong><small>{{ indicators.closed_count }} fechamento(s) analisado(s)</small></article>
+    <article class="metric-card"><span>Conversão</span><strong>{{ indicators.conversion_label }}</strong><small>ganhos ÷ ganhos + perdas</small></article>
+    <article class="metric-card"><span>Ticket médio ganho</span><strong class="money-metric">{{ indicators.avg_ticket_label }}</strong><small>somente vendas ganhas</small></article>
+</section>
+
+<div class="indicator-grid-two">
+    <section class="panel indicator-panel">
+        <div class="panel-header"><div><h2>Pipeline por etapa</h2><p>Distribuição atual das oportunidades abertas.</p></div><small>{{ indicators.period_label }}</small></div>
+        <div class="indicator-list">
+            {% for row in indicators.stage_rows %}
+            <div class="indicator-row">
+                <div class="indicator-row-main">
+                    <span class="indicator-stage-dot" style="background:{{ row.stage_color }}"></span>
+                    <div><strong>{{ row.stage_name }}</strong><small>{{ row.funnel_name }} · {{ row.count }} oportunidade(s)</small></div>
+                </div>
+                <div class="indicator-row-value"><strong>{{ row.value_label }}</strong><div class="indicator-bar"><i style="width:{{ row.bar_percent }}%;background:{{ row.stage_color }}"></i></div></div>
+            </div>
+            {% else %}<div class="empty compact">Nenhuma etapa encontrada.</div>{% endfor %}
+        </div>
+    </section>
+
+    <section class="panel indicator-panel">
+        <div class="panel-header"><div><h2>Motivos de perda</h2><p>Negócios perdidos dentro do período.</p></div></div>
+        <div class="indicator-list">
+            {% for reason in indicators.loss_reasons %}
+            <div class="indicator-row loss-row">
+                <div class="indicator-row-main"><div><strong>{{ reason.name }}</strong><small>{{ reason.count }} perda(s)</small></div></div>
+                <div class="indicator-row-value reason-value"><div class="indicator-bar"><i style="width:{{ reason.bar_percent }}%"></i></div></div>
+            </div>
+            {% else %}<div class="empty compact">Nenhuma perda registrada no período.</div>{% endfor %}
+        </div>
+    </section>
+</div>
+
+<section class="panel indicator-performance-panel">
+    <div class="panel-header"><div><h2>Resultado por responsável</h2><p>Pipeline atual e fechamentos dentro do período.</p></div></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Responsável</th><th>Pipeline</th><th>Ganhos</th><th>Perdas</th><th>Conversão</th></tr></thead>
+            <tbody>
+                {% for row in indicators.performance %}
+                <tr>
+                    <td><strong>{{ row.name }}</strong><small>{{ row.open_count }} oportunidade(s) aberta(s)</small></td>
+                    <td><strong>{{ row.pipeline_label }}</strong></td>
+                    <td><strong>{{ row.won_value_label }}</strong><small>{{ row.won_count }} ganho(s)</small></td>
+                    <td>{{ row.lost_count }}</td>
+                    <td><strong>{{ row.conversion_label }}</strong></td>
+                </tr>
+                {% else %}<tr><td colspan="5"><div class="empty compact">Sem responsáveis para exibir.</div></td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

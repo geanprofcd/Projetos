@@ -1,0 +1,5 @@
+/* VENDRA 0.0.16 — sincronização automática do funil */
+.kanban-live-row{display:flex;justify-content:flex-end;margin:0 0 10px}
+.kanban-card.is-live-updated{animation:kanbanLiveFlash 1.6s ease}
+@keyframes kanbanLiveFlash{0%{box-shadow:0 0 0 3px rgba(37,99,235,.22);transform:translateY(-2px)}55%{box-shadow:0 0 0 2px rgba(37,99,235,.10)}100%{box-shadow:none;transform:none}}
+@media(max-width:760px){.kanban-live-row{justify-content:flex-start}.kanban-live-row .live-label{display:inline}}

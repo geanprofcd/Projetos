@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Clientes | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div><span class="eyebrow">CADASTRO</span><h1>Clientes</h1><p>Cadastros, contatos e histórico de atendimentos em um único lugar.</p></div>
+    <a class="button primary" href="/clientes/novo">Novo cliente</a>
+</header>
+
+<form class="filters" method="get" action="/clientes">
+    <input type="search" name="q" value="{{ query }}" placeholder="Buscar por nome, telefone, e-mail, documento ou empresa...">
+    <button class="button secondary" type="submit">Buscar</button>
+    {% if query %}<a class="button secondary" href="/clientes">Limpar</a>{% endif %}
+</form>
+
+<section class="panel">
+<div class="table-wrap">
+<table>
+<thead><tr><th>Cliente</th><th>Contato</th><th>Status</th><th></th></tr></thead>
+<tbody>
+{% for customer in customers %}
+<tr onclick="window.location='/clientes/{{ customer.id }}'">
+    <td><strong>{{ customer.name }}</strong><small>{{ customer.company_name or customer.document or 'Cliente' }}</small></td>
+    <td>{{ customer.phone or '—' }}<small>{{ customer.email or '' }}</small></td>
+    
+    <td><span class="status {% if customer.status == 'active' %}status-em_atendimento{% else %}status-cancelado{% endif %}">{{ 'ativo' if customer.status == 'active' else 'inativo' }}</span></td>
+    <td><a class="table-link" href="/clientes/{{ customer.id }}">Abrir</a></td>
+</tr>
+{% else %}
+<tr><td colspan="4"><div class="empty">Nenhum cliente encontrado.</div></td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+/* Isolado no ambiente H1-005B3; não altera a interface de produção. */
+.staging-form{max-width:740px;padding:clamp(1rem,3vw,1.75rem)}
+.staging-form form{display:grid;gap:1.1rem}
+.staging-form label{display:grid;gap:.35rem;font-weight:600}
+.staging-form input,.staging-form select,.staging-form textarea{width:100%;min-width:0;max-width:100%;padding:.8rem;border:1px solid #cfd6e5;border-radius:10px;font:inherit}
+.staging-form textarea{resize:vertical}
+.staging-actions{display:flex;flex-wrap:wrap;gap:.75rem}
+.staging-table-wrap{overflow-x:auto}
+.staging-table{width:100%;border-collapse:collapse;text-align:left;min-width:520px}
+.staging-table th,.staging-table td{padding:.85rem;border-bottom:1px solid #e4e8f0}
+.staging-table th{font-size:.85rem;color:#506078}
+.staging-notes{display:grid;gap:.75rem;margin:1rem 0 1.3rem}
+.staging-note{padding:1rem;border:1px solid #e4e8f0;border-radius:12px;background:#f7f9ff;overflow-wrap:anywhere}
+.staging-note p{white-space:pre-wrap;margin:.5rem 0 0}
+@media(max-width:640px){.staging-table{min-width:480px}.staging-form{max-width:100%}.staging-actions>*{width:100%;text-align:center}}

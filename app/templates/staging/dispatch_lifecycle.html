@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Ciclo de Disparos Simulados | VENDRA STAGING{% endblock %}
+{% block content %}
+<section class="vendra-staging-dispatch vendra-dispatch-life">
+  <header>
+    <p class="overline">H1-005B6 · somente homologação</p>
+    <h1>Disparos · Ciclo simulado</h1>
+    <p>Teste duplicidade, sucesso, falha e nova tentativa. <strong>Nenhum WhatsApp é enviado, nenhuma mensagem é enfileirada.</strong></p>
+    <a class="vendra-life-link" href="/disparos">← Voltar à prévia H1-005B5</a>
+    <a class="vendra-life-link" href="/disparos/prontidao" style="margin-left:12px">Ver prontidão H1-005B7 →</a>
+  </header>
+  {% if error %}<div class="vendra-staging-dispatch-error" role="alert">{{ error }}</div>{% endif %}
+  <form method="post" action="/disparos/simulacoes/preparar" class="vendra-staging-dispatch-form">
+    <h2>Preparar solicitação de teste</h2>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label for="simulation-opp">Oportunidade aberta</label>
+    <select id="simulation-opp" name="opportunity_id" required>
+      <option value="">Escolha uma oportunidade</option>
+      {% for op in candidates %}<option value="{{ op.id }}" {% if selected == op.id %}selected{% endif %}>{{ op.title }} · {{ op.customer_name }}</option>{% endfor %}
+    </select>
+    <label for="simulation-content">Mensagem usada somente na simulação</label>
+    <textarea id="simulation-content" name="content" maxlength="1024" rows="4" required placeholder="Olá, {{ '{{nome}}' }}!">{{ content or '' }}</textarea>
+    <p>Mesmo texto + mesma oportunidade = uma solicitação, sem duplicidade. O conteúdo e o número não são armazenados nesta tabela.</p>
+    <button type="submit">Preparar simulação — sem envio</button>
+  </form>
+  {% if result %}
+    <div class="vendra-staging-dispatch-result" role="status">
+      <h2>Solicitação de teste preparada</h2>
+      <p><strong>Oportunidade:</strong> {{ result.title }}</p>
+      <p><strong>Telefone mascarado:</strong> {{ result.phone_masked }}</p>
+      <div class="vendra-staging-dispatch-message">{{ result.message }}</div>
+      <p><strong>Nenhum envio externo.</strong> Solicitação: <code>{{ result.id }}</code></p>
+    </div>
+  {% endif %}
+  <div class="vendra-life-register">
+    <h2>Simulações registradas</h2>
+    {% if not simulations %}<p>Nenhuma simulação preparada ainda.</p>{% endif %}
+    {% for item in simulations %}
+    <article class="vendra-life-item">
+      <div class="vendra-life-item-title">
+        <strong>{{ item.title }}</strong>
+        <span class="vendra-life-state">{{ item.state_label }}</span>
+      </div>
+      <p>Tentativas simuladas: <strong>{{ item.attempt_count }}</strong> · Versão: <strong>{{ item.lock_version }}</strong></p>
+      <div class="vendra-life-actions">
+        {% if item.state == 'prepared' %}
+          {% for action,label in [('simulate_success','Simular sucesso'),('simulate_failure','Simular falha'),('cancel','Cancelar')] %}
+          <form method="post" action="/disparos/simulacoes/{{ item.id }}/estado">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="lock_version" value="{{ item.lock_version }}">
+            <input type="hidden" name="action" value="{{ action }}"><button type="submit">{{ label }}</button>
+          </form>
+          {% endfor %}
+        {% elif item.state == 'failed' %}
+          {% for action,label in [('retry','Preparar nova tentativa'),('cancel','Cancelar')] %}
+          <form method="post" action="/disparos/simulacoes/{{ item.id }}/estado">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="lock_version" value="{{ item.lock_version }}">
+            <input type="hidden" name="action" value="{{ action }}"><button type="submit">{{ label }}</button>
+          </form>
+          {% endfor %}
+        {% else %}<p>Estado final para esta solicitação de teste.</p>{% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

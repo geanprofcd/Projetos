@@ -1,0 +1,497 @@
+{% extends "base.html" %}
+{% block title %}Configurações | VENDRA
+<script>
+document.querySelectorAll('[data-route-funnel]').forEach(function(funnelSelect){
+    var code = funnelSelect.getAttribute('data-route-funnel');
+    var stageSelect = document.querySelector('[data-route-stage="' + code + '"]');
+    if (!stageSelect) return;
+    function syncStages(){
+        var funnelId = funnelSelect.value;
+        var current = stageSelect.value;
+        var currentVisible = false;
+        Array.from(stageSelect.options).forEach(function(option, index){
+            if (index === 0) return;
+            var matches = !!funnelId && option.getAttribute('data-funnel-id') === funnelId;
+            option.hidden = !matches;
+            option.disabled = !matches;
+            if (matches && option.value === current) currentVisible = true;
+        });
+        if (!currentVisible) stageSelect.value = '';
+        stageSelect.disabled = !funnelId;
+    }
+    funnelSelect.addEventListener('change', syncStages);
+    syncStages();
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="settings-page">
+<header class="page-header settings-header">
+    <div>
+        <span class="eyebrow">ADMINISTRAÇÃO</span>
+        <h1>Configurações</h1>
+        <p>Centralize o número do WhatsApp e os webhooks usados para conectar o VENDRA aos serviços externos.</p>
+    </div>
+    <div class="header-actions"><a class="button secondary" href="/configuracoes/funis">Funis de vendas</a><a class="button secondary" href="/integracoes">Ver monitoramento</a></div>
+</header>
+
+{% if error %}<div class="alert error settings-alert" role="alert"><strong>Não foi possível salvar.</strong><span>{{ error }}</span></div>{% endif %}
+{% if success %}<div class="alert success settings-alert" role="status"><strong>Concluído.</strong><span>{{ success }}</span></div>{% endif %}
+
+{% if local_test_mode and local_config %}
+<section class="panel security-panel" id="config-local" style="margin-bottom: 18px;">
+    <div class="panel-header">
+        <div>
+            <span class="eyebrow">MODO DE TESTE LOCAL</span>
+            <h2>Credenciais persistentes desta máquina</h2>
+            <p>Ao iniciar qualquer cópia desta versão no mesmo usuário do Windows, o VENDRA carrega este arquivo automaticamente. Ele não fica dentro do ZIP.</p>
+        </div>
+    </div>
+    <div class="security-grid">
+        <div><strong>Arquivo local</strong><p><code>{{ local_config.path }}</code></p></div>
+        <div><strong>Administrador de teste</strong><p><code>{{ local_config.admin_email }}</code> / <code>{{ local_config.admin_password }}</code></p></div>
+        <div><strong>WhatsApp e webhooks</strong><p>Número, IDs, webhooks, segredos e a URL do webhook instantâneo do Make são gravados neste arquivo e permanecem após fechar/reabrir ou extrair uma nova cópia nesta máquina.</p></div>
+        <div><strong>Uso temporário</strong><p>Este comportamento é proposital para homologação. Antes do ambiente dedicado/produção, os segredos deverão voltar para secret store/variáveis seguras e o Supabase real.</p></div>
+    </div>
+</section>
+{% endif %}
+
+{% if new_webhook and new_webhook_secret %}
+<section id="credencial-webhook" class="credential-reveal" aria-live="polite">
+    <div class="credential-icon">✓</div>
+    <div class="credential-main">
+        <span class="eyebrow">CREDENCIAL GERADA</span>
+        <h2>{{ new_webhook.name }}</h2>
+        <p>{% if local_test_mode %}Copie a URL e o segredo para o Make. Nesta versão de teste, o segredo também fica salvo no arquivo local da máquina e poderá ser consultado novamente em Configurações. Antes da produção, esse comportamento deverá ser desativado.{% else %}Copie a URL e o segredo agora. Por segurança, somente o hash é persistido e depois ele não poderá ser recuperado sem rotação.{% endif %}{% if new_webhook.kind == 'whatsapp_text' %} Este mesmo segredo também autentica a fila de saída e os callbacks do bridge Make ↔ VENDRA.{% endif %}</p>
+        <div class="credential-grid">
+            <div><label>URL do webhook (JSON)</label><code>{{ base_url }}/webhooks/configurados/{{ new_webhook.public_id }}</code></div>
+            <div><label>Header de autenticação</label><code>X-Vendra-Webhook-Secret</code></div>
+            {% if new_webhook.kind == 'whatsapp_text' %}<div><label>URL para mídia</label><code>{{ base_url }}/webhooks/configurados/{{ new_webhook.public_id }}/media</code></div>{% endif %}
+            <div class="credential-secret"><label>Segredo</label><code>{{ new_webhook_secret }}</code></div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<div class="settings-layout">
+    <nav class="settings-nav" aria-label="Seções de configuração">
+        <a href="#provedores"><span>1</span><div><strong>Provedores</strong><small>Cadastro e acesso oficial</small></div></a>
+        <a href="#whatsapp"><span>2</span><div><strong>WhatsApp</strong><small>Número vinculado ao canal</small></div></a>
+        <a href="#make-outbox"><span>3</span><div><strong>Saída instantânea</strong><small>Webhook do Make para acordar a outbox</small></div></a>
+        <a href="#ia"><span>4</span><div><strong>IA de atendimento</strong><small>Automação e handoff humano</small></div></a>
+        <a href="#ai-routing"><span>5</span><div><strong>Roteamento da IA</strong><small>#1, #2 e #3 para o funil</small></div></a>
+        <a href="#dispatches"><span>6</span><div><strong>Disparos</strong><small>Mensagem pré-configurada via Make</small></div></a>
+        <a href="#webhooks"><span>7</span><div><strong>Webhooks</strong><small>Entradas seguras do sistema</small></div></a>
+        <a href="#seguranca"><span>8</span><div><strong>Segurança</strong><small>Regras e compatibilidade</small></div></a>
+    </nav>
+
+    <div class="settings-content">
+        <section class="form-card provider-onboarding" id="provedores">
+            <div class="form-section-heading settings-section-heading">
+                <div class="form-section-number">1</div>
+                <div>
+                    <h2>Escolha e acesse o provedor</h2>
+                    <p>O VENDRA reúne atalhos oficiais e um roteiro por provedor. Cadastro e login acontecem no site oficial; senhas e tokens nunca passam pelo VENDRA.</p>
+                </div>
+                <span class="config-count">{{ provider_catalog|length }} opções</span>
+            </div>
+            <div class="provider-grid">
+                {% for item in provider_catalog %}
+                <article class="provider-card {% if item.key == (whatsapp.provider_key or 'meta_cloud') %}is-selected{% endif %}" data-provider-card="{{ item.key }}">
+                    <div class="provider-card-head">
+                        <div>
+                            <span class="provider-mode">{{ item.mode }}</span>
+                            <h3>{{ item.name }}</h3>
+                        </div>
+                        {% if item.recommended %}<span class="provider-badge">Direto</span>{% endif %}
+                    </div>
+                    <p>{{ item.description }}</p>
+                    <div class="provider-actions">
+                        {% if item.signup_url %}<a class="button primary mini" href="{{ item.signup_url }}" target="_blank" rel="noopener noreferrer">{{ item.signup_label }}</a>{% endif %}
+                        {% if item.login_url and item.login_url != item.signup_url %}<a class="button secondary mini" href="{{ item.login_url }}" target="_blank" rel="noopener noreferrer">{{ item.login_label }}</a>{% elif item.login_url %}<a class="button secondary mini" href="{{ item.login_url }}" target="_blank" rel="noopener noreferrer">{{ item.login_label }}</a>{% endif %}
+                        {% if item.docs_url %}<a class="button secondary mini" href="{{ item.docs_url }}" target="_blank" rel="noopener noreferrer">{{ item.docs_label }}</a>{% endif %}
+                    </div>
+                    <details class="provider-steps">
+                        <summary>Ver configuração mais fácil</summary>
+                        <ol>{% for step in item.steps %}<li>{{ step }}</li>{% endfor %}</ol>
+                        <p><strong>Make:</strong> {{ item.make_hint }}</p>
+                    </details>
+                    <button class="button provider-select" type="button" data-select-provider="{{ item.key }}">Usar este provedor</button>
+                </article>
+                {% endfor %}
+            </div>
+            <div class="provider-safety-note">
+                <strong>Login seguro:</strong> os botões abrem o domínio oficial em outra aba. O VENDRA não pede nem armazena senha, Auth Token, API Key ou access token do provedor. Segredos devem ficar no Make ou em um secret store apropriado.
+            </div>
+        </section>
+        <section class="form-card" id="whatsapp">
+            <div class="form-section-heading settings-section-heading">
+                <div class="form-section-number">2</div>
+                <div>
+                    <h2>Canal do WhatsApp</h2>
+                    <p>Defina qual número representa o VENDRA. Essa identificação acompanha a integração e fica disponível ao worker Make na fila de saída.</p>
+                </div>
+                <span class="config-state {{ 'is-on' if whatsapp.enabled else 'is-off' }}">{{ 'Ativo' if whatsapp.enabled else 'Inativo' }}</span>
+            </div>
+            <form method="post" action="/configuracoes/whatsapp" class="registration-form settings-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-fields">
+                    <div class="field field-full toggle-field">
+                        <label class="toggle-row" for="wa-enabled">
+                            <input id="wa-enabled" type="checkbox" name="enabled" {% if whatsapp.enabled %}checked{% endif %}>
+                            <span class="toggle-control" aria-hidden="true"></span>
+                            <span><strong>Canal habilitado</strong><small>Ative somente quando o número abaixo estiver pronto para operar com o cenário de integração.</small></span>
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label for="wa-number">Número do WhatsApp <span class="required">*</span></label>
+                        <input id="wa-number" name="display_phone_number" value="{{ whatsapp.display_phone_number or '' }}" inputmode="tel" autocomplete="off" placeholder="+55 65 99999-9999">
+                        <small>Informe DDI, DDD e número. Ex.: +55 65 99999-9999.</small>
+                    </div>
+                    <div class="field">
+                        <label for="wa-provider-key">Provedor / conector</label>
+                        <select id="wa-provider-key" name="provider_key">
+                            {% for item in provider_catalog %}<option value="{{ item.key }}" {% if item.key == (whatsapp.provider_key or 'meta_cloud') %}selected{% endif %}>{{ item.name }}</option>{% endfor %}
+                        </select>
+                        <input id="wa-provider" type="hidden" name="provider" value="{{ whatsapp.provider or 'Meta WhatsApp Cloud API' }}">
+                        <small id="wa-provider-help">Selecione o provedor. Os rótulos abaixo se adaptam ao conector escolhido.</small>
+                    </div>
+                    <div class="field">
+                        <label for="wa-phone-id" id="wa-phone-id-label">ID externo do número</label>
+                        <input id="wa-phone-id" name="phone_number_id" value="{{ whatsapp.phone_number_id or '' }}" maxlength="160" autocomplete="off" placeholder="Ex.: Phone Number ID do provedor">
+                        <small>Opcional. Útil para o Make distinguir o número remetente sem deixar IDs espalhados pelos cenários.</small>
+                    </div>
+                    <div class="field">
+                        <label for="wa-business-id" id="wa-business-id-label">ID da conta comercial</label>
+                        <input id="wa-business-id" name="business_account_id" value="{{ whatsapp.business_account_id or '' }}" maxlength="160" autocomplete="off" placeholder="Ex.: WhatsApp Business Account ID">
+                        <small>Opcional. Mantém a identidade da conta centralizada no VENDRA.</small>
+                    </div>
+                    <div class="field field-full">
+                        <label for="wa-notes">Observações administrativas</label>
+                        <textarea id="wa-notes" name="notes" rows="3" maxlength="1000" placeholder="Ex.: número de homologação, responsável pelo provedor, ambiente...">{{ whatsapp.notes or '' }}</textarea>
+                        <small>Não armazene senhas, tokens ou chaves nesta observação.</small>
+                    </div>
+                </div>
+                <footer class="form-submit-bar settings-submit">
+                    <div><strong>Configuração central do canal</strong><span>Os dados ficam restritos ao backend e à área administrativa.</span></div>
+                    <div class="form-actions"><button class="button primary" type="submit">Salvar WhatsApp</button></div>
+                </footer>
+            </form>
+        </section>
+
+        <section class="form-card" id="make-outbox">
+            <div class="form-section-heading settings-section-heading">
+                <div class="form-section-number">3</div>
+                <div>
+                    <h2>Saída instantânea pelo Make</h2>
+                    <p>Quando o operador envia uma resposta, o VENDRA grava primeiro na outbox e em seguida chama um Custom Webhook do Make. O polling continua disponível somente como contingência.</p>
+                </div>
+                <span class="config-state {{ 'is-on' if make_outbox.enabled else 'is-off' }}">{{ 'Ativo' if make_outbox.enabled else 'Inativo' }}</span>
+            </div>
+            <form method="post" action="/configuracoes/make-outbox" class="registration-form settings-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-fields">
+                    <div class="field field-full toggle-field">
+                        <label class="toggle-row" for="make-outbox-enabled">
+                            <input id="make-outbox-enabled" type="checkbox" name="enabled" {% if make_outbox.enabled %}checked{% endif %}>
+                            <span class="toggle-control" aria-hidden="true"></span>
+                            <span><strong>Disparo instantâneo habilitado</strong><small>A outbox continua sendo a fonte de verdade. Se o webhook falhar, a mensagem permanece pendente para reprocessamento.</small></span>
+                        </label>
+                    </div>
+                    <div class="field field-full">
+                        <label for="make-outbox-url">URL do Custom Webhook do Make</label>
+                        <input id="make-outbox-url" name="wake_url" value="{{ make_outbox.wake_url or '' }}" autocomplete="off" placeholder="https://hook.us2.make.com/xxxxxxxx">
+                        <small>Use a URL gerada pelo primeiro módulo <strong>Webhooks &gt; Custom webhook</strong> do cenário de saída. No modo de teste ela fica salva apenas no arquivo local desta máquina.</small>
+                    </div>
+                </div>
+                <footer class="form-submit-bar settings-submit">
+                    <div><strong>Evento imediato + fila durável</strong><span>O VENDRA envia apenas um aviso com o ID da outbox; o Make continua reclamando a mensagem pelo endpoint seguro da fila.</span></div>
+                    <div class="form-actions"><button class="button primary" type="submit">Salvar saída instantânea</button></div>
+                </footer>
+            </form>
+            {% if make_outbox.enabled and make_outbox.wake_url %}
+            <form method="post" action="/configuracoes/make-outbox/testar" style="margin-top: 12px;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="button secondary" type="submit">Testar webhook do Make</button>
+                <small style="margin-left: 8px;">Envia o evento <code>whatsapp_outbox.probe</code>; não cria mensagem nem altera a fila.</small>
+            </form>
+            {% endif %}
+        </section>
+
+        <section class="form-card" id="ia">
+            <div class="form-section-heading settings-section-heading">
+                <div class="form-section-number">4</div>
+                <div>
+                    <h2>IA de atendimento e handoff humano</h2>
+                    <p>O VENDRA decide se a IA pode responder cada atendimento. O Make recebe essa decisão junto com a mensagem e só chama a IA quando <code>should_respond=true</code>.</p>
+                </div>
+                <span class="config-state {{ 'is-on' if ai_automation.enabled else 'is-off' }}">{{ 'Ativa' if ai_automation.enabled else 'Inativa' }}</span>
+            </div>
+            <form method="post" action="/configuracoes/ia" class="registration-form settings-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-fields">
+                    <div class="field field-full toggle-field">
+                        <label class="toggle-row" for="ai-enabled">
+                            <input id="ai-enabled" type="checkbox" name="enabled" {% if ai_automation.enabled %}checked{% endif %}>
+                            <span class="toggle-control" aria-hidden="true"></span>
+                            <span><strong>Permitir IA nos atendimentos de WhatsApp</strong><small>Quando desativado, o VENDRA sempre responde ao Make que o atendimento deve permanecer humano.</small></span>
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label for="ai-name">Nome exibido da IA</label>
+                        <input id="ai-name" name="assistant_name" maxlength="120" value="{{ ai_automation.assistant_name or 'Assistente de IA' }}" placeholder="Assistente de IA">
+                        <small>Este nome aparece como autor das respostas registradas no VENDRA.</small>
+                    </div>
+                    <div class="field">
+                        <label for="ai-default">Modo padrão de novos atendimentos</label>
+                        <select id="ai-default" name="default_mode">
+                            <option value="ai" {% if ai_automation.default_mode == 'ai' %}selected{% endif %}>IA ativa</option>
+                            <option value="human" {% if ai_automation.default_mode == 'human' %}selected{% endif %}>Atendimento humano</option>
+                        </select>
+                        <small>O atendente pode assumir ou reativar a IA a qualquer momento dentro do atendimento.</small>
+                    </div>
+                    <div class="field field-full toggle-field">
+                        <label class="toggle-row" for="ai-control-enabled">
+                            <input id="ai-control-enabled" type="checkbox" name="control_webhook_enabled" {% if ai_automation.control_webhook_enabled %}checked{% endif %}>
+                            <span class="toggle-control" aria-hidden="true"></span>
+                            <span><strong>Avisar o Make quando o controle mudar</strong><small>Opcional. O VENDRA continua sendo a fonte de verdade mesmo sem esse aviso.</small></span>
+                        </label>
+                    </div>
+                    <div class="field field-full">
+                        <label for="ai-control-url">Webhook de controle do Make</label>
+                        <input id="ai-control-url" name="control_webhook_url" value="{{ ai_automation.control_webhook_url or '' }}" autocomplete="off" placeholder="https://hook.us2.make.com/xxxxxxxx">
+                        <small>Recebe eventos <code>ai.control.changed</code> quando um atendente assume ou devolve a conversa para a IA.</small>
+                    </div>
+                </div>
+                <footer class="form-submit-bar settings-submit">
+                    <div><strong>VENDRA como árbitro</strong><span>Respostas da IA retornam ao VENDRA antes do Meta. Se o humano assumir durante o processamento, a resposta atrasada da IA é suprimida por versão de controle.</span></div>
+                    <div class="form-actions"><button class="button primary" type="submit">Salvar IA</button></div>
+                </footer>
+            </form>
+        </section>
+
+        <section class="form-card" id="ai-routing">
+            <div class="form-section-heading settings-section-heading">
+                <div class="form-section-number">5</div>
+                <div>
+                    <h2>Roteamento comercial da IA</h2>
+                    <p>Transforme os códigos #1, #2 e #3 produzidos pelo Make AI Agent em movimentações reais no funil do VENDRA.</p>
+                </div>
+                <span class="config-state {{ 'is-on' if ai_routing.enabled else 'is-off' }}">{{ 'Ativo' if ai_routing.enabled else 'Inativo' }}</span>
+            </div>
+            <form method="post" action="/configuracoes/ia-roteamento" class="registration-form settings-form" data-ai-routing-form>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-fields">
+                    <div class="field field-full toggle-field">
+                        <label class="toggle-row" for="ai-routing-enabled">
+                            <input id="ai-routing-enabled" type="checkbox" name="enabled" {% if ai_routing.enabled %}checked{% endif %}>
+                            <span class="toggle-control" aria-hidden="true"></span>
+                            <span><strong>Permitir que a IA mova leads no funil</strong><small>Somente respostas autorizadas pela versão de controle do atendimento podem aplicar uma rota.</small></span>
+                        </label>
+                    </div>
+                    {% for code in ['1','2','3'] %}
+                    {% set current = ai_routing.routes.get(code, {}) %}
+                    <div class="field">
+                        <label for="route-{{ code }}-funnel">Quando a IA retornar #{{ code }} — Funil</label>
+                        <select id="route-{{ code }}-funnel" name="route_{{ code }}_funnel_id" data-route-funnel="{{ code }}">
+                            <option value="">Não mover automaticamente</option>
+                            {% for funnel in routing_funnels %}
+                            <option value="{{ funnel.id }}" {% if current.funnel_id == funnel.id %}selected{% endif %}>{{ funnel.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="route-{{ code }}-stage">Etapa de destino</label>
+                        <select id="route-{{ code }}-stage" name="route_{{ code }}_stage_id" data-route-stage="{{ code }}">
+                            <option value="">Selecione a etapa</option>
+                            {% for funnel in routing_funnels %}
+                                {% for stage in funnel.stages if stage.is_active %}
+                                <option value="{{ stage.id }}" data-funnel-id="{{ funnel.id }}" {% if current.stage_id == stage.id %}selected{% endif %}>{{ funnel.name }} — {{ stage.name }}</option>
+                                {% endfor %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endfor %}
+                </div>
+                <footer class="form-submit-bar settings-submit">
+                    <div><strong>Fonte de verdade comercial</strong><span>Se ainda não existir oportunidade aberta no atendimento, o VENDRA cria uma. Se existir, move a mesma oportunidade para a etapa configurada.</span></div>
+                    <div class="form-actions"><button class="button primary" type="submit">Salvar roteamento</button></div>
+                </footer>
+            </form>
+        </section>
+
+        <section class="form-card" id="dispatches">
+            <div class="form-section-heading settings-section-heading">
+                <div class="form-section-number">6</div>
+                <div>
+                    <h2>Disparos pelo Make / Meta</h2>
+                    <p>Configure o webhook que recebe Nome e Telefone da aba Disparos. O texto/template continua pré-configurado no cenário do Make.</p>
+                </div>
+                <span class="config-state {{ 'is-on' if dispatch_settings.enabled else 'is-off' }}">{{ 'Ativo' if dispatch_settings.enabled else 'Inativo' }}</span>
+            </div>
+            <form method="post" action="/configuracoes/disparos" class="registration-form settings-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-fields">
+                    <div class="field field-full toggle-field">
+                        <label class="toggle-row" for="dispatch-enabled">
+                            <input id="dispatch-enabled" type="checkbox" name="enabled" {% if dispatch_settings.enabled %}checked{% endif %}>
+                            <span class="toggle-control" aria-hidden="true"></span>
+                            <span><strong>Habilitar aba Disparos</strong><small>Ative somente depois de configurar e testar o cenário correspondente no Make.</small></span>
+                        </label>
+                    </div>
+                    <div class="field field-full">
+                        <label for="dispatch-url">URL do Custom Webhook do Make</label>
+                        <input id="dispatch-url" name="webhook_url" value="{{ dispatch_settings.webhook_url or '' }}" autocomplete="off" placeholder="https://hook.us2.make.com/xxxxxxxx">
+                        <small>O VENDRA persiste a solicitação antes de chamar o Make e envia um <code>idempotency_key</code> para evitar duplicidade no cenário.</small>
+                    </div>
+                    <div class="field field-full">
+                        <label for="dispatch-template">Identificador opcional da mensagem/template</label>
+                        <input id="dispatch-template" name="template_key" maxlength="120" value="{{ dispatch_settings.template_key or '' }}" placeholder="Ex.: prospeccao_inicial">
+                        <small>Serve apenas como referência para o Make. O conteúdo da mensagem não fica configurado nesta tela.</small>
+                    </div>
+                </div>
+                <footer class="form-submit-bar settings-submit">
+                    <div><strong>Payload mínimo</strong><span>Nome, telefone, cliente, identificador do template e chave de idempotência. O Make continua responsável pelo envio no Meta.</span></div>
+                    <div class="form-actions"><button class="button primary" type="submit">Salvar Disparos</button></div>
+                </footer>
+            </form>
+        </section>
+
+        <section class="form-card" id="webhooks">
+            <div class="form-section-heading settings-section-heading">
+                <div class="form-section-number">7</div>
+                <div>
+                    <h2>Webhooks do VENDRA</h2>
+                    <p>Crie endpoints individuais, com segredo próprio, sem editar arquivo <code>.env</code> para cada nova integração.</p>
+                </div>
+                <span class="config-count">{{ webhooks|length }} cadastrado{{ '' if webhooks|length == 1 else 's' }}</span>
+            </div>
+
+            <form method="post" action="/configuracoes/webhooks" class="webhook-create-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-fields">
+                    <div class="field">
+                        <label for="webhook-name">Nome do webhook <span class="required">*</span></label>
+                        <input id="webhook-name" name="name" required maxlength="120" placeholder="Ex.: Make — WhatsApp Produção">
+                        <small>Use um nome que identifique origem e ambiente.</small>
+                    </div>
+                    <div class="field">
+                        <label for="webhook-kind">Finalidade <span class="required">*</span></label>
+                        <select id="webhook-kind" name="kind" required>
+                            {% for value, label in webhook_kinds.items() %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+                        </select>
+                        <small>O tipo WhatsApp cria/atualiza atendimento; o genérico registra o evento para rastreabilidade.</small>
+                    </div>
+                    <div class="field field-full webhook-create-action">
+                        <button class="button primary" type="submit">+ Criar webhook seguro</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="configured-webhooks">
+                {% for hook in webhooks %}
+                <article class="webhook-card">
+                    <div class="webhook-card-main">
+                        <div class="webhook-title-line">
+                            <span class="webhook-dot {{ 'is-on' if hook.active else 'is-off' }}"></span>
+                            <div><strong>{{ hook.name }}</strong><small>{{ hook.kind_label }}</small></div>
+                        </div>
+                        <div class="webhook-url"><code>{{ base_url }}/webhooks/configurados/{{ hook.public_id }}</code>{% if hook.kind == 'whatsapp_text' %}<small>Mídia: {{ base_url }}/webhooks/configurados/{{ hook.public_id }}/media</small>{% endif %}</div>
+                        <div class="webhook-meta">
+                            <span>{{ 'Ativo' if hook.active else 'Desativado' }}</span>
+                            <span>Último uso: {{ hook.last_used_at|datetime_br if hook.last_used_at else 'ainda não recebido' }}</span>
+                            {% if hook.last_status %}<span>Último resultado: {{ hook.last_status }}</span>{% endif %}
+                        </div>
+                        {% if local_test_mode and hook.local_secret %}
+                        <details class="provider-steps" style="margin-top: 10px;">
+                            <summary>Ver segredo salvo localmente (teste)</summary>
+                            <p><code>{{ hook.local_secret }}</code></p>
+                            <small>Use este valor no header <code>X-Vendra-Webhook-Secret</code> do Make. Não compartilhe este segredo.</small>
+                        </details>
+                        {% endif %}
+                    </div>
+                    <div class="webhook-actions">
+                        <form method="post" action="/configuracoes/webhooks/{{ hook.id }}/alternar">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <input type="hidden" name="active" value="{{ 'false' if hook.active else 'true' }}">
+                            <button class="button secondary mini" type="submit">{{ 'Desativar' if hook.active else 'Ativar' }}</button>
+                        </form>
+                        <form method="post" action="/configuracoes/webhooks/{{ hook.id }}/rotacionar">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <button class="button secondary mini" type="submit">Gerar novo segredo</button>
+                        </form>
+                        <form method="post" action="/configuracoes/webhooks/{{ hook.id }}/excluir" onsubmit="return confirm('Excluir este webhook? Essa URL deixará de funcionar imediatamente.');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <button class="button danger mini" type="submit">Excluir</button>
+                        </form>
+                    </div>
+                </article>
+                {% else %}
+                <div class="empty-settings"><strong>Nenhum webhook criado ainda.</strong><span>Crie o primeiro acima. A URL e o segredo serão gerados automaticamente.</span></div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="panel security-panel" id="seguranca">
+            <div class="panel-header"><div><span class="eyebrow">ETAPA 7</span><h2>Segurança e compatibilidade</h2><p>Como as configurações administrativas funcionam nesta versão.</p></div></div>
+            <div class="security-grid">
+                <div><strong>Acesso administrativo</strong><p>A tela e todas as ações de configuração exigem sessão com perfil <code>administrador</code>; acessar a URL diretamente com outro perfil retorna 403.</p></div>
+                <div><strong>Segredos de webhook</strong><p>{% if local_test_mode %}No modo de teste local, o segredo é salvo no arquivo de credenciais desta máquina e o hash continua sendo usado na validação. Em produção, o segredo em texto puro não deve ser persistido.{% else %}O segredo é mostrado somente na criação ou rotação. O VENDRA persiste apenas SHA-256 e compara em tempo constante.{% endif %}</p></div>
+                <div><strong>Compatibilidade Make</strong><p>Os endpoints antigos em <code>/webhooks/make/whatsapp</code> continuam válidos. Um segredo de webhook WhatsApp criado aqui também autentica outbox/status/anexos do bridge Make, eliminando a necessidade de criar um segredo diferente no arquivo <code>.env</code>.</p></div>
+                <div><strong>Provisionamento externo</strong><p>O número é centralizado aqui, mas cadastro, aprovação e credenciais do WhatsApp Business continuam sendo fornecidos pelo provedor/API oficial.</p></div>
+            </div>
+        </section>
+    </div>
+</div>
+</div>
+<script id="provider-catalog-data" type="application/json">{{ provider_catalog|tojson }}</script>
+<script>
+(function(){
+    const select = document.getElementById('wa-provider-key');
+    const hiddenName = document.getElementById('wa-provider');
+    const phoneLabel = document.getElementById('wa-phone-id-label');
+    const businessLabel = document.getElementById('wa-business-id-label');
+    const cards = Array.from(document.querySelectorAll('[data-provider-card]'));
+    let catalog = [];
+    try { catalog = JSON.parse(document.getElementById('provider-catalog-data').textContent || '[]'); } catch (_) {}
+    const byKey = Object.fromEntries(catalog.map(item => [item.key, item]));
+    function applyProvider(key, scrollToForm){
+        const item = byKey[key] || byKey.generic_bsp;
+        if (!item) return;
+        select.value = item.key;
+        hiddenName.value = item.name;
+        phoneLabel.textContent = item.phone_id_label || 'ID externo do número';
+        businessLabel.textContent = item.business_id_label || 'ID da conta comercial';
+        cards.forEach(card => card.classList.toggle('is-selected', card.dataset.providerCard === item.key));
+        if (scrollToForm) document.getElementById('whatsapp').scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    select.addEventListener('change', () => applyProvider(select.value, false));
+    document.querySelectorAll('[data-select-provider]').forEach(button => button.addEventListener('click', () => applyProvider(button.dataset.selectProvider, true)));
+    applyProvider(select.value || 'meta_cloud', false);
+})();
+</script>
+
+<script>
+document.querySelectorAll('[data-route-funnel]').forEach(function(funnelSelect){
+    var code = funnelSelect.getAttribute('data-route-funnel');
+    var stageSelect = document.querySelector('[data-route-stage="' + code + '"]');
+    if (!stageSelect) return;
+    function syncStages(){
+        var funnelId = funnelSelect.value;
+        var current = stageSelect.value;
+        var currentVisible = false;
+        Array.from(stageSelect.options).forEach(function(option, index){
+            if (index === 0) return;
+            var matches = !!funnelId && option.getAttribute('data-funnel-id') === funnelId;
+            option.hidden = !matches;
+            option.disabled = !matches;
+            if (matches && option.value === current) currentVisible = true;
+        });
+        if (!currentVisible) stageSelect.value = '';
+        stageSelect.disabled = !funnelId;
+    }
+    funnelSelect.addEventListener('change', syncStages);
+    syncStages();
+});
+</script>
+{% endblock %}

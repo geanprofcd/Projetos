@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Minha conta | VENDRA{% endblock %}
+{% block content %}
+<section class="panel access-welcome"><span class="eyebrow">ACESSO INTERNO</span><h1>Olá, {{ user.full_name.split(' ')[0] }}.</h1><p>Sua conta está ativa. Ainda não há módulos liberados para seu perfil.</p><p>Se precisar de acesso, procure o administrador do VENDRA.</p></section>
+{% endblock %}

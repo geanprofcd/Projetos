@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}CRM | VENDRA STAGING{% endblock %}
+{% block content %}
+<header class="page-header"><div><span class="eyebrow">HOMOLOGAÇÃO</span><h1>CRM Comercial</h1><p>Consulta ao Supabase-STAGING. A criação e movimentação de oportunidades aguardam operações transacionais.</p></div></header>
+<section class="panel" style="padding:1.25rem"><h2>Funis</h2><div class="staging-table-wrap"><table class="staging-table"><thead><tr><th>Funil</th><th>Situação</th><th>Etapas</th></tr></thead><tbody>{% for f in funnels %}<tr><td>{{ f.name }}</td><td>{{ 'Ativo' if f.is_active else 'Inativo' }}</td><td>{{ f.stages|length }}</td></tr>{% else %}<tr><td colspan="3">Nenhum funil cadastrado.</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="panel" style="padding:1.25rem; margin-top:1rem"><h2>Oportunidades</h2><div class="staging-table-wrap"><table class="staging-table"><thead><tr><th>Cliente</th><th>Oportunidade</th><th>Funil</th><th>Etapa</th><th>Status</th></tr></thead><tbody>{% for o in opportunities %}<tr><td>{{ o.customer_name }}</td><td>{{ o.title }}</td><td>{{ o.funnel_name }}</td><td>{{ o.stage_name }}</td><td>{{ o.status }}</td></tr>{% else %}<tr><td colspan="5">Nenhuma oportunidade cadastrada.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

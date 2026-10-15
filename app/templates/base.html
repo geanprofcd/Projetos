@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#151b26">
+    <title>{% block title %}VENDRA{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.5.css">
+    <link rel="stylesheet" href="/static/css/indicators-v0.0.6.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.7.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.8.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.9.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.10.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.11.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.12.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.14.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.16.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.18.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.20.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.21.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.22.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.23.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.24.css">
+    <link rel="stylesheet" href="/static/css/vendra-v0.0.25.css">
+    {% if vendra_environment == "staging" %}<link rel="stylesheet" href="/static/css/staging-h1-005b3.css"><link rel="stylesheet" href="/static/css/staging-h1-005b4.css"><link rel="stylesheet" href="/static/css/staging-h1-005b5.css"><link rel="stylesheet" href="/static/css/staging-h1-005b6.css"><link rel="stylesheet" href="/static/css/staging-h1-005b7.css"><link rel="stylesheet" href="/static/css/staging-h1-005b8.css"><link rel="stylesheet" href="/static/css/staging-h1-005b9.css">{% endif %}
+</head>
+<body>
+<a class="vendra-skip-link" href="#vendra-main">Ir para o conteúdo</a>
+<header class="mobile-bar" data-mobile-nav style="display:none">
+    <a class="mobile-brand" href="/"><span class="mobile-brand-mark">V</span><span><strong>VENDRA</strong><small>Gestão Comercial</small></span></a>
+    <nav class="mobile-nav" aria-label="Navegação principal">
+        {% if level_for(user) != 'comum' %}<a href="/">Visão geral</a>{% endif %}
+        {% for href,label,key in [('atendimentos','Atendimentos','tickets'),('clientes','Clientes','customers'),('produtos','Produtos e Serviços','products'),('disparos','Disparos','dispatches'),('indicadores','Indicadores','indicators'),('configuracoes','Configurações','settings'),('integracoes','Integrações','integrations'),('auditoria','Auditoria','audit'),('usuarios','Usuários','users')] %}
+        {% if allowed(user, href) %}<a class="{% if active_page == key %}active{% endif %}" href="/{{ href }}">{{ label }}</a>{% endif %}
+        {% endfor %}
+        {% if vendra_environment == "staging" and allowed(user, "oportunidades") %}<a href="/oportunidades">CRM (homologação)</a>{% endif %}
+    </nav>
+</header>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">V</div>
+            <div><strong>VENDRA</strong><span>Gestão Comercial</span></div>
+        </div>
+        <nav class="nav">
+            {% if level_for(user) != 'comum' %}<a class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" href="/">Visão geral</a>{% endif %}
+            {% for href,label,key in [('atendimentos','Atendimentos','tickets'),('clientes','Clientes','customers'),('produtos','Produtos e Serviços','products'),('disparos','Disparos','dispatches'),('indicadores','Indicadores','indicators'),('configuracoes','Configurações','settings'),('integracoes','Integrações','integrations'),('auditoria','Auditoria','audit'),('usuarios','Usuários','users')] %}
+            {% if allowed(user, href) %}<a class="nav-link {% if active_page == key %}active{% endif %}" href="/{{ href }}">{{ label }}</a>{% endif %}
+            {% endfor %}
+            {% if vendra_environment == "staging" and allowed(user, "oportunidades") %}<a class="nav-link {% if active_page == 'opportunities' %}active{% endif %}" href="/oportunidades">CRM (homologação)</a>{% endif %}
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-mini">
+                <div class="avatar">{{ user.full_name[0] if user else 'V' }}</div>
+                <div><strong>{{ user.full_name if user else '' }}</strong><span>{{ level_for(user)|capitalize if user else '' }}</span></div>
+            </div>
+            {% if user and allowed(user, 'atendimentos') and vendra_environment != 'staging' %}
+            <button type="button" class="lead-alert-sidebar-open" data-alert-open hidden aria-label="Ver atendimentos em atraso">
+                <span aria-hidden="true">⏱</span> <span data-alert-open-label>Atrasos: 0</span>
+            </button>
+            <button type="button" class="lead-alert-sidebar-sound" data-alert-sound aria-pressed="false">🔔 Ativar som dos alertas</button>
+            {% endif %}
+            <form method="post" action="/logout"><button class="link-button" type="submit">Sair</button></form>
+        </div>
+    </aside>
+    <main id="vendra-main" class="main-content" tabindex="-1">
+        {% if vendra_environment == 'staging' %}
+        <div class="vendra-staging-ribbon" role="status"><strong>AMBIENTE DE TESTES</strong><span>Supabase STAGING · Login, Clientes, Atendimentos e CRM transacional, Disparos simulados e Preflight e Contrato transacional isolado (sem envios) · Porta 8011</span></div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</div>
+{% if user and allowed(user, 'atendimentos') and vendra_environment != 'staging' %}
+<aside class="lead-alert-root" data-lead-alert-root hidden role="status" aria-live="polite" aria-label="Alertas de atendimento sem resposta">
+    <div class="lead-alert-head">
+        <span aria-hidden="true">●</span><strong>Atendimento em atraso</strong>
+        <span class="lead-alert-count" data-alert-count>0</span>
+        <button type="button" class="lead-alert-sound" data-alert-sound aria-pressed="false">Ativar som</button>
+        <button type="button" class="lead-alert-dismiss" data-alert-dismiss aria-label="Fechar aviso de atraso" title="Fechar aviso">×</button>
+    </div>
+    <p class="lead-alert-subtitle" data-alert-status>Verificando atendimentos...</p>
+    <div class="lead-alert-list" data-alert-list></div>
+</aside>
+<script src="/static/js/lead-alerts-v0.0.25.js" defer></script>
+{% endif %}
+</body>
+</html>

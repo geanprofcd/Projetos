@@ -1,0 +1,20 @@
+/* H1-005B6 - Corrige contraste das duas telas de Disparos e organiza ciclo de testes. */
+.vendra-staging-dispatch header h1{color:#1a283a!important}
+.vendra-staging-dispatch header p:not(.overline){color:#38475a!important}
+.vendra-staging-dispatch header p.overline{color:#23578c!important;font-weight:700}
+.vendra-staging-dispatch-form,.vendra-staging-dispatch-result{color:#f1f6fb!important}
+.vendra-staging-dispatch-form :is(h2,label,p,strong),
+.vendra-staging-dispatch-result :is(h2,p,strong){color:#f1f6fb!important}
+.vendra-staging-dispatch-result code{color:#e7f1ff}
+.vendra-staging-dispatch-error{color:#fff3f3!important}
+.vendra-life-link{color:#205c9e;display:inline-block;font-weight:650;margin:6px 0 0}
+.vendra-life-register{background:#fff;border:1px solid #dce4ed;padding:20px;border-radius:14px;color:#1b2c42}
+.vendra-life-register h2{color:#1b2c42;margin:0 0 12px}
+.vendra-life-item{padding:14px 0;border-top:1px solid #dae1ec}
+.vendra-life-item-title{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.vendra-life-item-title strong{color:#1b2c42}
+.vendra-life-state{background:#e7edf4;color:#244465;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700}
+.vendra-life-item p{margin:9px 0;color:#38475a}
+.vendra-life-actions{display:flex;flex-wrap:wrap;gap:8px}
+.vendra-life-actions button{border:1px solid #a8bdd2;padding:9px 13px;border-radius:9px;background:#eaf1f8;color:#163759;font-weight:650;cursor:pointer}
+.vendra-life-actions button:hover{background:#dce9f6}

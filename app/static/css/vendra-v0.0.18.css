@@ -1,0 +1,33 @@
+/* VENDRA 0.0.18 — atendimento simplificado e posse automática */
+.ticket-detail-head{align-items:flex-end}
+.ticket-detail-head .back{margin-bottom:12px}
+.ticket-detail-head h1{margin:0 0 9px;font-size:30px}
+.ticket-quick-actions .compact-action{min-width:210px}
+
+/* O compositor fica mais limpo: anexo alinhado à borda esquerda da caixa de texto
+   e somente a ação de envio à direita. */
+.ticket-workspace .composer-bottom{align-items:center;margin-top:10px}
+.ticket-workspace .composer-left{align-items:center;gap:9px;min-width:0;flex:1 1 auto}
+.ticket-workspace .attachment-button{margin:0;white-space:nowrap}
+.ticket-workspace .selected-files{flex:1 1 auto}
+.ticket-workspace .future-actions{margin-left:auto;flex:0 0 auto}
+
+/* Status de entrega em português, sem o prefixo do canal. */
+.message-delivery{font-size:10px;color:var(--muted);margin:5px 7px 0;text-align:right;font-weight:650}
+.message-delivery.is-sent,.message-delivery.is-delivered{color:#587063}
+.message-delivery.is-read{color:var(--brand)}
+.message-delivery.is-failed{color:#a33b2a}
+.message-delivery-error{display:block;max-width:360px;margin-top:3px;color:#a33b2a;font-size:9.5px;font-weight:500;line-height:1.35;overflow-wrap:anywhere}
+
+@media(max-width:760px){
+  .ticket-detail-head h1{font-size:26px}
+  .ticket-workspace .composer-bottom{align-items:stretch;flex-direction:row}
+  .ticket-workspace .composer-left{align-items:flex-start;flex-direction:column}
+  .ticket-workspace .future-actions{align-self:flex-end}
+}
+
+@media(max-width:480px){
+  .ticket-workspace .composer-bottom{flex-direction:column;align-items:stretch}
+  .ticket-workspace .future-actions{align-self:stretch}
+  .ticket-workspace .future-actions .button{width:100%}
+}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Funis de vendas | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div><a class="back" href="/configuracoes">← Configurações</a><span class="eyebrow">CONFIGURAÇÕES · CRM</span><h1>Funis de vendas</h1><p>Crie fluxos comerciais independentes e organize as etapas usadas pelas oportunidades.</p></div>
+    <a class="button primary" href="/configuracoes/funis/novo">Novo funil</a>
+</header>
+
+<section class="funnel-settings-grid">
+{% for funnel in funnels %}
+<a class="panel funnel-settings-card" href="/configuracoes/funis/{{ funnel.id }}">
+    <div class="funnel-settings-card-head">
+        <div><span class="status {{ 'status-em_atendimento' if funnel.is_active else 'status-cancelado' }}">{{ 'ativo' if funnel.is_active else 'inativo' }}</span><h2>{{ funnel.name }}</h2></div>
+        <span class="funnel-chevron">›</span>
+    </div>
+    <p>{{ funnel.description or 'Sem descrição.' }}</p>
+    <div class="funnel-settings-stats"><strong>{{ funnel.active_stage_count }}</strong><span>etapas ativas</span><strong>{{ funnel.stage_count }}</strong><span>etapas totais</span></div>
+    <div class="funnel-stage-preview">
+        {% for stage in funnel.stages[:5] %}<span><i style="background:{{ stage.color }}"></i>{{ stage.name }}</span>{% endfor %}
+        {% if funnel.stage_count > 5 %}<span class="muted">+{{ funnel.stage_count - 5 }}</span>{% endif %}
+    </div>
+</a>
+{% else %}
+<div class="panel empty funnel-empty">Nenhum funil cadastrado. Crie o primeiro fluxo comercial.</div>
+{% endfor %}
+</section>
+<div class="catalog-note"><strong>Regra atual:</strong> o funil define apenas a sequência comercial. “Ganha” e “Perdida” serão estados da oportunidade, não etapas obrigatórias do funil.</div>
+{% endblock %}

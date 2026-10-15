@@ -1,0 +1,168 @@
+/* VENDRA 0.0.14 — workspace de atendimento, mensagens humanizadas e janela WhatsApp */
+
+/* Em desktop o atendimento vira um workspace: cabeçalho/controles/composer ficam
+   estáveis e somente a conversa rola. Isso evita que uma conversa longa aumente
+   indefinidamente a página inteira. */
+.ticket-workspace{
+  align-items:stretch;
+  height:min(820px,calc(100dvh - 210px));
+  min-height:580px;
+}
+.ticket-workspace .chat-panel{
+  height:100%;
+  min-height:0;
+  overflow:hidden;
+}
+.ticket-workspace .chat-head,
+.ticket-workspace .ai-control-bar,
+.ticket-workspace .whatsapp-window-bar,
+.ticket-workspace .composer{
+  flex:0 0 auto;
+}
+.chat-scroll-shell{
+  position:relative;
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden;
+  background:#f7f8fb;
+}
+.chat-scroll-shell .messages{
+  height:100%;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+  scroll-behavior:smooth;
+}
+.ticket-workspace .context-panel{
+  height:100%;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+}
+.ticket-workspace .composer{
+  position:relative;
+  z-index:2;
+  box-shadow:0 -8px 20px rgba(24,32,42,.035);
+}
+
+/* Preserva os parágrafos produzidos pela IA/operador e evita estouro de URLs. */
+.message .bubble{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+/* Nova mensagem enquanto o operador está lendo o histórico. */
+.new-message-indicator{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  z-index:4;
+  border:1px solid #cdd8ee;
+  border-radius:999px;
+  background:#fff;
+  color:var(--brand);
+  box-shadow:0 8px 24px rgba(24,32,42,.16);
+  padding:8px 13px;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+}
+.new-message-indicator:hover{background:#f5f7ff}
+.new-message-indicator[hidden]{display:none!important}
+
+/* Janela de atendimento WhatsApp. */
+.whatsapp-window-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:11px 16px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+.whatsapp-window-copy{display:flex;align-items:flex-start;gap:11px;min-width:0}
+.whatsapp-window-copy>div{min-width:0}
+.whatsapp-window-copy strong,.whatsapp-window-copy small{display:block}
+.whatsapp-window-copy strong{font-size:12px;line-height:1.3}
+.whatsapp-window-copy small{margin-top:3px;color:var(--muted);font-size:11px;line-height:1.45;overflow-wrap:anywhere}
+.whatsapp-window-dot{width:9px;height:9px;border-radius:50%;margin-top:4px;flex:0 0 auto}
+.whatsapp-window-bar.is-open{background:#f3fbf5;border-bottom-color:#d8ebdd}
+.whatsapp-window-bar.is-open .whatsapp-window-dot{background:#22a559;box-shadow:0 0 0 4px rgba(34,165,89,.10)}
+.whatsapp-window-bar.is-open strong{color:#176c3b}
+.whatsapp-window-bar.is-closed{background:#fff8ed;border-bottom-color:#f0ddbc}
+.whatsapp-window-bar.is-closed .whatsapp-window-dot{background:#d97706;box-shadow:0 0 0 4px rgba(217,119,6,.10)}
+.whatsapp-window-bar.is-closed strong{color:#9a5708}
+.whatsapp-template-action{flex:0 0 auto;padding:8px 11px;font-size:11px}
+
+.composer-policy-warning{
+  margin:0 0 10px;
+  padding:9px 11px;
+  border:1px solid #efd7ac;
+  border-radius:10px;
+  background:#fff8ed;
+  color:#85500e;
+  font-size:11px;
+  line-height:1.45;
+}
+.composer-policy-warning a{font-weight:800;text-decoration:underline}
+
+.context-operation-card{
+  display:grid;
+  gap:4px;
+  padding:12px 13px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#f8fafc;
+}
+.context-operation-card span{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:800}
+.context-operation-card strong{font-size:13px}
+.context-operation-card small{margin-top:3px;color:var(--muted);font-size:11px;line-height:1.45}
+
+/* Em larguras intermediárias a lateral passa para baixo, mas a conversa continua
+   com viewport próprio. Isso protege o chat em 1024 px sem espremê-lo. */
+@media(max-width:1180px){
+  .ticket-workspace{
+    grid-template-columns:1fr;
+    height:auto;
+    min-height:0;
+    max-height:none;
+  }
+  .ticket-workspace .chat-panel{
+    height:min(740px,calc(100dvh - 170px));
+    min-height:560px;
+  }
+  .ticket-workspace .context-panel{
+    height:auto;
+    max-height:none;
+    overflow:visible;
+  }
+}
+
+@media(max-width:760px){
+  .ticket-workspace .chat-panel{
+    height:calc(100dvh - 116px);
+    min-height:600px;
+  }
+  .whatsapp-window-bar{align-items:stretch;flex-direction:column;padding:10px 13px}
+  .whatsapp-template-action{width:100%;text-align:center}
+  .chat-scroll-shell .messages{padding:14px 12px}
+  .new-message-indicator{bottom:10px}
+  .ticket-workspace .composer{padding:12px}
+  .ticket-workspace .composer textarea{min-height:70px}
+  .ticket-workspace .sync-note{display:none}
+}
+
+@media(max-width:430px){
+  .ticket-workspace .chat-panel{height:calc(100dvh - 96px);min-height:620px}
+  .whatsapp-window-copy small{font-size:10.5px}
+  .message{min-width:0;width:auto;max-width:94%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .chat-scroll-shell .messages{scroll-behavior:auto}
+}

@@ -1,0 +1,37 @@
+/* VENDRA 0.0.11 — contenção de nomes + ações visíveis + fila sequencial de Disparos */
+
+/* O seletor de lista nunca pode expandir o cabeçalho, mesmo com nomes muito longos. */
+.dispatch-list-header{min-width:0;overflow:hidden}
+.dispatch-list-header>div:first-child{min-width:0}
+.dispatch-selected-filename{display:block;max-width:min(760px,100%);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dispatch-list-picker{flex:0 0 420px;width:420px;max-width:420px;min-width:0}
+.dispatch-list-picker select{display:block;width:100%;max-width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:34px}
+
+/* Ações de disparo precisam parecer ações: preenchimento, contraste e área de clique estável. */
+.dispatch-import-table .dispatch-list-action{width:170px;min-width:170px;text-align:right}
+.dispatch-import-table .dispatch-list-action form{display:flex;justify-content:flex-end}
+.dispatch-contact-button,.dispatch-all-button{background:#3157d5!important;border-color:#3157d5!important;color:#fff!important;box-shadow:0 5px 14px rgba(49,87,213,.18)}
+.dispatch-contact-button{min-width:104px;justify-content:center;text-align:center}
+.dispatch-contact-button:hover,.dispatch-all-button:hover{background:#2447bb!important;border-color:#2447bb!important;color:#fff!important}
+.dispatch-contact-button:disabled,.dispatch-all-button:disabled{background:#aab7dd!important;border-color:#aab7dd!important;color:#f8faff!important;box-shadow:none}
+
+/* Envio em lote é uma fila serial: o clique inicia e o processamento segue em background. */
+.dispatch-bulk-bar{margin:0 18px 16px;padding:14px 16px;border:1px solid #dbe3ef;border-radius:14px;background:#f8faff;display:flex;align-items:center;justify-content:space-between;gap:18px;min-width:0}
+.dispatch-bulk-copy{display:grid;gap:4px;min-width:0;flex:1}
+.dispatch-bulk-copy>strong{font-size:13px;color:#202b3c}
+.dispatch-bulk-copy>span{font-size:12px;line-height:1.45;color:#667085}
+.dispatch-bulk-form{margin:0;flex:0 0 auto}
+.dispatch-all-button{min-width:168px;white-space:nowrap}
+.dispatch-bulk-progress{height:7px;width:min(520px,100%);margin-top:5px;border-radius:999px;background:#e5eaf4;overflow:hidden}
+.dispatch-bulk-progress>span{display:block;height:100%;border-radius:inherit;background:#3157d5;transition:width .25s ease}
+
+@media(max-width:1080px){
+  .dispatch-list-picker{width:100%;max-width:100%;flex-basis:100%}
+}
+@media(max-width:680px){
+  .dispatch-selected-filename{max-width:100%}
+  .dispatch-bulk-bar{margin-left:12px;margin-right:12px;align-items:stretch;flex-direction:column}
+  .dispatch-bulk-form,.dispatch-all-button{width:100%}
+  .dispatch-import-table .dispatch-list-action{min-width:145px;width:145px}
+  .dispatch-contact-button{min-width:96px}
+}

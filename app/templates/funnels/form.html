@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Novo funil | VENDRA{% endblock %}
+{% block content %}
+<div class="form-page">
+<header class="page-header form-page-header"><div><a class="back" href="/configuracoes/funis">← Voltar</a><span class="eyebrow">CONFIGURAÇÕES · CRM</span><h1>Novo funil de vendas</h1><p>Crie um fluxo. As etapas serão adicionadas depois do cadastro.</p></div></header>
+{% if error %}<div class="alert error form-alert" role="alert">{{ error }}</div>{% endif %}
+<form method="post" class="registration-form">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<section class="form-card"><div class="form-section-heading"><div class="form-section-number">1</div><div><h2>Identificação do funil</h2><p>Use um nome simples para diferenciar processos como Comercial, Renovação ou Pós-venda.</p></div></div>
+<div class="form-fields"><div class="field field-full"><label for="funnel-name">Nome <span class="required">*</span></label><input id="funnel-name" name="name" required maxlength="120" value="{{ funnel.name if funnel else '' }}" placeholder="Ex.: Comercial"></div><div class="field field-full"><label for="funnel-description">Descrição</label><textarea id="funnel-description" name="description" rows="4" maxlength="600" placeholder="Objetivo deste funil">{{ funnel.description if funnel else '' }}</textarea></div></div></section>
+<footer class="form-submit-bar"><div><strong>Criar estrutura</strong><span>Depois você poderá cadastrar e ordenar as etapas.</span></div><div class="form-actions"><a class="button secondary" href="/configuracoes/funis">Cancelar</a><button class="button primary" type="submit">Criar funil</button></div></footer>
+</form></div>
+{% endblock %}

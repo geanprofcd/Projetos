@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Oportunidades | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div><a class="back" href="/atendimentos">← Atendimentos</a><span class="eyebrow">CRM COMERCIAL</span><h1>Oportunidades</h1><p>Negociações vinculadas a atendimentos, funis e produtos/serviços.</p></div>
+  <div class="header-actions"><a class="button primary" href="/oportunidades/nova">Nova oportunidade</a></div>
+</header>
+<section class="metrics-grid commercial-metrics">
+  <article class="metric-card"><span>Oportunidades abertas</span><strong>{{ summary.open_count }}</strong><small>Pipeline atual</small></article>
+  <article class="metric-card"><span>Valor em aberto</span><strong class="money-metric">{{ summary.open_value_label }}</strong><small>Soma dos itens das abertas</small></article>
+  <article class="metric-card"><span>Ganhas</span><strong>{{ summary.won_count }}</strong><small>{{ summary.won_value_label }} congelados</small></article>
+  <article class="metric-card"><span>Perdidas</span><strong>{{ summary.lost_count }}</strong><small>Histórico preservado</small></article>
+</section>
+<form class="filters opportunity-filters" method="get">
+  <input type="search" name="q" value="{{ query }}" placeholder="Buscar cliente, oportunidade ou responsável...">
+  <select name="status"><option value="all">Todos os status</option>{% for value,label in statuses.items() %}<option value="{{ value }}" {% if status_filter==value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+  <select name="funnel_id"><option value="">Todos os funis</option>{% for funnel in funnels %}<option value="{{ funnel.id }}" {% if funnel_filter==funnel.id %}selected{% endif %}>{{ funnel.name }}</option>{% endfor %}</select>
+  <button class="button secondary" type="submit">Filtrar</button>
+  <a class="button secondary" href="/oportunidades">Limpar</a>
+</form>
+<section class="panel">
+<div class="table-wrap"><table><thead><tr><th>Cliente / oportunidade</th><th>Funil / etapa</th><th>Valor</th><th>Responsável</th><th>Status</th></tr></thead><tbody>
+{% for opportunity in opportunities %}
+<tr onclick="window.location='/oportunidades/{{ opportunity.id }}'">
+  <td><strong>{{ opportunity.customer_name }}</strong><small>{{ opportunity.title }}{% if opportunity.ticket_id %} · atendimento #{{ opportunity.ticket_id }}{% endif %}</small></td>
+  <td><strong>{{ opportunity.funnel_name }}</strong><small><span class="stage-dot" style="background:{{ opportunity.stage_color }}"></span>{{ opportunity.stage_name }}</small></td>
+  <td><strong>{{ opportunity.final_value_label if opportunity.status=='won' and opportunity.final_value_label else opportunity.calculated_value_label }}</strong><small>{{ opportunity.item_count }} item(ns)</small></td>
+  <td>{{ opportunity.assigned_name }}</td>
+  <td><span class="opportunity-status opportunity-status-{{ opportunity.status }}">{{ opportunity.status_label }}</span></td>
+</tr>
+{% else %}<tr><td colspan="5"><div class="empty compact">Nenhuma oportunidade encontrada.</div></td></tr>{% endfor %}
+</tbody></table></div>
+</section>
+{% endblock %}

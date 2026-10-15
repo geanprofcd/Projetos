@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% set editing = farm and farm.id %}
+{% block title %}{{ 'Editar propriedade' if editing else 'Nova propriedade' }} | VENDRA{% endblock %}
+{% block content %}
+<div class="form-page">
+    <header class="page-header form-page-header">
+        <div>
+            <a class="back" href="/clientes/{{ customer.id }}#propriedades">← {{ customer.name }}</a>
+            <span class="eyebrow">PROPRIEDADE</span>
+            <h1>{{ 'Editar propriedade' if editing else 'Nova propriedade' }}</h1>
+            <p>{{ 'Atualize os dados da propriedade vinculada ao produtor.' if editing else 'Cadastre uma fazenda ou área produtiva vinculada a ' ~ customer.name ~ '.' }}</p>
+        </div>
+    </header>
+
+    {% if error %}<div class="alert error form-alert" role="alert">{{ error }}</div>{% endif %}
+
+    <form method="post" action="{{ '/clientes/' ~ customer.id ~ '/propriedades/' ~ farm.id ~ '/editar' if editing else '/clientes/' ~ customer.id ~ '/propriedades' }}" class="registration-form">
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">1</div>
+                <div><h2>Identificação da propriedade</h2><p>Nome pelo qual a área será encontrada dentro do histórico do produtor.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field field-full">
+                    <label for="farm-name">Nome da propriedade <span class="required">*</span></label>
+                    <input id="farm-name" name="name" value="{{ farm.name if farm else '' }}" required maxlength="160" placeholder="Ex.: Fazenda Santa Maria">
+                </div>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">2</div>
+                <div><h2>Localização e área</h2><p>Contexto geográfico básico usado no atendimento e nos relatórios.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field">
+                    <label for="farm-city">Município</label>
+                    <input id="farm-city" name="city" value="{{ (farm.city or '') if farm else '' }}" autocomplete="address-level2" placeholder="Ex.: Sorriso">
+                </div>
+                <div class="field field-small">
+                    <label for="farm-state">UF</label>
+                    <input id="farm-state" name="state" maxlength="2" value="{{ (farm.state or '') if farm else '' }}" autocomplete="address-level1" placeholder="MT" style="text-transform:uppercase">
+                </div>
+                <div class="field">
+                    <label for="farm-area">Área total (ha)</label>
+                    <input id="farm-area" name="area_hectares" value="{{ (farm.area_hectares or '') if farm else '' }}" inputmode="decimal" placeholder="Ex.: 850,5">
+                    <small>Informe apenas números; vírgula ou ponto são aceitos.</small>
+                </div>
+            </div>
+        </section>
+
+        <footer class="form-submit-bar">
+            <div><strong>{{ 'Salvar alterações da propriedade' if editing else 'Concluir cadastro da propriedade' }}</strong><span>Ela ficará vinculada ao cliente {{ customer.name }}.</span></div>
+            <div class="form-actions">
+                <a class="button secondary" href="/clientes/{{ customer.id }}#propriedades">Cancelar</a>
+                <button class="button primary" type="submit">{{ 'Salvar alterações' if editing else 'Salvar propriedade' }}</button>
+            </div>
+        </footer>
+    </form>
+</div>
+{% endblock %}

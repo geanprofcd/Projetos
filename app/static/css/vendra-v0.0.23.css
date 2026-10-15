@@ -1,0 +1,21 @@
+/* 0.0.23 — Marcos do lead e alertas de atendimento. */
+.lead-alert-root[hidden]{display:none!important}
+.lead-alert-root{position:fixed;top:14px;right:20px;width:min(365px,calc(100vw - 28px));z-index:900;background:#fff;border:1px solid #efb1a1;border-left:5px solid #d23b25;border-radius:13px;box-shadow:0 12px 34px rgba(26,34,50,.22);overflow:hidden}
+.lead-alert-head{display:flex;align-items:center;gap:8px;padding:12px 13px;background:#fff4f0;color:#8e2718}
+.lead-alert-head strong{flex:1;font-size:13px}
+.lead-alert-count{display:grid;place-items:center;min-width:22px;height:22px;border-radius:99px;background:#b72b1f;color:#fff;font-size:12px;font-weight:800}
+.lead-alert-sound{border:1px solid #e0a69b;border-radius:7px;background:#fff;color:#8d2d21;padding:5px 7px;font-size:11px;cursor:pointer}
+.lead-alert-subtitle{margin:9px 13px;font-size:11px;color:#775b55}
+.lead-alert-list{max-height:210px;overflow:auto}
+.lead-alert-item{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:9px 13px;border-top:1px solid #f3e0db;color:#233047;text-decoration:none}
+.lead-alert-item:hover{background:#fff8f4}
+.lead-alert-item strong{font-size:12px;max-width:50%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lead-alert-item span{font-size:11px;color:#9a3728;text-align:right}
+.is-sla-overdue{outline:2px solid #d23b25;outline-offset:-2px;background:#fff8f5!important}
+.lead-milestones{display:flex;flex-wrap:wrap;gap:10px;color:#62718a;font-size:11px;margin-top:6px}
+.lead-milestones b{color:#263b5b;font-weight:700}
+.kanban-card-milestones{padding-top:4px;font-size:10.5px}
+@media(max-width:700px){.lead-alert-root{top:65px;right:10px}.lead-alert-item{flex-direction:column;align-items:flex-start}.lead-alert-item strong{max-width:100%}}
+
+.lead-alert-sidebar-sound{margin-top:10px;padding:7px 9px;background:transparent;border:1px solid #8091a6;border-radius:8px;color:inherit;font-size:11px;cursor:pointer;text-align:left;width:100%}
+.lead-alert-sidebar-sound[aria-pressed="true"]{border-color:#58a56e;color:#68b17b}

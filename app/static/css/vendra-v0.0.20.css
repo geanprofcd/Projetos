@@ -1,0 +1,5 @@
+/* VENDRA 0.0.20 — caminho primário Kanban → conversa; atalho secundário CRM */
+.kanban-opportunity-shortcut {display:inline-flex; align-items:center; width:fit-content; max-width:calc(100% - 24px); margin:0 12px 8px; padding:4px 7px; border-radius:6px; font-size:11px; line-height:1.35; font-weight:600; color:#2563eb; text-decoration:none; white-space:normal; }
+.kanban-opportunity-shortcut:hover,.kanban-opportunity-shortcut:focus-visible {background:#e8f0ff; text-decoration:underline; outline-offset:2px;}
+.kanban-card-link:focus-visible {outline:2px solid #2563eb;outline-offset:2px;}
+@media(max-width:540px){.kanban-opportunity-shortcut{font-size:12px; min-height:28px;}}

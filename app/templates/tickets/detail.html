@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block title %}{{ ticket.customer_name }} | VENDRA{% endblock %}
+{% block content %}
+<div class="ticket-detail-head detail-head-flex">
+    <div>
+        <a class="back" href="/atendimentos">← Voltar</a>
+        <h1>{{ ticket.customer_name }}</h1>
+        <div class="ticket-tags">
+            <span id="ticketStatusBadge" class="status status-{{ ticket.status }}">{{ ticket.status.replace('_',' ') }}</span>
+            <span class="source">{{ ticket.source }}</span>
+            <span class="priority priority-{{ ticket.priority }}">{{ ticket.priority }}</span>
+        </div>
+        <div class="lead-milestones"><span>Chegada <b>{{ ticket_milestones.arrival_date }}</b></span><span>Primeira resposta <b>{{ ticket_milestones.first_reply_time }}</b></span></div>
+    </div>
+    {% if user.role != 'agronomo' %}
+    <div class="ticket-quick-actions">
+        <form method="post" action="/atendimentos/{{ ticket.id }}/status" class="compact-action">
+            <label>Status
+                <select name="status" onchange="this.form.submit()">
+                    {% for value in statuses %}<option value="{{ value }}" {% if ticket.status == value %}selected{% endif %}>{{ value.replace('_',' ')|capitalize }}</option>{% endfor %}
+                </select>
+            </label>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<div class="detail-grid ticket-workspace" id="ticketLiveRoot" data-ticket-id="{{ ticket.id }}" data-poll-seconds="{{ poll_seconds }}" data-attachment-max-mb="{{ settings_attachment_max_mb if settings_attachment_max_mb is defined else 15 }}" data-video-max-mb="{{ settings_attachment_video_max_mb if settings_attachment_video_max_mb is defined else 50 }}"{% if whatsapp_window %} data-window-expires-at="{{ whatsapp_window.expires_at or '' }}" data-window-open="{{ 'true' if whatsapp_window.open else 'false' }}"{% endif %}>
+    <section class="chat-panel">
+        <div class="chat-head">
+            <div class="chat-head-main">
+                <div class="avatar large">{{ ticket.customer_name[0] }}</div>
+                <div><strong>{{ ticket.customer_name }}</strong><span>{{ ticket.source|capitalize }} · {{ ticket.assigned_name or 'Sem responsável' }}</span></div>
+            </div>
+            <div class="live-badge" id="liveBadge" title="A conversa verifica novas mensagens automaticamente">
+                <span class="live-dot"></span><span class="live-label">Atualização automática</span>
+            </div>
+        </div>
+
+        {% if ai_control %}
+        <div class="ai-control-bar {{ 'is-ai' if ai_control.should_respond else 'is-human' }}" id="aiControlBar" data-control-version="{{ ai_control.control_version }}">
+            <div class="ai-control-copy">
+                <span class="ai-control-dot"></span>
+                <div>
+                    <strong>{{ ai_control.mode_label }}</strong>
+                    <small class="compact-helper" title="A conexão controla a IA apenas nesta conversa; a entrada de mensagens continua ativa.">{{ 'IA indisponível' if not ai_control.enabled else ('Respostas automáticas ativas' if ai_control.route_to_ai else 'Atendimento manual') }}</small>
+                </div>
+            </div>
+            {% if ai_control.enabled and user.role in ['responsavel','administrador'] %}
+                {% if ai_control.should_respond %}
+                <form method="post" action="/atendimentos/{{ ticket.id }}/ia/desconectar">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button class="button ai-human-button ai-disconnect-button" type="submit" title="Interrompe somente a rota desta conversa para a IA">Desconectar IA</button>
+                </form>
+                {% else %}
+                <form method="post" action="/atendimentos/{{ ticket.id }}/ia/conectar">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button class="button ai-resume-button ai-connect-button" type="submit">Reconectar IA</button>
+                </form>
+                {% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if ticket.source == 'whatsapp' and whatsapp_window %}
+        <div class="whatsapp-window-bar {{ 'is-open' if whatsapp_window.open else 'is-closed' }}" id="whatsappWindowBar" data-expires-at="{{ whatsapp_window.expires_at or '' }}">
+            <div class="whatsapp-window-copy">
+                <span class="whatsapp-window-dot"></span>
+                <div>
+                    <strong id="whatsappWindowTitle">{{ 'WhatsApp liberado' if whatsapp_window.open else 'Janela encerrada' }}</strong>
+                    <small id="whatsappWindowText">
+                        {% if whatsapp_window.open %}
+                        <span id="whatsappWindowCountdown">{{ whatsapp_window.remaining_label }}</span> restantes
+                        {% else %}
+                        Somente template aprovado
+                        {% endif %}
+                    </small>
+                </div>
+            </div>
+            {% if not whatsapp_window.open and user.role != 'agronomo' %}<button class="button secondary whatsapp-template-action" type="button" data-open-template-modal>Usar modelo aprovado</button>{% endif %}
+        </div>
+        {% endif %}
+
+        <div class="chat-scroll-shell">
+        <div class="messages" id="messagesList" aria-live="polite">
+            {% for message in messages %}
+            <div class="message {% if message.sender_id == user.id or message.sender_kind == 'ai' %}mine{% endif %} {% if message.is_internal %}internal{% endif %}" data-message-id="{{ message.id }}">
+                <div class="message-author">{{ 'Assistente de IA' if message.sender_kind == 'ai' else message.sender_name }}{% if message.is_internal %} · nota interna{% endif %}</div>
+                {% if message.body %}<div class="bubble">{{ message.body }}</div>{% endif %}
+                {% if message.attachments %}
+                <div class="message-attachments">
+                    {% for attachment in message.attachments %}
+                    {% if attachment.is_image %}
+                    <a class="attachment-card image" href="{{ attachment.url }}" target="_blank" rel="noopener" title="Abrir {{ attachment.file_name }}">
+                        <img src="{{ attachment.url }}" alt="{{ attachment.file_name }}" loading="lazy">
+                        <span class="attachment-caption"><span class="attachment-info"><strong>{{ attachment.file_name }}</strong><small>{{ attachment.size_label }}</small></span></span>
+                    </a>
+                    {% elif attachment.is_audio %}
+                    <div class="attachment-media-card audio">
+                        <div class="attachment-media-head"><span class="attachment-icon">♪</span><span class="attachment-info"><strong>{{ attachment.file_name }}</strong><small>{{ attachment.size_label }} · áudio</small></span></div>
+                        <audio controls preload="metadata" src="{{ attachment.url }}">Seu navegador não suporta reprodução de áudio.</audio>
+                        <a class="attachment-download" href="{{ attachment.url }}" target="_blank" rel="noopener">Abrir / baixar arquivo</a>
+                    </div>
+                    {% elif attachment.is_video and attachment.is_browser_playable_video %}
+                    <div class="attachment-media-card video">
+                        <video controls preload="metadata" playsinline src="{{ attachment.url }}">Seu navegador não suporta reprodução deste vídeo.</video>
+                        <div class="attachment-media-head"><span class="attachment-icon">▶</span><span class="attachment-info"><strong>{{ attachment.file_name }}</strong><small>{{ attachment.size_label }} · vídeo</small></span></div>
+                        <a class="attachment-download" href="{{ attachment.url }}" target="_blank" rel="noopener">Abrir / baixar arquivo</a>
+                    </div>
+                    {% else %}
+                    <a class="attachment-card" href="{{ attachment.url }}" target="_blank" rel="noopener">
+                        <span class="attachment-icon">{% if attachment.is_pdf %}PDF{% elif attachment.is_video %}VID{% else %}↗{% endif %}</span>
+                        <span class="attachment-info"><strong>{{ attachment.file_name }}</strong><small>{{ attachment.size_label }} · {% if attachment.is_video %}formato salvo; abrir/baixar{% else %}abrir arquivo{% endif %}</small></span>
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if (message.sender_id == user.id or message.sender_kind == 'ai') and message.delivery_status %}
+                    {% set delivery_label = 'Lido' if message.delivery_status == 'read' else ('Enviado' if message.delivery_status in ['sent','delivered'] else ('Falha no envio' if message.delivery_status == 'failed' else '')) %}
+                    {% if delivery_label %}<div class="message-delivery is-{{ message.delivery_status }}">{{ delivery_label }}{% if message.delivery_status == 'failed' and message.delivery_error %}<span class="message-delivery-error">{{ message.delivery_error }}</span>{% endif %}</div>{% endif %}
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="empty" id="emptyMessages">Nenhuma mensagem neste atendimento.</div>
+            {% endfor %}
+            <div id="fim"></div>
+        </div>
+        <button class="new-message-indicator" id="newMessageIndicator" type="button" hidden>↓ Nova mensagem</button>
+        </div>
+
+        <form class="composer" method="post" action="/atendimentos/{{ ticket.id }}/mensagens" enctype="multipart/form-data" id="messageComposer">
+            {% if composer_error %}<div class="composer-error" role="alert">{{ composer_error }}</div>{% endif %}
+            <textarea name="body" rows="3" placeholder="Digite uma resposta ou envie um anexo...">{{ composer_body or '' }}</textarea>
+            <div class="composer-bottom">
+                <div class="composer-left">
+                    <div class="attachment-picker">
+                        <input id="messageFiles" type="file" name="files" multiple accept="image/jpeg,image/png,image/webp,image/gif,application/pdf,audio/mpeg,audio/ogg,audio/wav,audio/mp4,video/mp4,video/quicktime,video/webm,video/ogg,video/x-msvideo,video/x-matroska,video/mpeg,video/3gpp,video/3gpp2,video/x-ms-wmv,video/x-ms-asf,video/x-flv,video/mp2t,.mp4,.mov,.webm,.m4v,.3gp,.3g2,.avi,.mkv,.mpeg,.mpg,.wmv,.asf,.ogv,.flv,.ts,.mts,.m2ts,.vob,text/plain,text/csv">
+                        <label class="attachment-button" for="messageFiles">📎 Anexar arquivos</label>
+                    </div>
+                    <div class="selected-files" id="selectedFiles" aria-live="polite"></div>
+                </div>
+                <div class="future-actions">
+                    <button class="button primary" type="submit">Enviar</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+
+{% if ticket.source == 'whatsapp' and user.role in ['responsavel','administrador'] %}
+<div class="template-overlay" id="templateOverlay" {% if not template_open %}hidden{% endif %}>
+  <div class="template-dialog" role="dialog" aria-modal="true" aria-labelledby="templateDialogTitle" tabindex="-1">
+    <header class="template-dialog-head">
+      <div><span class="template-eyebrow">WHATSAPP BUSINESS</span><h2 id="templateDialogTitle">Modelos de mensagem</h2><p>Envie modelos aprovados ou solicite análise de novos modelos.</p></div>
+      <button class="template-close" type="button" data-close-template-modal aria-label="Fechar">×</button>
+    </header>
+    {% if template_error %}<div class="template-error" role="alert">{{ template_error }}</div>{% endif %}
+    <div class="template-tabs" role="tablist" aria-label="Operações com modelos">
+      <button type="button" role="tab" aria-selected="true" class="is-active" data-template-tab="send">Enviar aprovado</button>
+      <button type="button" role="tab" aria-selected="false" data-template-tab="create">Criar modelo</button>
+    </div>
+    <section class="template-body" data-template-panel="send">
+      <div class="template-lede"><strong>Escolha um modelo disponível</strong><button type="button" class="template-refresh" id="templateRefresh">↻ Atualizar</button></div>
+      <div id="templateMessage" class="template-info" aria-live="polite">Carregando modelos da Meta...</div>
+      <form method="post" action="/atendimentos/{{ ticket.id }}/modelos/enviar" id="templateSendForm">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="template_name" id="templateSelectedName">
+        <input type="hidden" name="language" id="templateSelectedLanguage" value="pt_BR"><input type="hidden" name="values_json" id="templateValuesJson" value="[]">
+        <div id="templateOptions" class="template-options" aria-label="Modelos disponíveis"></div>
+        <div id="templatePreviewBox" class="template-preview" hidden><span class="template-eyebrow">PRÉVIA DA MENSAGEM</span><p id="templatePreview"></p><div id="templateVariables"></div></div>
+        <footer class="template-dialog-foot"><small id="templateSendHelp">Apenas modelos aprovados podem ser enviados.</small><button type="submit" class="button primary" id="templateSendButton" disabled>Enviar modelo</button></footer>
+      </form>
+    </section>
+    <section class="template-body" data-template-panel="create" hidden>
+      <p class="template-create-hint">Crie um modelo de texto para enviar à Meta. Ele só poderá ser utilizado após aprovação.</p>
+      <form id="templateCreateForm" method="post" action="/atendimentos/{{ ticket.id }}/modelos/criar">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="examples_json" id="templateExampleJson" value="[]">
+        <div class="template-form-row"><label>Identificador<input name="name" required minlength="3" maxlength="128" pattern="[a-z][a-z0-9_]{2,127}" placeholder="retomar_contato_cliente"></label>
+        <label>Categoria<select name="category"><option value="UTILITY">Utilidade</option><option value="MARKETING">Marketing</option></select></label></div>
+        <label>Idioma<select name="language"><option value="pt_BR">Português (Brasil)</option><option value="en_US">Inglês (EUA)</option><option value="es_ES">Espanhol (Espanha)</option></select></label>
+        <label>Mensagem<textarea name="body" id="templateNewBody" required minlength="10" maxlength="1024" rows="5" placeholder="Olá, {{1}}! Podemos continuar seu atendimento?"></textarea></label>
+        <div id="templateExamples"></div>
+        <div class="template-info">Os exemplos das variáveis são usados apenas na análise do modelo. A Meta decide se aprova ou rejeita o conteúdo.</div>
+        <footer class="template-dialog-foot"><small>Não será enviado ao cliente nesta etapa.</small><button type="submit" class="button primary" id="templateCreateButton">Enviar para análise</button></footer>
+      </form>
+    </section>
+  </div>
+</div>
+{% endif %}
+{% if template_notice == 'submitted' %}<div class="template-toast" role="status">Modelo enviado para análise. Consulte o status da Meta antes de utilizar.</div>{% elif template_notice == 'sent' %}<div class="template-toast" role="status">Meta aceitou a mensagem. A entrega será acompanhada pelos status do WhatsApp.</div>{% endif %}
+
+    <aside class="context-panel">
+        {% if user.role in ['responsavel','administrador'] %}
+        {% if opportunity %}
+        <div class="ticket-commercial-summary">
+            <div class="ticket-commercial-top"><span class="opportunity-status opportunity-status-{{ opportunity.status }}">{{ opportunity.status_label }}</span><strong>{{ opportunity.calculated_value_label if opportunity.status != 'won' else opportunity.final_value_label }}</strong></div>
+            <h3>{{ opportunity.title }}</h3>
+            <p><i style="background:{{ opportunity.stage_color }}"></i>{{ opportunity.funnel_name }} · {{ opportunity.stage_name }}</p>
+            <small>{{ opportunity.item_count }} item(ns)</small>
+            <a class="button secondary full commercial-open" href="/oportunidades/{{ opportunity.id }}">Abrir oportunidade</a>
+        </div>
+        {% else %}
+        <div class="ticket-commercial-empty"><h3>Sem oportunidade</h3><p>Este atendimento ainda não participa de um funil comercial.</p><a class="button primary full" href="/oportunidades/nova?atendimento={{ ticket.id }}">Criar oportunidade</a></div>
+        {% endif %}
+        <hr>
+        {% endif %}
+        <h3>Contexto do atendimento</h3>
+        <dl>
+            <dt>Cliente</dt><dd>{% if user.role != 'agronomo' %}<a class="context-link" href="/clientes/{{ ticket.customer_id }}">{{ ticket.customer_name }}</a>{% else %}{{ ticket.customer_name }}{% endif %}</dd>
+            <dt>Responsável</dt><dd>{{ ticket.assigned_name or 'A definir' }}</dd>
+            <dt>Prioridade</dt><dd>{{ ticket.priority|capitalize }}</dd>
+            <dt>Origem</dt><dd>{{ ticket.source|capitalize }}</dd>
+        </dl>
+        {% if ticket.source == 'whatsapp' and whatsapp_window %}
+        <hr>
+        <h3>Operação WhatsApp</h3>
+        <div class="context-operation-card">
+            <span>Envio permitido agora</span>
+            <strong>{{ 'Texto livre' if whatsapp_window.open else 'Somente modelo aprovado' }}</strong>
+            {% if whatsapp_window.last_customer_message_at %}<small>Janela calculada a partir da última mensagem recebida do cliente.</small>{% else %}<small>Ainda não há mensagem recebida do cliente para abrir a janela de atendimento.</small>{% endif %}
+        </div>
+        {% endif %}
+    </aside>
+</div>
+<script src="/static/js/ticket-detail-v0.0.21.js"></script>
+<script src="/static/js/meta-templates-v0.0.22.js"></script>
+{% endblock %}

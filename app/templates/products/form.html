@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% set editing = product and product.id %}
+{% block title %}{{ 'Editar item' if editing else 'Novo item' }} | VENDRA{% endblock %}
+{% block content %}
+<div class="form-page">
+    <header class="page-header form-page-header">
+        <div>
+            <a class="back" href="/produtos">← Voltar</a>
+            <span class="eyebrow">CATÁLOGO COMERCIAL</span>
+            <h1>{{ 'Editar produto ou serviço' if editing else 'Novo produto ou serviço' }}</h1>
+            <p>Defina os dados comerciais usados como referência nas futuras oportunidades.</p>
+        </div>
+    </header>
+
+    {% if error %}<div class="alert error form-alert" role="alert">{{ error }}</div>{% endif %}
+
+    <form method="post" class="registration-form">
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">1</div>
+                <div><h2>Identificação</h2><p>Nome, tipo e código usados para localizar o item no catálogo.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field field-full">
+                    <label for="product-name">Nome <span class="required">*</span></label>
+                    <input id="product-name" name="name" value="{{ product.name if product else '' }}" required maxlength="160" placeholder="Ex.: Implantação, Consultoria ou Produto X">
+                </div>
+                <div class="field">
+                    <label for="kind">Tipo <span class="required">*</span></label>
+                    <select id="kind" name="kind" required>
+                        {% for value, label in kinds.items() %}<option value="{{ value }}" {% if product and product.kind == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="code">Código / SKU</label>
+                    <input id="code" name="code" value="{{ product.code if product else '' }}" maxlength="80" autocomplete="off" placeholder="Ex.: SERV-001">
+                    <small>Quando preenchido, deve ser único no catálogo.</small>
+                </div>
+                <div class="field">
+                    <label for="category">Categoria</label>
+                    <input id="category" name="category" value="{{ product.category if product else '' }}" maxlength="120" placeholder="Ex.: Serviços, Equipamentos">
+                </div>
+                <div class="field">
+                    <label for="unit">Unidade</label>
+                    <input id="unit" name="unit" value="{{ product.unit if product else '' }}" maxlength="40" placeholder="Ex.: un, hora, projeto, kg">
+                </div>
+                <div class="field field-full">
+                    <label for="description">Descrição</label>
+                    <textarea id="description" name="description" rows="4" maxlength="1200" placeholder="Descrição comercial opcional">{{ product.description if product else '' }}</textarea>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">2</div>
+                <div><h2>Preço de referência</h2><p>Valor padrão utilizado como ponto de partida ao incluir o item em uma negociação.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field field-half">
+                    <label for="default-price">Preço padrão (R$) <span class="required">*</span></label>
+                    <input id="default-price" name="default_price" value="{{ product.default_price if product else '0,00' }}" required inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    <small>Aceita 5000,00 ou 5.000,00. O sistema grava com precisão de 2 casas decimais.</small>
+                </div>
+            </div>
+        </section>
+
+        {% if editing %}
+        <section class="form-card">
+            <div class="form-section-heading">
+                <div class="form-section-number">3</div>
+                <div><h2>Situação do catálogo</h2><p>Itens inativos permanecem no histórico, mas deixam de ser oferecidos para novas negociações.</p></div>
+            </div>
+            <div class="form-fields">
+                <div class="field field-half">
+                    <label for="is-active">Status</label>
+                    <select id="is-active" name="is_active">
+                        <option value="true" {% if product.is_active %}selected{% endif %}>Ativo</option>
+                        <option value="false" {% if not product.is_active %}selected{% endif %}>Inativo</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <footer class="form-submit-bar">
+            <div><strong>{{ 'Salvar alterações' if editing else 'Concluir cadastro' }}</strong><span>O catálogo não controla estoque nesta etapa do VENDRA.</span></div>
+            <div class="form-actions">
+                <a class="button secondary" href="/produtos">Cancelar</a>
+                <button class="button primary" type="submit">{{ 'Salvar alterações' if editing else 'Salvar item' }}</button>
+            </div>
+        </footer>
+    </form>
+</div>
+{% endblock %}

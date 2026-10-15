@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Atendimento interno | VENDRA STAGING{% endblock %}
+{% block content %}
+<header class="page-header"><div><span class="eyebrow">ATENDIMENTO INTERNO • SEM CANAL EXTERNO</span><h1>{{ ticket.title }}</h1><p>{{ ticket.customer_name }} · {{ ticket.status.replace('_',' ')|capitalize }} · chegada {{ ticket.created_at|date_br }}</p></div><a class="button secondary" href="/atendimentos">← Voltar</a></header>
+<section class="panel staging-form"><h2>Notas internas</h2><p>Registros de teste. <strong>Não são respostas para o lead</strong> e não enviam mensagens.</p><div class="staging-notes" aria-label="Histórico de notas internas">
+{% for note in notes %}<article class="staging-note"><div><strong>{{ note.author_name }}</strong> · <small>{{ note.created_at|datetime_br }}</small></div><p>{{ note.content }}</p></article>
+{% else %}<p>Nenhuma nota cadastrada.</p>{% endfor %}</div>
+{% if ticket.status not in ['finalizado','cancelado'] %}<form method="post" action="/atendimentos/{{ ticket.id }}/notas"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">{% if error %}<div class="alert error">{{ error }}</div>{% endif %}<label>Nova nota interna<textarea name="content" rows="4" maxlength="5000" required placeholder="Anotações de teste..."></textarea></label><button class="button primary" type="submit">Salvar nota</button></form>{% endif %}
+</section>
+{% endblock %}

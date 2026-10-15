@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ funnel.name }} | Funis | VENDRA{% endblock %}
+{% block content %}
+<header class="page-header"><div><a class="back" href="/configuracoes/funis">← Funis de vendas</a><span class="eyebrow">CONFIGURAÇÕES · CRM</span><h1>{{ funnel.name }}</h1><p>Edite o funil e organize a ordem das etapas comerciais.</p></div></header>
+{% if request.query_params.get('created') %}<div class="alert success catalog-alert">Funil criado. Agora configure as etapas.</div>{% endif %}
+{% if request.query_params.get('updated') %}<div class="alert success catalog-alert">Funil atualizado.</div>{% endif %}
+{% if request.query_params.get('stage_created') %}<div class="alert success catalog-alert">Etapa adicionada.</div>{% endif %}
+{% if request.query_params.get('stage_updated') %}<div class="alert success catalog-alert">Etapa atualizada.</div>{% endif %}
+{% if request.query_params.get('reordered') %}<div class="alert success catalog-alert">Ordem das etapas atualizada.</div>{% endif %}
+{% if error %}<div class="alert error form-alert">{{ error }}</div>{% endif %}
+<div class="funnel-config-layout">
+<section class="form-card">
+<div class="form-section-heading"><div class="form-section-number">1</div><div><h2>Dados do funil</h2><p>O funil pode ser inativado sem apagar seu histórico.</p></div></div>
+<form method="post" action="/configuracoes/funis/{{ funnel.id }}/editar" class="registration-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><div class="form-fields"><div class="field field-full"><label for="name">Nome</label><input id="name" name="name" required maxlength="120" value="{{ funnel.name }}"></div><div class="field field-full"><label for="description">Descrição</label><textarea id="description" name="description" rows="3" maxlength="600">{{ funnel.description or '' }}</textarea></div><div class="field field-half"><label for="is-active">Status</label><select id="is-active" name="is_active"><option value="true" {% if funnel.is_active %}selected{% endif %}>Ativo</option><option value="false" {% if not funnel.is_active %}selected{% endif %}>Inativo</option></select></div></div><div class="funnel-inline-submit"><button class="button primary" type="submit">Salvar funil</button></div></form>
+</section>
+<section class="form-card">
+<div class="form-section-heading"><div class="form-section-number">2</div><div><h2>Etapas</h2><p>A ordem abaixo será a ordem das colunas no Kanban.</p></div><span class="config-count">{{ funnel.active_stage_count }} ativas</span></div>
+<div class="funnel-stage-list">
+{% for stage in funnel.stages %}
+<article class="funnel-stage-row {% if not stage.is_active %}is-inactive{% endif %}"><div class="stage-drag"><span class="stage-color" style="background:{{ stage.color }}"></span><div><strong>{{ stage.position }}. {{ stage.name }}</strong><small>{{ 'Ativa' if stage.is_active else 'Inativa' }}</small></div></div><div class="stage-actions"><form method="post" action="/configuracoes/funis/{{ funnel.id }}/etapas/{{ stage.id }}/mover"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="direction" value="up"><button class="button secondary mini" type="submit" aria-label="Mover etapa para cima">↑</button></form><form method="post" action="/configuracoes/funis/{{ funnel.id }}/etapas/{{ stage.id }}/mover"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="direction" value="down"><button class="button secondary mini" type="submit" aria-label="Mover etapa para baixo">↓</button></form><a class="button secondary mini" href="/configuracoes/funis/{{ funnel.id }}/etapas/{{ stage.id }}/editar">Editar</a></div></article>
+{% else %}<div class="empty compact">Nenhuma etapa configurada.</div>{% endfor %}
+</div>
+{% if stage_error %}<div class="alert error funnel-stage-error">{{ stage_error }}</div>{% endif %}
+<form method="post" action="/configuracoes/funis/{{ funnel.id }}/etapas/nova" class="funnel-stage-create"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><div class="field"><label for="stage-name">Nova etapa</label><input id="stage-name" name="name" required maxlength="120" placeholder="Ex.: Proposta"></div><div class="field color-field"><label for="stage-color">Cor</label><input id="stage-color" type="color" name="color" value="#3157d5"></div><button class="button primary" type="submit">Adicionar etapa</button></form>
+</section>
+</div>
+<div class="catalog-note"><strong>Preparação para o próximo incremento:</strong> oportunidades só poderão entrar em funis ativos e em etapas ativas. Inativar uma etapa não apagará os registros que já estiverem vinculados a ela.</div>
+{% endblock %}

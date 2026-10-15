@@ -1,0 +1,24 @@
+/* H1-005B7: painel acessivel de prontidao (sempre sem envios) */
+.vendra-preflight{max-width:1000px;margin:0 auto;color:#192d44}
+.vendra-preflight header h1{color:#182b40;font-size:1.9rem;margin:8px 0 10px}
+.vendra-preflight header p{color:#405773;font-size:0.98rem;line-height:1.5}
+.vendra-preflight header a{color:#1e5894;font-weight:700}
+.vendra-preflight-eyebrow{font-size:.8rem!important;color:#1e5995!important;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.vendra-preflight-card,.vendra-preflight-form{border-radius:15px;padding:24px;margin:22px 0;background:#fff;border:1px solid #dae3ec}
+.vendra-preflight h2{color:#1e324c;font-size:1.25rem;margin:0 0 15px}
+.vendra-preflight-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.vendra-preflight-metrics div{border-radius:10px;background:#eaf0f7;padding:14px}
+.vendra-preflight-metrics span{display:block;color:#42546b;font-size:.8rem}
+.vendra-preflight-metrics strong{display:block;font-size:1.45rem;color:#182e49;margin-top:4px}
+.vendra-preflight-ok{background:#e6f5ee;color:#165a3d;border-radius:10px;padding:12px;font-weight:650}
+.vendra-preflight-alert{background:#ffeaeb;color:#7f1c28;border-radius:10px;padding:14px;margin:12px 0;font-weight:650}
+.vendra-preflight-form form{display:grid;gap:11px}
+.vendra-preflight-form label{color:#243f5c;font-weight:700}
+.vendra-preflight-form select,.vendra-preflight-form textarea{width:100%;box-sizing:border-box;border-radius:10px;border:1px solid #8cacc7;padding:12px;background:#fff;color:#13263d;font-size:1rem}
+.vendra-preflight-form button{background:#1e5c98;border:0;color:#fff;font-weight:700;padding:13px 16px;border-radius:10px;cursor:pointer;justify-self:start}
+.vendra-preflight-form button:disabled{background:#93a9bd;cursor:not-allowed}
+.vendra-preflight-form p,.vendra-preflight-card p{color:#334c65;line-height:1.6}
+.vendra-preflight-result{border-color:#9ebfb2}
+.vendra-preflight-msg{white-space:pre-wrap;overflow-wrap:anywhere;background:#e9f0f6;color:#122842;border-radius:10px;padding:16px;margin:10px 0}
+.vendra-preflight code{overflow-wrap:anywhere}
+@media(max-width:750px){.vendra-preflight-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.vendra-preflight-card,.vendra-preflight-form{padding:16px}}

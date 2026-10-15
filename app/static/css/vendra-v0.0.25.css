@@ -1,0 +1,11 @@
+/* VENDRA 0.0.25 — alerta transitório (5s + fade) e dispensável. */
+.lead-alert-root{opacity:1;transform:translateY(0);transition:opacity .65s ease,transform .65s ease;will-change:opacity,transform}
+.lead-alert-root.is-fading{opacity:0;transform:translateY(-12px);pointer-events:none}
+.lead-alert-dismiss{flex:0 0 auto;border:0;background:transparent;color:#8e2718;font-size:23px;font-weight:600;line-height:1;width:30px;height:30px;border-radius:7px;cursor:pointer;display:grid;place-items:center}
+.lead-alert-dismiss:hover,.lead-alert-dismiss:focus-visible{background:#fce3dc}
+.lead-alert-item span{font-variant-numeric:tabular-nums;font-weight:650;white-space:nowrap}
+.lead-alert-sidebar-open{display:flex;align-items:center;gap:8px;width:100%;text-align:left;margin-top:10px;padding:8px 10px;border:1px solid #e1a297;border-radius:8px;background:#fff1ed;color:#9a2c1c;font-size:12px;font-weight:800;cursor:pointer}
+.lead-alert-sidebar-open:hover{background:#ffe1d9}
+.lead-alert-sidebar-open[hidden]{display:none!important}
+@media(max-width:700px){.lead-alert-item span{white-space:normal}.lead-alert-root{max-width:calc(100vw - 20px)}}
+@media(prefers-reduced-motion:reduce){.lead-alert-root{transition:none}.lead-alert-root.is-fading{transform:none}}

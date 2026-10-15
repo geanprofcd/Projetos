@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Prévia de Disparos | VENDRA STAGING{% endblock %}
+{% block content %}
+<section class="vendra-staging-dispatch">
+  <header><p class="overline">H1-005B5 • Ambiente de testes</p>
+  <h1>Disparos · Prévia segura</h1>
+  <p>Valide o destinatário e o conteúdo antes da integração com o WhatsApp. <strong>Esta tela NÃO envia mensagens, não agenda disparos e não cria itens na outbox.</strong></p></header>
+  <p><a class="vendra-life-link" href="/disparos/simulacoes">Continuar para o ciclo de simulações H1-005B6 →</a></p>
+  {% if error %}<div class="vendra-staging-dispatch-error" role="alert">{{ error }}</div>{% endif %}
+  <form method="post" action="/disparos/simular" class="vendra-staging-dispatch-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label for="opp">Oportunidade aberta</label>
+    <select id="opp" name="opportunity_id" required>
+      <option value="">Escolha uma oportunidade</option>
+      {% for option in candidates %}
+      <option value="{{ option.id }}" {% if selected == option.id %}selected{% endif %}>{{ option.title }} · {{ option.customer_name }}</option>
+      {% endfor %}
+    </select>
+    <label for="content">Conteúdo para simulação (não é template aprovado pela Meta)</label>
+    <textarea id="content" name="content" rows="6" maxlength="1024" required placeholder="Olá, {{ '{{nome}}' }}! Podemos falar sobre {{ '{{oportunidade}}' }}?">{{ content }}</textarea>
+    <p>Variáveis permitidas: <code>{{ '{{nome}}' }}</code>, <code>{{ '{{empresa}}' }}</code>, <code>{{ '{{oportunidade}}' }}</code>, <code>{{ '{{funil}}' }}</code> e <code>{{ '{{etapa}}' }}</code>.</p>
+    <button type="submit">Simular e registrar na auditoria</button>
+  </form>
+  {% if result %}
+  <div class="vendra-staging-dispatch-result" role="status">
+    <h2>Prévia registrada com sucesso</h2>
+    <p><strong>Cliente:</strong> {{ result.customer_name }} | <strong>Telefone mascarado:</strong> {{ result.phone_masked }}</p>
+    <p><strong>Oportunidade:</strong> {{ result.opportunity_title }}</p>
+    <div class="vendra-staging-dispatch-message">{{ result.message }}</div>
+    <p><strong>Sem envio externo.</strong> Sem entrada na fila. Auditoria: {{ result.fingerprint }}</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
