@@ -40,10 +40,13 @@ class BridgeConfig:
     business_account_id: str
     allowed_phones: tuple[str, ...]
     ai_enabled: bool = False
+    dispatch_enabled: bool = False
 
     def validate(self) -> None:
         if type(self.ai_enabled) is not bool:
             raise ValueError('Flag IA precisa ser booleana explicita.')
+        if type(self.dispatch_enabled) is not bool:
+            raise ValueError('Flag de disparos precisa ser booleana explicita.')
         if self.environment not in {'staging', 'production'}:
             raise ValueError('Ambiente explicito obrigatorio.')
         parsed = urlsplit(self.supabase_url)
@@ -75,13 +78,16 @@ def load_config(path: Path) -> BridgeConfig:
     ai_flag = values.get('VENDRA_BRIDGE_AI_ENABLED', 'false')
     if ai_flag not in {'true', 'false'}:
         raise ValueError('VENDRA_BRIDGE_AI_ENABLED exige true ou false explicito.')
+    dispatch_flag = values.get('VENDRA_BRIDGE_DISPATCH_ENABLED', 'false')
+    if dispatch_flag not in {'true', 'false'}:
+        raise ValueError('VENDRA_BRIDGE_DISPATCH_ENABLED exige true ou false explicito.')
     config = BridgeConfig(
         environment=values['APP_ENV'], project_ref=values['VENDRA_BRIDGE_PROJECT_REF'],
         supabase_url=values['SUPABASE_URL'], backend_key=values['SUPABASE_SERVICE_ROLE_KEY'],
         webhook_secret=values['MAKE_WEBHOOK_SECRET'], phone_number_id=values['META_PHONE_NUMBER_ID'],
         business_account_id=values['META_WABA_ID'],
         allowed_phones=tuple(p.strip() for p in values['VENDRA_BRIDGE_ALLOWED_PHONES'].split(',') if p.strip()),
-        ai_enabled=ai_flag == 'true')
+        ai_enabled=ai_flag == 'true', dispatch_enabled=dispatch_flag == 'true')
     config.validate()
     return config
 
@@ -145,6 +151,30 @@ class OutboxBinding(MetaSource):
     claim_token: SecretStr = Field(min_length=32, max_length=100)
     recipient_id: str = Field(min_length=8, max_length=30)
     status: str = Field(default='sent', pattern='^sent$')
+
+
+class DispatchPrepare(MetaSource):
+    phone: str = Field(min_length=8, max_length=30)
+    name: str | None = Field(default=None, min_length=1, max_length=160)
+    name_base64: str | None = Field(default=None, max_length=1000)
+    template_key: str = Field(pattern='^continuar_atendimento_vendra$')
+
+    @model_validator(mode='after')
+    def decode_name(self):
+        if (self.name is None) == (self.name_base64 is None):
+            raise ValueError('Informe exatamente uma representacao do nome.')
+        if self.name_base64 is not None:
+            try:
+                self.name = base64.b64decode(self.name_base64, validate=True).decode('utf-8')
+            except (binascii.Error, UnicodeError):
+                raise ValueError('Nome codificado invalido.') from None
+        if not self.name.strip() or len(self.name) > 160:
+            raise ValueError('Nome fora do limite.')
+        return self
+
+
+class DispatchBinding(OutboxBinding):
+    outbox_id: UUID
 
 
 def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
@@ -228,7 +258,8 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
     def health():
         return {'status': 'ok', 'environment': config.environment,
                 'component': 'whatsapp_callbacks_v1', 'external_sends_enabled': False,
-                'ai_enabled': config.ai_enabled, 'persistence': 'supabase'}
+                'ai_enabled': config.ai_enabled, 'dispatch_enabled': config.dispatch_enabled,
+                'persistence': 'supabase'}
 
     @app.post('/webhooks/make/whatsapp', status_code=202)
     def inbound(payload: Inbound, x_webhook_secret: str | None = Header(default=None)):
@@ -253,7 +284,8 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
     def provider_status(payload: ProviderStatus, x_webhook_secret: str | None = Header(default=None)):
         if not authorize(x_webhook_secret, payload, payload.recipient_id):
             return {'accepted': True, 'ignored': True, 'reason': 'outside_test_scope'}
-        return rpc('vendra_whatsapp_status_v1', {
+        function = 'vendra_dispatch_provider_status_v1' if config.dispatch_enabled else 'vendra_whatsapp_status_v1'
+        return rpc(function, {
             'p_provider_message_id': payload.provider_message_id, 'p_status': payload.status,
             'p_occurred_at': payload.occurred_at.isoformat(), 'p_recipient_id': payload.recipient_id,
             'p_error_message': payload.error_message})
@@ -269,6 +301,40 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
         return rpc('vendra_whatsapp_bind_v1', {'p_outbox_id': str(outbox_id),
             'p_provider_message_id': payload.provider_message_id,
             'p_claim_token': payload.claim_token.get_secret_value()})
+
+    if config.dispatch_enabled:
+        def dispatch_scope(dispatch_id: UUID, phone: str) -> dict:
+            item = lookup('dispatches', 'phone,ticket_id', dispatch_id)
+            check_entity_phone(item['phone'], phone)
+            ticket_scope(item['ticket_id'], phone)
+            return item
+
+        @app.post('/webhooks/make/disparos/{dispatch_id}/prepare', status_code=202)
+        def dispatch_prepare(dispatch_id: UUID, payload: DispatchPrepare,
+                             x_webhook_secret: str | None = Header(default=None)):
+            if not authorize(x_webhook_secret, payload, payload.phone):
+                raise HTTPException(403, 'Destinatario fora do escopo autorizado.')
+            dispatch_scope(dispatch_id, payload.phone)
+            result = rpc('vendra_dispatch_prepare_v1', {'p_dispatch_id': str(dispatch_id),
+                'p_phone': payload.phone, 'p_name': payload.name, 'p_template_key': payload.template_key})
+            if result.get('authorized') is True:
+                outbox = result.get('outbox')
+                if not isinstance(outbox, dict):
+                    raise HTTPException(503, 'Banco nao confirmou a reserva do disparo.')
+                check_entity_phone(outbox.get('phone'), payload.phone)
+            return result
+
+        @app.post('/webhooks/make/disparos/{dispatch_id}/status', status_code=202)
+        def dispatch_bind(dispatch_id: UUID, payload: DispatchBinding,
+                          x_webhook_secret: str | None = Header(default=None)):
+            if not authorize(x_webhook_secret, payload, payload.recipient_id):
+                raise HTTPException(403, 'Destinatario fora do escopo autorizado.')
+            dispatch_scope(dispatch_id, payload.recipient_id)
+            item = lookup('whatsapp_outbox', 'phone', payload.outbox_id)
+            check_entity_phone(item['phone'], payload.recipient_id)
+            return rpc('vendra_dispatch_bind_v1', {'p_dispatch_id': str(dispatch_id),
+                'p_outbox_id': str(payload.outbox_id), 'p_provider_message_id': payload.provider_message_id,
+                'p_claim_token': payload.claim_token.get_secret_value()})
 
     if config.ai_enabled:
         @app.get('/webhooks/make/ai/control/{ticket_id}')

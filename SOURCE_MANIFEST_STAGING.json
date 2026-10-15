@@ -667,7 +667,7 @@
     },
     {
       "path": "app/whatsapp_callbacks.py",
-      "sha256": "cdeb3834826375887e867e93431860fe6b8c1aa3d83c978c30f8cb3e23bdb5aa"
+      "sha256": "0e09f7220a429c7891ecaa90ba89005d63ce7f237e6e2d51110de6c0f31f0429"
     },
     {
       "path": "docs/ANALISE_INICIAL.md",
@@ -1060,6 +1060,26 @@
     {
       "path": "docs/VALIDACAO_AGENTE_CALLBACKS_STAGING.md",
       "sha256": "d8f637ec5a5117b6432d137755dd7ce113444b10b1d5bc25e19a88610e2aaefa"
+    },
+    {
+      "path": "tests/test_whatsapp_dispatch_bridge.py",
+      "sha256": "d5ccdda7593a864d9bdeff17997eb0e80e504cfda6c51f04865967e09adc671c"
+    },
+    {
+      "path": "sql/06_APLICAR_DISPARO_INICIAL_STAGING.sql",
+      "sha256": "c1d6f1a49166cc7d289785a87e24e190dd9c218b3c35e84f035db6fed2fab27e"
+    },
+    {
+      "path": "sql/07_ROLLBACK_DISPARO_INICIAL_STAGING.sql",
+      "sha256": "6e8e390bc5cf7ff25b5be1e34e81dfa8c4d245fed0ee48d8a56c52db6cc7c3c8"
+    },
+    {
+      "path": "sql/08_CORRIGIR_WAMID_MENSAGEM_DISPARO_STAGING.sql",
+      "sha256": "139917275b65fc7dd2e0b96288d6793594307c45f9be8bc63954f46cb8461866"
+    },
+    {
+      "path": "docs/VALIDACAO_DISPARO_INICIAL_STAGING.md",
+      "sha256": "2a751699d267846aca2c43fe8b0ba75254a74a0aa69c51b4b9669126a66b8dfd"
     }
   ]
 }
