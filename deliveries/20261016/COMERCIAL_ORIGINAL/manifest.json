@@ -1,0 +1,75 @@
+{
+  "files": [
+    {
+      "path": "files/app/db/http_client.py",
+      "sha256": "780c30d86eef7b3ce0866a355094b9ffdd55bbf5d1217c2141bcb772b9007f27"
+    },
+    {
+      "path": "files/app/db/supabase.py",
+      "sha256": "ee5df88efbea9bebcfe050496e14b119d931402d5cba83ca8c99b13819c5719d"
+    },
+    {
+      "path": "files/app/routers/tickets.py",
+      "sha256": "5a73ce741cccf6ca2bcbda1e4076c60df01f8aab38fcf3d83f9813f8ff05b3ed"
+    },
+    {
+      "path": "files/app/services/conversation_order_service.py",
+      "sha256": "1e950ace2e03a9fc5fe9d862bc35c71cb279f7530e1ed07002cc2b862bbe9524"
+    },
+    {
+      "path": "files/app/services/opportunity_service.py",
+      "sha256": "787b6f6acf29006bae956cebfd7c5a0ae3888341b8566df9bc029bc48821dffa"
+    },
+    {
+      "path": "files/app/services/ticket_attention_service.py",
+      "sha256": "367cadb0a4414fa047f4b8e3597854ed38aa8d43db511bd254db7bf3e486ed2c"
+    },
+    {
+      "path": "files/docs/OPERACAO_ORIGINAL_ONLINE.md",
+      "sha256": "694e6192c708e2288cbb2b05b79bc7c47278d70f8e999ce226411925d4f955bf"
+    },
+    {
+      "path": "files/docs/VALIDACAO_ATUAL.md",
+      "sha256": "8184da06277f306eb98c43094ef89fc30495d364fa1ff1b8112ef2e8c2b0ab81"
+    },
+    {
+      "path": "files/docs/VALIDACAO_FUNIS_COMERCIAL_20261016.md",
+      "sha256": "b757f4a16440770a04b61fc4b163e00c3dc019a1ab567045d5ccc8dba9a8f229"
+    },
+    {
+      "path": "files/sql/25_COMPLETAR_FUNIL_COMERCIAL_ORIGINAL.sql",
+      "sha256": "a35dd5700e4d5f06dee6faf6f3cec2f96e818bd53c665bb445c0cac9b33dfd99"
+    },
+    {
+      "path": "files/sql/26_REGRAS_COMERCIAIS_WHATSAPP.sql",
+      "sha256": "74ec521f16b0eacd70ac16ac27d8096cce25f7f5c3a325bcd802ac5bdb4e62ee"
+    },
+    {
+      "path": "files/sql/26_VALIDAR_REGRAS_COMERCIAIS_TRANSACAO.sql",
+      "sha256": "f46711a95ed37a1a12cf822df7867bf36e7a9058e3a68045c2097d5eaa4a7e30"
+    },
+    {
+      "path": "files/sql/27_ROLLBACK_REGRAS_COMERCIAIS_WHATSAPP.sql",
+      "sha256": "86bfe626e2ce2add515464f0017c15e77a4f5b7c98e302cc67b5074754abf203"
+    },
+    {
+      "path": "files/tests/test_conversation_order.py",
+      "sha256": "6563bfe154d8964822b776f9b41db9855e314565afcc5455ac9a4c59889e5911"
+    },
+    {
+      "path": "files/tests/test_database_http_client.py",
+      "sha256": "6425fabcd4c257ede1a207373829ead8571b530b964ac558981de08a28b4ed25"
+    },
+    {
+      "path": "files/tools/aplicar_ordem_comercial_original.py",
+      "sha256": "fb398fe2dc98674db5d7095d5ffbda7e1afa38ae738804b8521bb56065cfae50"
+    },
+    {
+      "path": "INSTRUCOES.md",
+      "sha256": "374f107f71e887d8ebfd3874ba4ef5d995a87ac4b4698e08f10d9a7d8e2c37e7"
+    }
+  ],
+  "source_commit": "c25a2693e350efcba54a0eea9ce1ea377f171685",
+  "sql_make_separate": true,
+  "native_original_applied": true
+}
