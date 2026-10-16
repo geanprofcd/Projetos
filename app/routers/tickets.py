@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+from uuid import uuid4
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
@@ -27,6 +28,9 @@ from app.services.funnel_service import get_funnel, list_funnels
 from app.services.metadata_service import list_categories, list_crops, list_internal_users
 from app.services.opportunity_service import OpportunityConflictError, archive_opportunity, get_ticket_opportunity, list_opportunities, move_opportunity_stage
 from app.services.integration_service import queue_whatsapp_outbound
+from app.services.whatsapp_human_command_service import (
+    request_human_text, HumanCommandConflict, HumanCommandUnavailable,
+)
 from app.services.whatsapp_window_service import WhatsAppTemplateRequiredError, get_whatsapp_service_window, require_freeform_window
 from app.services.automation_service import (
     connect_ticket_to_ai,
@@ -71,6 +75,7 @@ def _detail_context(ticket_id: str, user: dict, request: Request | None = None, 
         "settings_attachment_video_max_mb": get_settings().attachment_video_max_mb,
         "composer_error": None,
         "composer_body": "",
+        "composer_request_id": str(uuid4()),
         "csrf_token": _tickets_csrf(request) if request else None,
     }
     if user.get("role") in {"responsavel", "administrador"}:
@@ -496,6 +501,7 @@ async def send_message(
     is_internal: bool = Form(False),
     files: list[UploadFile] = File(default=[]),
     csrf_token: str | None = Form(default=None),
+    request_id: str | None = Form(default=None),
 ):
     _require_tickets_csrf(request, csrf_token or "")
     ticket = get_ticket(ticket_id, user)
@@ -544,6 +550,28 @@ async def send_message(
     saved_attachments = []
     human_whatsapp = (not is_internal and user.get("role") in {"responsavel", "administrador"}
                       and ticket.get("source") == "whatsapp")
+    settings = get_settings()
+    if (human_whatsapp and not prepared_files
+            and getattr(settings, 'whatsapp_persistent_control_enabled', False)
+            and not getattr(settings, 'demo_mode', True)):
+        try:
+            command = request_human_text(actor_id=user.get('id'), ticket_id=ticket_id,
+                                         body=body, request_id=request_id)
+        except ValueError as exc:
+            status = 409 if isinstance(exc, HumanCommandConflict) else 503 if isinstance(exc, HumanCommandUnavailable) else 422
+            return templates.TemplateResponse(
+                request=request, name='tickets/detail.html', status_code=status,
+                context=_detail_context(ticket_id, user, request=request, composer_error=str(exc),
+                                        composer_body=body, composer_request_id=request_id or ''),
+            )
+        # O comando já está confirmado. Falha de notificação nunca o desfaz.
+        if command['outbox'].get('status') == 'pending':
+            from app.services.outbox_wake_service import notify_make_outbox_async
+            try:
+                notify_make_outbox_async(command['outbox'])
+            except Exception as exc:
+                logger.warning('Notificação do comando humano indisponível: %s', type(exc).__name__)
+        return RedirectResponse(url=f'/atendimentos/{ticket_id}', status_code=303)
     if human_whatsapp:
         try:
             # Falha no controle interrompe antes de persistir mensagem/anexos/outbox.

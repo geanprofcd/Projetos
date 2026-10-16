@@ -131,6 +131,7 @@
 
         <form class="composer" method="post" action="/atendimentos/{{ ticket.id }}/mensagens" enctype="multipart/form-data" id="messageComposer">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="request_id" value="{{ composer_request_id }}">
             {% if composer_error %}<div class="composer-error" role="alert">{{ composer_error }}</div>{% endif %}
             <textarea name="body" rows="3" placeholder="Digite uma resposta ou envie um anexo...">{{ composer_body or '' }}</textarea>
             <div class="composer-bottom">

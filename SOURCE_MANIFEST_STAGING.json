@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "80f0dedc3e962e499e5e6864b75ec9db32f5e817aee8b77f90e5577ac2325ddc"
+      "sha256": "8a41c36e5f2aee57f52dc769a90114a752b00e1c13897ffbc753a1f1f3a84c72"
     },
     {
       "path": "README.md",
@@ -135,7 +135,7 @@
     },
     {
       "path": "app/routers/tickets.py",
-      "sha256": "6e8c4fa0363ef779d4db62a576814aeaa9d3d9e286c193fe71e91d06e62d95d9"
+      "sha256": "6e12962cfe1d2da1d0fb223524dfd9f16ca1f266bb0341500d4b25168927a1a1"
     },
     {
       "path": "app/routers/users.py",
@@ -647,7 +647,7 @@
     },
     {
       "path": "app/templates/tickets/detail.html",
-      "sha256": "7ecb8f1984b47098873ab2f9b1f701393adb04870b494db2383e8b7fda4f93c0"
+      "sha256": "648e83d2a8ff9c782244e56338aae7b31dee0597ddd1737ec70170d17789ba75"
     },
     {
       "path": "app/templates/tickets/form.html",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "0bac1aabf7a165b5fc46702bd309e73d795831daac9de0849c1f374ca0b7ca25"
+      "sha256": "2bc9dd7cf6a2cf1e668471739cf3d4f48c11b9afcb6149f3699210f59b6d6ee5"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1183,7 +1183,7 @@
     },
     {
       "path": "tests/test_commercial_composer.py",
-      "sha256": "c4e3d9032622486deacf8898f92f7a282424b243b2ce20163aa27c6c554ad8ea"
+      "sha256": "1b0f80d00132b57c8af500c8a9c56ee7cc7aa1f3c15ba6d0838f0e22cc46960d"
     },
     {
       "path": "docs/VALIDACAO_COMPOSER_ANEXOS_H1_006M.md",
@@ -1216,6 +1216,26 @@
     {
       "path": "docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
       "sha256": "9611318fdb2d8209e1d8f02b1a2f7e54dc3ec04cd7489eaf8dbe0ec92b54927a"
+    },
+    {
+      "path": "app/services/whatsapp_human_command_service.py",
+      "sha256": "c3367da3fba7a9de9e7f627f84e5792237777a9c14157368d5201c4458a5841b"
+    },
+    {
+      "path": "tests/test_whatsapp_human_command.py",
+      "sha256": "1fc40e10e35ce01b5084a6efd46b7bb38f34892ffd38c1e902e42490aa0f1020"
+    },
+    {
+      "path": "sql/15_PREPARAR_COMANDO_HUMANO_STAGING.sql",
+      "sha256": "4075c2e1c7b3cd03fc6f3151b9495309ec7f9ed5e3fa6bff0f44c5797506db83"
+    },
+    {
+      "path": "sql/16_ROLLBACK_COMANDO_HUMANO_STAGING.sql",
+      "sha256": "70be16a940019267099201c076940b7b0f6fbca769f57f23684c2285bc3d2117"
+    },
+    {
+      "path": "docs/VALIDACAO_COMANDO_HUMANO_H1_006P.md",
+      "sha256": "cadf7f54a1d7c303bf9312107dfbf513e6018767f3b037e506681df050f5bf2a"
     }
   ]
 }

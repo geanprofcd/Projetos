@@ -46,6 +46,18 @@ class ComposerRouteTests(TestCase):
         self.queue.side_effect=lambda *a,**kw:events.append('outbox')
         self.assertEqual(self.post().status_code,303);self.assertEqual(events,['handoff','message','outbox'])
         self.assertEqual(self.mode.call_args.kwargs['actor_id'],'operator')
+    def test_persistent_text_uses_one_atomic_command_without_legacy_writes(self):
+        settings=SimpleNamespace(demo_mode=False,whatsapp_persistent_control_enabled=True)
+        with patch.object(self.routes,'get_settings',return_value=settings), patch.object(self.routes,'request_human_text',return_value={'outbox':{'status':'sent'}}) as command:
+            self.assertEqual(self.post(data={'request_id':'same-request'}).status_code,303)
+        self.assertEqual(command.call_args.kwargs['request_id'],'same-request')
+        self.mode.assert_not_called();self.add.assert_not_called();self.queue.assert_not_called()
+    def test_uncertain_atomic_result_keeps_nonce_and_never_rolls_back(self):
+        settings=SimpleNamespace(demo_mode=False,whatsapp_persistent_control_enabled=True)
+        with patch.object(self.routes,'get_settings',return_value=settings), patch.object(self.routes,'request_human_text',side_effect=self.routes.HumanCommandUnavailable('Confira o comando.')), patch.object(self.routes,'_detail_context',return_value={'composer_error':'Confira o comando.'}) as context:
+            self.assertEqual(self.post(data={'request_id':'same-request'}).status_code,503)
+        self.assertEqual(context.call_args.kwargs['composer_request_id'],'same-request')
+        self.mode.assert_not_called();self.add.assert_not_called();self.remove_message.assert_not_called()
     def test_invalid_file_and_empty_form_do_not_take_over(self):
         self.assertEqual(self.post(files={'files':('teste.exe',b'MZ','application/octet-stream')}).status_code,422)
         self.assertEqual(self.post(data={'body':''}).status_code,422)
