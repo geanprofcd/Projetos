@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "0d436f23e5ee599c6318d762fb03c7d6a10b7f146a18adaf33b89be4300e34c3"
+      "sha256": "80f0dedc3e962e499e5e6864b75ec9db32f5e817aee8b77f90e5577ac2325ddc"
     },
     {
       "path": "README.md",
@@ -667,7 +667,7 @@
     },
     {
       "path": "app/whatsapp_callbacks.py",
-      "sha256": "0e09f7220a429c7891ecaa90ba89005d63ce7f237e6e2d51110de6c0f31f0429"
+      "sha256": "59120b6989a2cf8ae1b63186122341545edbdba74c93b3569af7cc65691a1743"
     },
     {
       "path": "docs/ANALISE_INICIAL.md",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "cd3f8aecde5cc9c29aa01188ab42bbb3137fcbf680f050580a967ecd7e26d754"
+      "sha256": "0bac1aabf7a165b5fc46702bd309e73d795831daac9de0849c1f374ca0b7ca25"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1196,6 +1196,26 @@
     {
       "path": "docs/VALIDACAO_HISTORICO_COMERCIAL_H1_006N.md",
       "sha256": "7d16f8c897f9650f2bb504f14f4182403163bc6992d57be22b91183d25cab740"
+    },
+    {
+      "path": "tests/test_whatsapp_human_bridge.py",
+      "sha256": "e4d6cf661a8b161981599d59a24ac806eca6e1174e751b151379d5b8943d9bb9"
+    },
+    {
+      "path": "sql/13_PREPARAR_RESERVA_HUMANA_STAGING.sql",
+      "sha256": "a442fc207093792fbad78b28742a720d7efcbf3a905ba06e9722102b883866ff"
+    },
+    {
+      "path": "sql/14_ROLLBACK_RESERVA_HUMANA_STAGING.sql",
+      "sha256": "b6d381eaba15135d3c968eaa699ee0c8b4bfcc9fcda542dbc6e12c0e46884186"
+    },
+    {
+      "path": "docs/VALIDACAO_SAIDA_HUMANA_H1_006O.md",
+      "sha256": "182e7967590df8ad3b18676014952db9a901908eb2bf888bb19ce7469955456b"
+    },
+    {
+      "path": "docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
+      "sha256": "9611318fdb2d8209e1d8f02b1a2f7e54dc3ec04cd7489eaf8dbe0ec92b54927a"
     }
   ]
 }

@@ -12,12 +12,16 @@ import hmac
 import base64
 import binascii
 import re
+import logging
 from urllib.parse import urlsplit
 from uuid import UUID
+from contextlib import asynccontextmanager
 
 from dotenv import dotenv_values
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field, SecretStr, field_validator, model_validator
+
+logger = logging.getLogger(__name__)
 
 
 def canonical_phone(value: str) -> str:
@@ -41,12 +45,15 @@ class BridgeConfig:
     allowed_phones: tuple[str, ...]
     ai_enabled: bool = False
     dispatch_enabled: bool = False
+    human_enabled: bool = False
 
     def validate(self) -> None:
         if type(self.ai_enabled) is not bool:
             raise ValueError('Flag IA precisa ser booleana explicita.')
         if type(self.dispatch_enabled) is not bool:
             raise ValueError('Flag de disparos precisa ser booleana explicita.')
+        if type(self.human_enabled) is not bool:
+            raise ValueError('Flag de saida humana precisa ser booleana explicita.')
         if self.environment not in {'staging', 'production'}:
             raise ValueError('Ambiente explicito obrigatorio.')
         parsed = urlsplit(self.supabase_url)
@@ -81,13 +88,16 @@ def load_config(path: Path) -> BridgeConfig:
     dispatch_flag = values.get('VENDRA_BRIDGE_DISPATCH_ENABLED', 'false')
     if dispatch_flag not in {'true', 'false'}:
         raise ValueError('VENDRA_BRIDGE_DISPATCH_ENABLED exige true ou false explicito.')
+    human_flag = values.get('VENDRA_BRIDGE_HUMAN_ENABLED', 'false')
+    if human_flag not in {'true', 'false'}:
+        raise ValueError('VENDRA_BRIDGE_HUMAN_ENABLED exige true ou false explicito.')
     config = BridgeConfig(
         environment=values['APP_ENV'], project_ref=values['VENDRA_BRIDGE_PROJECT_REF'],
         supabase_url=values['SUPABASE_URL'], backend_key=values['SUPABASE_SERVICE_ROLE_KEY'],
         webhook_secret=values['MAKE_WEBHOOK_SECRET'], phone_number_id=values['META_PHONE_NUMBER_ID'],
         business_account_id=values['META_WABA_ID'],
         allowed_phones=tuple(p.strip() for p in values['VENDRA_BRIDGE_ALLOWED_PHONES'].split(',') if p.strip()),
-        ai_enabled=ai_flag == 'true', dispatch_enabled=dispatch_flag == 'true')
+        ai_enabled=ai_flag == 'true', dispatch_enabled=dispatch_flag == 'true', human_enabled=human_flag == 'true')
     config.validate()
     return config
 
@@ -177,14 +187,34 @@ class DispatchBinding(OutboxBinding):
     outbox_id: UUID
 
 
+class HumanPrepare(MetaSource):
+    phone: str = Field(min_length=8, max_length=30)
+
+
 def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
     config.validate()
+    transport = None
     if client is None:
+        import httpx
         from supabase import create_client
-        client = create_client(config.supabase_url, config.backend_key)
+        from supabase.lib.client_options import SyncClientOptions
+        # HTTP/1.1 evita erros de protocolo reproduzidos com callbacks concorrentes.
+        # Nao repetir escritas automaticamente quando o resultado for incerto.
+        transport = httpx.Client(http2=False, timeout=30, follow_redirects=False)
+        client = create_client(config.supabase_url, config.backend_key,
+            options=SyncClientOptions(httpx_client=transport, auto_refresh_token=False, persist_session=False))
     allowed = {canonical_phone(p) for p in config.allowed_phones}
+
+    @asynccontextmanager
+    async def lifespan(_):
+        try:
+            yield
+        finally:
+            if transport is not None:
+                transport.close()
+
     app = FastAPI(title='VENDRA - callbacks WhatsApp', docs_url=None,
-                  redoc_url=None, openapi_url=None)
+                  redoc_url=None, openapi_url=None, lifespan=lifespan)
 
     @app.middleware('http')
     async def headers(request, call_next):
@@ -223,6 +253,8 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
             result = client.rpc(name, params).execute().data
         except Exception as exc:
             code = str(getattr(exc, 'code', ''))
+            if code not in ('PT409', '22023', '42501'):
+                logger.warning('Falha RPC de callback: %s', type(exc).__name__)
             status = {'PT409': 409, '22023': 422, '42501': 403}.get(code, 503)
             raise HTTPException(status, 'Callback nao persistido; consultar o diagnostico do servidor.') from None
         if not isinstance(result, dict) or result.get('accepted') is not True:
@@ -232,7 +264,8 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
     def lookup(table: str, columns: str, entity_id: UUID | str) -> dict:
         try:
             rows = client.table(table).select(columns).eq('id', str(entity_id)).limit(1).execute().data
-        except Exception:
+        except Exception as exc:
+            logger.warning('Falha de consulta de escopo: %s', type(exc).__name__)
             raise HTTPException(503, 'Nao foi possivel validar o escopo da entidade.') from None
         if not rows:
             raise HTTPException(404, 'Entidade nao encontrada.')
@@ -259,6 +292,7 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
         return {'status': 'ok', 'environment': config.environment,
                 'component': 'whatsapp_callbacks_v1', 'external_sends_enabled': False,
                 'ai_enabled': config.ai_enabled, 'dispatch_enabled': config.dispatch_enabled,
+                'human_enabled': config.human_enabled,
                 'persistence': 'supabase'}
 
     @app.post('/webhooks/make/whatsapp', status_code=202)
@@ -335,6 +369,32 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
             return rpc('vendra_dispatch_bind_v1', {'p_dispatch_id': str(dispatch_id),
                 'p_outbox_id': str(payload.outbox_id), 'p_provider_message_id': payload.provider_message_id,
                 'p_claim_token': payload.claim_token.get_secret_value()})
+
+    if config.human_enabled:
+        @app.post('/webhooks/make/whatsapp/outbox/{outbox_id}/prepare-human', status_code=202)
+        def human_prepare(outbox_id: UUID, payload: HumanPrepare,
+                          x_webhook_secret: str | None = Header(default=None)):
+            if not authorize(x_webhook_secret, payload, payload.phone):
+                raise HTTPException(403, 'Destinatario fora do escopo autorizado.')
+            item = lookup('whatsapp_outbox', 'phone,ticket_id', outbox_id)
+            check_entity_phone(item.get('phone'), payload.phone)
+            ticket_scope(UUID(item['ticket_id']), payload.phone)
+            result = rpc('vendra_whatsapp_human_prepare_v1', {'p_outbox_id': str(outbox_id)})
+            if type(result.get('authorized')) is not bool:
+                raise HTTPException(503, 'Banco nao confirmou a autorizacao humana.')
+            if result.get('authorized') is True:
+                outbox = result.get('outbox')
+                policy = outbox.get('delivery_policy') if isinstance(outbox, dict) else None
+                if (not isinstance(outbox, dict) or outbox.get('id') != str(outbox_id)
+                        or not isinstance(outbox.get('body'), str) or not outbox['body'].strip()
+                        or not isinstance(outbox.get('claim_token'), str) or not 32 <= len(outbox['claim_token']) <= 100
+                        or not isinstance(policy, dict) or policy.get('authorized_to_send') is not True
+                        or policy.get('template_required') is not False):
+                    raise HTTPException(503, 'Banco nao confirmou a reserva humana.')
+                check_entity_phone(outbox.get('phone'), payload.phone)
+            elif 'outbox' in result:
+                raise HTTPException(503, 'Reserva humana suprimida com dados de envio divergentes.')
+            return result
 
     if config.ai_enabled:
         @app.get('/webhooks/make/ai/control/{ticket_id}')
