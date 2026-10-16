@@ -44,3 +44,5 @@ Ler docs/MAPA_HOMOLOGACAO_ORIGINAL.md e docs/VALIDACAO_SAIDA_HUMANA_H1_006O.md. 
 
 ## H1-006P
 SQL15 autorizado/aplicado somente STAGING. Ler docs/VALIDACAO_COMANDO_HUMANO_H1_006P.md. Texto sem anexos atomico/idempotente:9 banco+8 HTTP reais,280 testesWindows. Fixtures limpas/sessao revogada. Original fisico intacto; Make callbacks STAGING autorizados/filtros bloqueados. Proximo H01 automatico/midia/defaultnovolead. SQL16 nao executado. Mestre149/pacote em consolidacao.
+
+Entrega P publicada f17a868; fonte codigo3c274fc. Mestre149(221p/219historicas) copias verificadas. ZIP30arquivos/103242bytes/downloadHTTP200hashconferido; dryrunzero. Form idempotente fechado; proximo automatico/midia/defaultIA. Ler VALIDACAO_ATUAL/mapa. Original fisico intacto.

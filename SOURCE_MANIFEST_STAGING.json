@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "8a41c36e5f2aee57f52dc769a90114a752b00e1c13897ffbc753a1f1f3a84c72"
+      "sha256": "4aeaed8e3c3ec4ab887600fb4561fa3d1b8e3f2d8a726a67a015d9f966679371"
     },
     {
       "path": "README.md",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "2bc9dd7cf6a2cf1e668471739cf3d4f48c11b9afcb6149f3699210f59b6d6ee5"
+      "sha256": "90430f0b7854b9c2b19a2cdd2160ee7d424b83d4d7854f94d07347420581563b"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1215,7 +1215,7 @@
     },
     {
       "path": "docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
-      "sha256": "9611318fdb2d8209e1d8f02b1a2f7e54dc3ec04cd7489eaf8dbe0ec92b54927a"
+      "sha256": "f041d332e3a4c390c2ab8c8e1b57f8aa539a1358ff73d277eeff93f1f8327925"
     },
     {
       "path": "app/services/whatsapp_human_command_service.py",
