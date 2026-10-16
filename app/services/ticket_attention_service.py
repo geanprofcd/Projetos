@@ -106,7 +106,7 @@ def summarize_ticket(ticket: dict, messages: list[dict], *, now: datetime | None
     first_inbound = None
     last_external = None
     last_direction = None
-    for row in sorted(messages, key=lambda x: (parse_instant(x.get('created_at')) or datetime.min.replace(tzinfo=timezone.utc), str(x.get('id') or ''))):
+    for row in sorted(messages, key=lambda x: (parse_instant(x.get('created_at')) or datetime.min.replace(tzinfo=timezone.utc), x.get('direction')=='inbound', str(x.get('id') or ''))):
         if row.get('is_internal'):
             continue
         direction = str(row.get('direction') or '').lower()
@@ -118,7 +118,7 @@ def summarize_ticket(ticket: dict, messages: list[dict], *, now: datetime | None
                 first_inbound = moment
             last_external = moment
             last_direction = 'inbound'
-        elif direction == 'outbound' and row.get('delivery_status') != 'failed':
+        elif direction == 'outbound' and row.get('delivery_status') not in ('failed','cancelled','pending'):
             last_external = moment
             last_direction = 'outbound'
     pending = (
@@ -132,6 +132,8 @@ def summarize_ticket(ticket: dict, messages: list[dict], *, now: datetime | None
         'arrival_date': date_br(ticket.get('created_at')),
         'first_reply_time': time_br(first_inbound),
         'first_reply_at': first_inbound.isoformat() if first_inbound else None,
+        'last_activity_at': last_external.isoformat() if last_external else None,
+        'last_direction': last_direction,
         'pending': bool(pending),
         'pending_since': last_external.isoformat() if pending else None,
         'pending_minutes': wait_minutes,

@@ -180,6 +180,8 @@ def _decorate(row: dict, *, include_items: bool = False, include_history: bool =
     reason = next((r for r in list_lost_reasons(active_only=False) if str(r.get("id")) == str(item.get("lost_reason_id"))), None)
     item["customer_name"] = (customer or {}).get("name") or "Cliente"
     item["ticket_title"] = (ticket or {}).get("title") or None
+    item["ticket_created_at"] = (ticket or {}).get("created_at")
+    item["ticket_status"] = (ticket or {}).get("status")
     item["funnel_name"] = (funnel or {}).get("name") or "—"
     item["stage_name"] = (stage or {}).get("name") or "—"
     item["stage_color"] = (stage or {}).get("color") or "#94a3b8"

@@ -12,7 +12,12 @@ def _create_client(url: str, key: str) -> Any:
         raise RuntimeError(
             "Pacote supabase não instalado. Execute: pip install -r requirements.txt"
         ) from exc
-    return create_client(url, key)
+    from supabase.lib.client_options import SyncClientOptions
+    from app.db.http_client import create_database_http_client
+    return create_client(url, key, options=SyncClientOptions(
+        httpx_client=create_database_http_client(),
+        auto_refresh_token=False, persist_session=False,
+    ))
 
 
 @lru_cache

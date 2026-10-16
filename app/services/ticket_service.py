@@ -127,33 +127,18 @@ def _enrich(rows: list[dict]) -> list[dict]:
 
 
 def list_tickets(user: dict, limit: int = 100) -> list[dict]:
-    if get_settings().demo_mode:
-        rows = [row.copy() for row in DEMO_TICKETS]
-        if user.get("role") == "agronomo":
-            allowed = set(_customer_ids_for_user(user))
-            rows = [row for row in rows if row.get("customer_id") in allowed]
-        rows.sort(key=lambda row: row.get("updated_at") or "", reverse=True)
-        return _enrich(rows[:limit])
-
-    admin = get_admin_client()
-    query = admin.table("tickets").select("*").order("updated_at", desc=True).limit(limit)
-    if user.get("role") == "agronomo":
-        customer_ids = _customer_ids_for_user(user)
-        if not customer_ids:
-            return []
-        query = query.in_("customer_id", customer_ids)
-    return _enrich(query.execute().data or [])
+    from app.services.conversation_order_service import list_ticket_rows
+    customer_ids = _customer_ids_for_user(user) if user.get('role')=='agronomo' else None
+    if customer_ids == []:
+        return []
+    return _enrich(list_ticket_rows(customer_ids=customer_ids,limit=limit))
 
 
 def list_tickets_for_customer(customer_id: str, user: dict, limit: int = 30) -> list[dict]:
     if user.get("role") == "agronomo" and customer_id not in set(_customer_ids_for_user(user)):
         return []
-    if get_settings().demo_mode:
-        rows = [row.copy() for row in DEMO_TICKETS if row.get("customer_id") == customer_id]
-        rows.sort(key=lambda row: row.get("updated_at") or "", reverse=True)
-        return _enrich(rows[:limit])
-    rows = get_admin_client().table("tickets").select("*").eq("customer_id", customer_id).order("updated_at", desc=True).limit(limit).execute().data or []
-    return _enrich(rows)
+    from app.services.conversation_order_service import list_ticket_rows
+    return _enrich(list_ticket_rows(customer_ids=[customer_id],limit=limit))
 
 
 def get_ticket(ticket_id: str, user: dict) -> dict | None:

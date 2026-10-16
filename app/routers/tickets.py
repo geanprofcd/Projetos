@@ -40,6 +40,7 @@ from app.services.automation_service import (
 )
 from app.services.product_service import money_label, parse_money
 from app.services.ticket_attention_service import summarize_ticket, summarize_tickets, date_br
+from app.services.conversation_order_service import activity_key
 from app.services.ticket_service import (
     TICKET_STATUSES,
     add_message,
@@ -158,6 +159,8 @@ def _kanban_signature(columns: list[dict]) -> str:
                     "first_reply_time": card.get("first_reply_time"),
                     "pending": card.get("pending"),
                     "updated_at": card.get("updated_at"),
+                    "last_activity_at": card.get("last_activity_at"),
+                    "last_direction": card.get("last_direction"),
                 }
                 for card in (column.get("cards") or [])
             ],
@@ -182,10 +185,8 @@ def _kanban_context(*, funnel_id: str | None, search: str | None, assigned_user_
     opportunities = list_opportunities(search=search, status="open", funnel_id=str(selected["id"]))
     if assigned_user_id:
         opportunities = [row for row in opportunities if str(row.get("assigned_user_id") or "") == str(assigned_user_id)]
-    opportunities.sort(key=lambda row: (int(row.get("kanban_position") or 0), str(row.get("created_at") or "")))
-    tickets = list_tickets(user, limit=500)
-    lookup = {str(ticket['id']): ticket for ticket in tickets}
-    related = [lookup[str(item['ticket_id'])] for item in opportunities if item.get('ticket_id') and str(item['ticket_id']) in lookup]
+    related = [{'id':str(item['ticket_id']), 'created_at':item.get('ticket_created_at'),
+                'status':item.get('ticket_status')} for item in opportunities if item.get('ticket_id')]
     milestones = summarize_tickets(related)
     for item in opportunities:
         ticket_id = str(item.get('ticket_id') or '')
@@ -193,6 +194,10 @@ def _kanban_context(*, funnel_id: str | None, search: str | None, assigned_user_
         item['arrival_date'] = data.get('arrival_date') or date_br(item.get('created_at'))
         item['first_reply_time'] = data.get('first_reply_time') or '—'
         item['pending'] = data.get('pending') or False
+        item['last_activity_at'] = data.get('last_activity_at')
+        item['last_direction'] = data.get('last_direction')
+
+    opportunities.sort(key=lambda item: activity_key(item, item), reverse=True)
 
     columns = []
     for stage in [s for s in (selected.get("stages") or []) if bool(s.get("is_active", True))]:

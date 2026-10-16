@@ -43,7 +43,7 @@
     },
     {
       "path": "app/db/supabase.py",
-      "sha256": "684dc23c23d9a75b3fc82c24aa501aed182da81f87278747eddf9087154785c6"
+      "sha256": "ee5df88efbea9bebcfe050496e14b119d931402d5cba83ca8c99b13819c5719d"
     },
     {
       "path": "app/dependencies/__init__.py",
@@ -135,7 +135,7 @@
     },
     {
       "path": "app/routers/tickets.py",
-      "sha256": "6e12962cfe1d2da1d0fb223524dfd9f16ca1f266bb0341500d4b25168927a1a1"
+      "sha256": "5a73ce741cccf6ca2bcbda1e4076c60df01f8aab38fcf3d83f9813f8ff05b3ed"
     },
     {
       "path": "app/routers/users.py",
@@ -227,7 +227,7 @@
     },
     {
       "path": "app/services/opportunity_service.py",
-      "sha256": "b71249054c5cb812473c18370088765953fafe0da30878d52fbc30f11f292bb5"
+      "sha256": "787b6f6acf29006bae956cebfd7c5a0ae3888341b8566df9bc029bc48821dffa"
     },
     {
       "path": "app/services/outbox_wake_service.py",
@@ -263,11 +263,11 @@
     },
     {
       "path": "app/services/ticket_attention_service.py",
-      "sha256": "28aba7e910587f42bc04bd7ae1d631684dd0a267d65964efc8c8904dc607734f"
+      "sha256": "367cadb0a4414fa047f4b8e3597854ed38aa8d43db511bd254db7bf3e486ed2c"
     },
     {
       "path": "app/services/ticket_service.py",
-      "sha256": "0ce54acc48c1c6f3b13d9b184a51671e3a5b8129a3b2e6cd2c664fe303575028"
+      "sha256": "144fbfd2f6b045e0d8aa7ad84288b66857d1e4477a7edae75a4628456105edb3"
     },
     {
       "path": "app/services/user_service.py",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "c670777ab02e87a15cdc2949b17b808f42cd34cb882c7770d5c2e7a9219e28d5"
+      "sha256": "8184da06277f306eb98c43094ef89fc30495d364fa1ff1b8112ef2e8c2b0ab81"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1287,7 +1287,7 @@
     },
     {
       "path": "docs/OPERACAO_ORIGINAL_ONLINE.md",
-      "sha256": "af90f23b00f80dfd3fe992c785d6eb3d1086709a9e1ca52236a9867d23cc7334"
+      "sha256": "694e6192c708e2288cbb2b05b79bc7c47278d70f8e999ce226411925d4f955bf"
     },
     {
       "path": "sql/21_PREPARAR_INTEGRACAO_WHATSAPP_ORIGINAL.sql",
@@ -1328,6 +1328,46 @@
     {
       "path": "docs/VALIDACAO_LISTAS_ORIGINAL_20261016.md",
       "sha256": "048b6a0c31b7f6049d015b7080657f7dc1810e1d40eda6351fde2081f9e4335a"
+    },
+    {
+      "path": "app/db/http_client.py",
+      "sha256": "780c30d86eef7b3ce0866a355094b9ffdd55bbf5d1217c2141bcb772b9007f27"
+    },
+    {
+      "path": "app/services/conversation_order_service.py",
+      "sha256": "1e950ace2e03a9fc5fe9d862bc35c71cb279f7530e1ed07002cc2b862bbe9524"
+    },
+    {
+      "path": "tools/aplicar_ordem_comercial_original.py",
+      "sha256": "fb398fe2dc98674db5d7095d5ffbda7e1afa38ae738804b8521bb56065cfae50"
+    },
+    {
+      "path": "tests/test_database_http_client.py",
+      "sha256": "6425fabcd4c257ede1a207373829ead8571b530b964ac558981de08a28b4ed25"
+    },
+    {
+      "path": "tests/test_conversation_order.py",
+      "sha256": "6563bfe154d8964822b776f9b41db9855e314565afcc5455ac9a4c59889e5911"
+    },
+    {
+      "path": "sql/25_COMPLETAR_FUNIL_COMERCIAL_ORIGINAL.sql",
+      "sha256": "a35dd5700e4d5f06dee6faf6f3cec2f96e818bd53c665bb445c0cac9b33dfd99"
+    },
+    {
+      "path": "sql/26_REGRAS_COMERCIAIS_WHATSAPP.sql",
+      "sha256": "74ec521f16b0eacd70ac16ac27d8096cce25f7f5c3a325bcd802ac5bdb4e62ee"
+    },
+    {
+      "path": "sql/26_VALIDAR_REGRAS_COMERCIAIS_TRANSACAO.sql",
+      "sha256": "f46711a95ed37a1a12cf822df7867bf36e7a9058e3a68045c2097d5eaa4a7e30"
+    },
+    {
+      "path": "sql/27_ROLLBACK_REGRAS_COMERCIAIS_WHATSAPP.sql",
+      "sha256": "86bfe626e2ce2add515464f0017c15e77a4f5b7c98e302cc67b5074754abf203"
+    },
+    {
+      "path": "docs/VALIDACAO_FUNIS_COMERCIAL_20261016.md",
+      "sha256": "b757f4a16440770a04b61fc4b163e00c3dc019a1ab567045d5ccc8dba9a8f229"
     }
   ]
 }
