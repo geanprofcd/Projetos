@@ -6,8 +6,10 @@ import urllib.request
 from datetime import datetime, timezone
 from typing import Any
 from uuid import uuid4
+from uuid import UUID
 
 from app.core.config import get_settings
+from app.db.supabase import get_admin_client
 from app.services.admin_settings_service import get_ai_routing_settings, get_ai_settings, get_dispatch_settings
 from app.services.automation_service import connect_ticket_to_ai, get_ticket_ai_control
 from app.services.customer_service import create_customer, find_customer_by_phone, normalize_phone
@@ -16,6 +18,7 @@ from app.services.funnel_service import list_funnels
 from app.services.opportunity_service import create_opportunity, get_ticket_opportunity
 
 DISPATCH_STATUSES = {"pending", "submitted", "sent", "delivered", "read", "failed", "cancelled"}
+_HISTORY_FIELDS = 'id,name,phone,status,template_key,ticket_id,last_error,created_at,updated_at'
 
 
 def _now() -> str:
@@ -40,6 +43,10 @@ def _public(row: dict[str, Any]) -> dict[str, Any]:
 
 def list_dispatches(limit: int = 100) -> list[dict[str, Any]]:
     if not get_settings().demo_mode:
+        if getattr(get_settings(), 'whatsapp_persistent_control_enabled', False):
+            rows = (get_admin_client().table('dispatches').select(_HISTORY_FIELDS)
+                    .order('created_at', desc=True).limit(max(1, min(limit, 500))).execute().data or [])
+            return [_public(row) for row in rows]
         return []
     rows = sorted(DEMO_DISPATCHES, key=lambda row: row.get("created_at") or "", reverse=True)[: max(1, min(limit, 500))]
     return [_public(row) for row in rows]
@@ -47,6 +54,14 @@ def list_dispatches(limit: int = 100) -> list[dict[str, Any]]:
 
 def get_dispatch(dispatch_id: str) -> dict[str, Any] | None:
     if not get_settings().demo_mode:
+        if getattr(get_settings(), 'whatsapp_persistent_control_enabled', False):
+            try:
+                dispatch_id = str(UUID(str(dispatch_id)))
+            except (ValueError, TypeError, AttributeError):
+                return None
+            rows = (get_admin_client().table('dispatches').select(_HISTORY_FIELDS)
+                    .eq('id', dispatch_id).limit(1).execute().data or [])
+            return rows[0] if rows else None
         return None
     row = next((row for row in DEMO_DISPATCHES if str(row.get("id")) == str(dispatch_id)), None)
     return row
@@ -305,6 +320,8 @@ def create_dispatch(*, name: str, phone: str, requested_by: str | None) -> dict[
 
 
 def retry_dispatch(dispatch_id: str, *, requested_by: str | None) -> dict[str, Any]:
+    if not get_settings().demo_mode:
+        raise ValueError('Reenvio comercial no Supabase real aguarda validação do contrato de envio.')
     row = get_dispatch(dispatch_id)
     if not row:
         raise ValueError("Disparo não encontrado.")

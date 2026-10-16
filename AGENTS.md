@@ -33,3 +33,6 @@ SQL11 aplicado com autorizacao especifica somente STAGING, migration vendra_what
 
 ## H1-006M validado
 Ler docs/VALIDACAO_COMPOSER_ANEXOS_H1_006M.md. ComposerCSRFinputoculto/semredesenho, handofffalhafechadaantespersistir, metadatahumanwhatsappsobflag. 258testesWindows e22funcionaisreais aprovados. BucketprivadoSTAGINGticket-attachments50MiB/publicfalse criado; todasfixtures/anexos/outbox/sessoesproprias limpos. Originalintocado. Naoafirmarenviohumanoprovedor/midia/idempotenciaduploclique/atomicidadetotal/visualnovo. BrowserCDPtimeout. ContinuarMakehumanoutbox/comercialDisparos/import/lote/padraonovosleads/backup/promocaoseletiva/hostingoriginal. SQL11LjaaplicadoSTAGING; semSQLadicionalM. Railwaysemdeploy.
+
+## H1-006N validado
+Ler docs/VALIDACAO_HISTORICO_COMERCIAL_H1_006N.md. HistoricoComercialDBrealsobflag, reenvioexplicitobloqueado. 263testesWindows e8funcionaisreaisaprovados,nenhumdisparoalterado/envio/SQL/Make/worker. M22funcionais composer/anexosprivadospassaram,fixtureslimpas. Previewlocal8014PID6428, originaldesign/pasta/banco intactos. MakeVENDRA7cenarios2ativos,REV2Outboxinativo eentradaMeta/IA/enviodiretoantigaconexao;nao e workerhumanohomologado. Proximo contratooutboxhumana/idempotencia+comercialDisparos/import/lote+padraonovosleads+backup/promocaoseletiva/hostingoriginal. Nao parar por documento. Railwaysemdeploy.
