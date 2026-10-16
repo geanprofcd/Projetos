@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "path": "files/docs/CORRECAO_REGRAS_POR_ETAPA_20261016.md",
+      "sha256": "33c4e3f286536b1fe338d6af84fc1e1f35edb92697eb0eccdfad4464177822f0"
+    },
+    {
+      "path": "files/docs/OPERACAO_ORIGINAL_ONLINE.md",
+      "sha256": "12ee76d7fd00d6c259cc88e1923d23d66cb52e074349b8c14fd8ccf670f5c3ef"
+    },
+    {
+      "path": "files/docs/VALIDACAO_ATUAL.md",
+      "sha256": "aef229d42e6be4eaffca681f3ff7678227f1cf80dbb9ed1059389070e3b26677"
+    },
+    {
+      "path": "files/sql/28_RECONCILIAR_CARDS_AFETADOS.sql",
+      "sha256": "2f1a1a733aeee9f25d442a3e9c0b906fd7cc5d5c92329ec3f25f57c59a0287fa"
+    },
+    {
+      "path": "files/sql/28_REGRAS_COMERCIAIS_POR_ETAPA.sql",
+      "sha256": "9942ac6d83a0f4523103a9814a9815784177e76ddb009b4b1d9bcc7bfb704e78"
+    },
+    {
+      "path": "files/sql/28_VALIDAR_REGRAS_POR_ETAPA_TRANSACAO.sql",
+      "sha256": "f20182a0b330946aa5ac9a6144c98bba8ef116dedd593769f86fd7d80af630f7"
+    },
+    {
+      "path": "files/sql/29_ROLLBACK_REGRAS_COMERCIAIS_POR_ETAPA.sql",
+      "sha256": "72c5f0723d1914bae36cb22543cd1f8f45f1e11aefbe97ec2a08d40beed5ce05"
+    },
+    {
+      "path": "INSTRUCOES.md",
+      "sha256": "ce9f9be4b2ca13b3db3c624b5f24dd48bc93e5fe3ad8c5b94d6452513393027c"
+    }
+  ],
+  "source_commit": "5a2b64b651e177c19f676ecf3e12c347bfc5e750",
+  "sql_already_applied": true,
+  "automatic_execution": false
+}
