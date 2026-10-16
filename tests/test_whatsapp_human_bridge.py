@@ -61,6 +61,10 @@ class HumanBridgeTests(TestCase):
     def test_human_prepare_uses_only_requested_outbox(self):
         r=self.post();self.assertEqual(r.status_code,202);self.assertTrue(r.json()['authorized'])
         self.assertEqual(self.db.calls,[('vendra_whatsapp_human_prepare_v1',{'p_outbox_id':self.oid})])
+    def test_expected_ticket_rejects_other_outbox_before_reservation(self):
+        self.assertEqual(self.post(payload={**self.payload,'expected_ticket_id':str(uuid4())}).status_code,403)
+        self.assertFalse(self.db.calls)
+        self.assertEqual(self.post(payload={**self.payload,'expected_ticket_id':self.tid}).status_code,202)
     def test_repeat_suppression_has_no_body_or_claim_token(self):
         self.db.result={'accepted':True,'authorized':False,'suppressed':True,'duplicate':True,'reason':'already_reserved_or_final'}
         r=self.post();self.assertEqual(r.status_code,202);self.assertNotIn('outbox',r.json())

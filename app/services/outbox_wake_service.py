@@ -5,6 +5,9 @@ import logging
 import threading
 import urllib.error
 import urllib.request
+import re
+from urllib.parse import urlsplit
+from uuid import UUID
 from datetime import datetime, timezone
 from typing import Any
 
@@ -12,6 +15,45 @@ from app.services.admin_settings_service import get_make_outbox_settings
 from app.core.config import get_settings
 
 logger = logging.getLogger(__name__)
+
+
+def _configuration():
+    settings = get_settings()
+    if settings.app_env != 'staging':
+        return get_make_outbox_settings()
+    if not getattr(settings, 'whatsapp_staging_wake_enabled', False):
+        return {'enabled': False}
+    url = settings.whatsapp_staging_wake_url
+    parsed = urlsplit(url)
+    if (settings.demo_mode or not settings.whatsapp_persistent_control_enabled
+            or settings.supabase_url.rstrip('/') != 'https://ljufhqnadzltqbtdaulv.supabase.co'
+            or parsed.scheme != 'https' or parsed.netloc != 'hook.us2.make.com'
+            or not re.fullmatch(r'/[a-zA-Z0-9]{20,100}', parsed.path)
+            or parsed.query or parsed.fragment or len(settings.whatsapp_staging_wake_token) < 32
+            or not settings.whatsapp_staging_wake_phone):
+        raise ValueError('Perfil de notificação STAGING inválido.')
+    UUID(settings.whatsapp_staging_wake_ticket_id)
+    return {'enabled': True, 'wake_url': url}
+
+
+def _validate_staging_item(item):
+    from app.db.supabase import get_admin_client
+    settings = get_settings()
+    if str(item.get('ticket_id')) != settings.whatsapp_staging_wake_ticket_id:
+        raise ValueError('Atendimento fora do teste autorizado.')
+    oid = str(UUID(str(item.get('id')))); mid = str(UUID(str(item.get('message_id'))))
+    db = get_admin_client()
+    rows = db.table('whatsapp_outbox').select('id,ticket_id,message_id,phone,status,provider_message_id').eq('id', oid).limit(1).execute().data or []
+    if len(rows) != 1:
+        raise ValueError('Saída indisponível.')
+    row = rows[0]
+    def phone(value):
+        value = re.sub(r'\D', '', str(value or ''))
+        return value[:4]+value[5:] if len(value) == 13 and value[4] == '9' else value
+    if (row['ticket_id'] != settings.whatsapp_staging_wake_ticket_id or row['message_id'] != mid
+            or row['status'] != 'pending' or row.get('provider_message_id')
+            or phone(row['phone']) != phone(settings.whatsapp_staging_wake_phone)):
+        raise ValueError('Saída fora do teste autorizado ou já processada.')
 
 
 def _now() -> str:
@@ -30,7 +72,9 @@ def _payload(item: dict[str, Any], *, event: str = "whatsapp_outbox.created") ->
 
 def _post_json(url: str, payload: dict[str, Any], *, timeout: float = 4.0) -> tuple[int, str]:
     if get_settings().app_env == "staging":
-        raise RuntimeError("Ambiente de homologação: envio externo bloqueado.")
+        config = _configuration()
+        if not config.get('enabled') or url != config.get('wake_url'):
+            raise RuntimeError('Ambiente de homologação: envio externo bloqueado.')
     body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     request = urllib.request.Request(
         url,
@@ -42,7 +86,11 @@ def _post_json(url: str, payload: dict[str, Any], *, timeout: float = 4.0) -> tu
         },
     )
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        # Não encaminhar o segredo do wake para outro host após redirecionamento.
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, req, fp, code, msg, headers, newurl):
+                return None
+        with urllib.request.build_opener(NoRedirect).open(request, timeout=timeout) as response:
             sample = response.read(512).decode("utf-8", errors="replace")
             return int(getattr(response, "status", 200)), sample
     except urllib.error.HTTPError as exc:
@@ -51,22 +99,33 @@ def _post_json(url: str, payload: dict[str, Any], *, timeout: float = 4.0) -> tu
 
 
 def send_make_outbox_wake(item: dict[str, Any], *, event: str = "whatsapp_outbox.created", timeout: float = 4.0) -> dict[str, Any]:
-    config = get_make_outbox_settings()
+    try:
+        config = _configuration()
+    except Exception:
+        return {'sent': False, 'reason': 'invalid_configuration'}
     url = str(config.get("wake_url") or "").strip()
     if not config.get("enabled") or not url:
         return {"sent": False, "configured": bool(url), "enabled": bool(config.get("enabled")), "reason": "disabled_or_missing"}
     try:
-        status, response_sample = _post_json(url, _payload(item, event=event), timeout=timeout)
+        payload = _payload(item, event=event)
+        if get_settings().app_env == 'staging':
+            _validate_staging_item(item)
+            payload['wake_secret'] = get_settings().whatsapp_staging_wake_token
+            timeout = max(timeout, 10.0)
+        status, response_sample = _post_json(url, payload, timeout=timeout)
         if 200 <= status < 300:
             return {"sent": True, "status_code": status, "response": response_sample}
         return {"sent": False, "status_code": status, "response": response_sample, "reason": "http_error"}
     except Exception as exc:  # O wake nunca pode cancelar a outbox durável.
-        logger.warning("Falha ao avisar o Make sobre a outbox %s: %s", item.get("id"), exc)
-        return {"sent": False, "reason": "exception", "error": str(exc)[:500]}
+        logger.warning("Falha ao avisar o Make sobre a outbox %s: %s", item.get("id"), type(exc).__name__)
+        return {"sent": False, "reason": "exception", "error_type": type(exc).__name__}
 
 
 def notify_make_outbox_async(item: dict[str, Any]) -> bool:
-    config = get_make_outbox_settings()
+    try:
+        config = _configuration()
+    except Exception:
+        return False
     if not config.get("enabled") or not str(config.get("wake_url") or "").strip():
         return False
 
@@ -76,7 +135,7 @@ def notify_make_outbox_async(item: dict[str, Any]) -> bool:
         result = send_make_outbox_wake(snapshot)
         if not result.get("sent"):
             logger.warning(
-                "Wake da outbox %s não confirmado; item permanece na fila para recuperação por polling. Resultado=%s",
+                "Wake da outbox %s não confirmado; comando persistido exige conferência. Resultado=%s",
                 snapshot.get("id"),
                 result,
             )

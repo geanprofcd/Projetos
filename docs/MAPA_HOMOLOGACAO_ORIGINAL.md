@@ -19,12 +19,13 @@ Atualizado em 16/10/2026. Este é o quadro de pendências; o histórico detalhad
 | Histórico comercial de Disparos | H1-006N, registros e Lido reais | Leitura aprovada; criação/importação/lote pendentes |
 | Reserva exclusiva e transmissão de texto humano | H1-006O: oito reservas/um vencedor, envio real e delivered, replay sem WhatsApp | Aprovado com acionamento sob demanda no cenário de teste |
 | Texto humano atômico e formulário idempotente | H1-006P: nove verificações de banco e oito HTTP comerciais; oito comandos/uma saída | Aprovado para texto sem anexos; acionamento automático pendente |
+| Acionamento automático de texto humano pelo formulário | H1-006Q: dois POSTs, duas execuções auto, um Send/uma tentativa/WAMID, delivered automático | Aprovado no STAGING, cenário e perfis novamente bloqueados |
 
 ## Quatro frentes restantes, com critério de encerramento
 
 | ID | Pendência | Critério para fechar |
 |---|---|---|
-| H01 | Completar automação da conversa comercial | Acionamento automático da saída humana sem comando manual; mídia com vínculo e recuperação por item; recuperação de falhas e padrão IA em novos atendimentos coerente com a configuração. Formulário de texto idempotente fechado em P |
+| H01 | Completar automação da conversa comercial | Mídia com vínculo e recuperação por item; recuperação de falhas e padrão IA em novos atendimentos coerente com a configuração. Formulário de texto idempotente fechado em P e acionamento automático fechado em Q |
 | H02 | Completar Disparos comerciais | Criação individual, importação, revisão e lote usando as telas existentes e persistência real; sem duplicação e com limites/permissões/recuperação comprovados |
 | H03 | Preparar promoção e recuperação do original | Conferir diferenças/migrations/configuração, backup e restauração testados; pacote seletivo homologado; preservar design, credenciais e dados; SQL e Make tratados separadamente |
 | H04 | Publicar e validar o original | Hospedagem do original finalizado, HTTPS/callbacks estáveis, persistência após reinício e fluxo completo no servidor; só então limpeza definitiva CODEX |

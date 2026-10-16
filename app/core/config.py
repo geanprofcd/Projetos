@@ -38,6 +38,11 @@ class Settings(BaseSettings):
     dispatch_transport_secret: str | None = None
     dispatch_allowed_phones: str = ''
     whatsapp_persistent_control_enabled: bool = False
+    whatsapp_staging_wake_enabled: bool = False
+    whatsapp_staging_wake_url: str = ''
+    whatsapp_staging_wake_token: str = ''
+    whatsapp_staging_wake_ticket_id: str = ''
+    whatsapp_staging_wake_phone: str = ''
     attachment_bucket: str = "ticket-attachments"
     attachment_max_mb: int = 15
     attachment_video_max_mb: int = 50

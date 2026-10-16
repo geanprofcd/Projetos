@@ -189,6 +189,7 @@ class DispatchBinding(OutboxBinding):
 
 class HumanPrepare(MetaSource):
     phone: str = Field(min_length=8, max_length=30)
+    expected_ticket_id: UUID | None = None
 
 
 def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
@@ -377,6 +378,8 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
             if not authorize(x_webhook_secret, payload, payload.phone):
                 raise HTTPException(403, 'Destinatario fora do escopo autorizado.')
             item = lookup('whatsapp_outbox', 'phone,ticket_id', outbox_id)
+            if payload.expected_ticket_id and str(payload.expected_ticket_id) != str(item.get('ticket_id')):
+                raise HTTPException(403, 'Saida fora do atendimento autorizado.')
             check_entity_phone(item.get('phone'), payload.phone)
             ticket_scope(UUID(item['ticket_id']), payload.phone)
             result = rpc('vendra_whatsapp_human_prepare_v1', {'p_outbox_id': str(outbox_id)})

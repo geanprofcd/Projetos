@@ -46,3 +46,6 @@ Ler docs/MAPA_HOMOLOGACAO_ORIGINAL.md e docs/VALIDACAO_SAIDA_HUMANA_H1_006O.md. 
 SQL15 autorizado/aplicado somente STAGING. Ler docs/VALIDACAO_COMANDO_HUMANO_H1_006P.md. Texto sem anexos atomico/idempotente:9 banco+8 HTTP reais,280 testesWindows. Fixtures limpas/sessao revogada. Original fisico intacto; Make callbacks STAGING autorizados/filtros bloqueados. Proximo H01 automatico/midia/defaultnovolead. SQL16 nao executado. Mestre149/pacote em consolidacao.
 
 Entrega P publicada f17a868; fonte codigo3c274fc. Mestre149(221p/219historicas) copias verificadas. ZIP30arquivos/103242bytes/downloadHTTP200hashconferido; dryrunzero. Form idempotente fechado; proximo automatico/midia/defaultIA. Ler VALIDACAO_ATUAL/mapa. Original fisico intacto.
+
+## H1-006Q
+Automatico humano pelo formulario fechado STAGING:99a4fe8576d14263abb13f25418cd9d3 auto1..6/umSend,116d91286d21487399070e686af6c804 auto1/2/3/zeroSend,delivered370c1d32fe3f42e180fc457adb0f2c6b. Banco1tentativa/WAMIDreal. 287testsWindows2,951s. Make6655228 inativo/filter4false,perfisprivadosrestaurados/bridge30412preview9020 startup; healthfinalnaoexecutado revisaoautomaticaquotas. Original fisico intacto. Ler docs/VALIDACAO_WAKE_AUTOMATICO_H1_006Q.md/mapa. Proximo midia/recuperacao/defaultIA; SQL17/18 preparados NAOaplicados/autorizacaopendente. Fonte/pacote/Mestre150 em consolidacao.

@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "4aeaed8e3c3ec4ab887600fb4561fa3d1b8e3f2d8a726a67a015d9f966679371"
+      "sha256": "86994593752da0461ac36116e64fe0da3eaf6073bae8dfc2431a4ad06c42a5d0"
     },
     {
       "path": "README.md",
@@ -31,7 +31,7 @@
     },
     {
       "path": "app/core/config.py",
-      "sha256": "0dda789cbe44db805378777ef0184ae4f3b45e67b72fd09cefc30e343556c23d"
+      "sha256": "c670ad30125231a974f152ef2be20523beccd01c552bd8421b93876daa9ba640"
     },
     {
       "path": "app/core/ui.py",
@@ -231,7 +231,7 @@
     },
     {
       "path": "app/services/outbox_wake_service.py",
-      "sha256": "a321f516d6d0b89432677726ee599e637d006434ed397bdb636fe35e4ade925f"
+      "sha256": "1d60f2ab7f4fa1a65869c07496a8eaea223aa771e39ef45689740d5d03982260"
     },
     {
       "path": "app/services/product_service.py",
@@ -667,7 +667,7 @@
     },
     {
       "path": "app/whatsapp_callbacks.py",
-      "sha256": "59120b6989a2cf8ae1b63186122341545edbdba74c93b3569af7cc65691a1743"
+      "sha256": "48e5198b1de4e2ecdf49e999ef6f9db61fbae7a491b8e8062f1cbc1fd43a393e"
     },
     {
       "path": "docs/ANALISE_INICIAL.md",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "90430f0b7854b9c2b19a2cdd2160ee7d424b83d4d7854f94d07347420581563b"
+      "sha256": "1441a1fd1f67b911cda410263560e76d511f1708d297b2a30136d14e61d6ab13"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1199,7 +1199,7 @@
     },
     {
       "path": "tests/test_whatsapp_human_bridge.py",
-      "sha256": "e4d6cf661a8b161981599d59a24ac806eca6e1174e751b151379d5b8943d9bb9"
+      "sha256": "544f00001b063cb41c4cde3f9a38bf6b0ce400cd601c9fc0e6c80d20439ed2de"
     },
     {
       "path": "sql/13_PREPARAR_RESERVA_HUMANA_STAGING.sql",
@@ -1215,7 +1215,7 @@
     },
     {
       "path": "docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
-      "sha256": "f041d332e3a4c390c2ab8c8e1b57f8aa539a1358ff73d277eeff93f1f8327925"
+      "sha256": "3120d645d5b9ca4e57429da7dd28dd4844b2b551e7918df877dca900da754c4e"
     },
     {
       "path": "app/services/whatsapp_human_command_service.py",
@@ -1236,6 +1236,22 @@
     {
       "path": "docs/VALIDACAO_COMANDO_HUMANO_H1_006P.md",
       "sha256": "cadf7f54a1d7c303bf9312107dfbf513e6018767f3b037e506681df050f5bf2a"
+    },
+    {
+      "path": "tests/test_outbox_wake_guard.py",
+      "sha256": "19c6a5c1b642d7f92e4d482037dcfb111a83d7071b44b716f4764be04f23cb8d"
+    },
+    {
+      "path": "docs/VALIDACAO_WAKE_AUTOMATICO_H1_006Q.md",
+      "sha256": "cba0949755a7813ac8f10232fd880e96c387547a30c46a1215fff3b48c4bc238"
+    },
+    {
+      "path": "sql/17_ALINHAR_PADRAO_NOVO_ATENDIMENTO_STAGING.sql",
+      "sha256": "96162e1a8b8c96cd2805ac996d0f85a76966bef073f7b02cbad319a1a3bd2f9d"
+    },
+    {
+      "path": "sql/18_ROLLBACK_PADRAO_NOVO_ATENDIMENTO_STAGING.sql",
+      "sha256": "993a7e0abcba93d81a3784041bcc190d3a229a0288812446df6f8e8c2b56713c"
     }
   ]
 }
