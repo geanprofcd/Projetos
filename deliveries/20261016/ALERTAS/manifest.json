@@ -1,0 +1,26 @@
+{
+  "files": [
+    {
+      "path": "aplicar.py",
+      "sha256": "173e31dfcd19e1b12d9a4b5856d1830c315fa74add3527643df1644ebf78a66c"
+    },
+    {
+      "path": "files/app/services/ticket_attention_service.py",
+      "sha256": "c10e1502af91b32705fc64d6aaeb736f8220b97d21334cfa8b66c5698e8992ec"
+    },
+    {
+      "path": "files/docs/VALIDACAO_ALERTAS_20261016.md",
+      "sha256": "78d57914609df5b7c94bc195fdf76b5d3dc1bcbbf3cb059af2a6fd893cf87d8b"
+    },
+    {
+      "path": "files/tests/test_ticket_attention.py",
+      "sha256": "8d815cd2f2a465a7635d3fc4a93712f4e6ed5b7e36aa3a26816cc5e4168a4a75"
+    },
+    {
+      "path": "INSTRUCOES.md",
+      "sha256": "11341e98426f80b871f5b066d16b652a5b7db69d011190274188fe31a6a945a4"
+    }
+  ],
+  "source_commit": "92b0bed9bdd7885c170ef497df325bd7b660f21e",
+  "automatic_sql": false
+}
