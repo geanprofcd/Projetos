@@ -1,9 +1,11 @@
 from __future__ import annotations
+from uuid import uuid4
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import JSONResponse, RedirectResponse
 
 from app.core.ui import templates
+from app.core.config import get_settings
 from app.dependencies.auth import current_user, internal_user
 from app.services.admin_settings_service import get_dispatch_settings
 from app.services.audit_service import record_audit
@@ -20,6 +22,7 @@ from app.services.dispatch_import_service import (
     start_bulk_dispatch,
 )
 from app.services.dispatch_service import create_dispatch, list_dispatches, retry_dispatch
+from app.services import dispatch_command_service
 
 router = APIRouter(prefix="/disparos", tags=["disparos"])
 
@@ -62,6 +65,8 @@ def _page_context(
         "rows": list_dispatches(200),
         "settings": get_dispatch_settings(),
         "csrf_token": _csrf(request),
+        "dispatch_request_id": (form or {}).get('request_id') or str(uuid4()),
+        "bulk_dispatch_enabled": get_settings().demo_mode,
         "success": success,
         "error": error,
         "form": form,
@@ -109,19 +114,28 @@ def dispatch_create(
     name: str = Form(...),
     phone: str = Form(...),
     csrf_token: str = Form(...),
+    request_id: str | None = Form(default=None),
     user: dict = Depends(current_user),
 ):
     _require_dispatch_access(user)
     _require_csrf(request, csrf_token)
     try:
-        row = create_dispatch(name=name, phone=phone, requested_by=str(user.get("id") or "") or None)
+        if not get_settings().demo_mode and getattr(get_settings(), 'whatsapp_persistent_control_enabled', False):
+            row = dispatch_command_service.request_dispatch(user=user, name=name, phone=phone, request_id=request_id)
+        else:
+            row = create_dispatch(name=name, phone=phone, requested_by=str(user.get("id") or "") or None)
     except ValueError as exc:
         return templates.TemplateResponse(
             request=request,
             name="dispatches/list.html",
             status_code=422,
-            context=_page_context(request, user, error=str(exc), form={"name": name, "phone": phone}),
+            context=_page_context(request, user, error=str(exc), form={"name": name, "phone": phone, 'request_id': request_id}),
         )
+    except Exception:
+        return templates.TemplateResponse(request=request, name='dispatches/list.html', status_code=503,
+            context=_page_context(request, user,
+                error='Não foi possível confirmar o pedido. Confira o histórico antes de repetir.',
+                form={'name':name,'phone':phone,'request_id':request_id}))
     record_audit(
         actor_id=user.get("id"),
         entity_type="dispatch",
@@ -135,7 +149,8 @@ def dispatch_create(
             "origin": "manual",
         },
     )
-    return RedirectResponse(url=f"/disparos?{'sent=1' if row.get('status') != 'failed' else 'failed=1'}", status_code=303)
+    confirmed = row.get('transport_confirmed', row.get('status') != 'failed')
+    return RedirectResponse(url=f"/disparos?{'sent=1' if confirmed else 'failed=1'}", status_code=303)
 
 
 @router.post("/importar")

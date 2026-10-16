@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import threading
+import os
 import urllib.error
 import urllib.request
 import re
@@ -20,7 +21,21 @@ logger = logging.getLogger(__name__)
 def _configuration():
     settings = get_settings()
     if settings.app_env != 'staging':
-        return get_make_outbox_settings()
+        config = get_make_outbox_settings()
+        if (settings.app_env != 'production' or not config.get('enabled')
+                or not getattr(settings, 'whatsapp_persistent_control_enabled', False)):
+            return config
+        parsed = urlsplit(str(config.get('wake_url') or ''))
+        secret = os.environ.get('VENDRA_OUTBOX_WAKE_SECRET', '')
+        allowed = os.environ.get('VENDRA_BRIDGE_ALLOWED_PHONES', '')
+        all_phones = os.environ.get('VENDRA_BRIDGE_ALLOW_ALL_PHONES', 'false')
+        if (settings.demo_mode or settings.supabase_url.rstrip('/') != 'https://znkjibqcikuigfwfsbjb.supabase.co'
+                or parsed.scheme != 'https' or parsed.netloc != 'hook.us2.make.com'
+                or not re.fullmatch(r'/[a-zA-Z0-9]{20,100}', parsed.path)
+                or parsed.query or parsed.fragment or len(secret) < 32
+                or all_phones not in ('true','false') or (not allowed.strip() and all_phones != 'true')):
+            raise ValueError('Perfil de notificacao de producao invalido.')
+        return {**config, '_production_protected': True, '_wake_secret': secret}
     if not getattr(settings, 'whatsapp_staging_wake_enabled', False):
         return {'enabled': False}
     url = settings.whatsapp_staging_wake_url
@@ -54,6 +69,25 @@ def _validate_staging_item(item):
             or row['status'] != 'pending' or row.get('provider_message_id')
             or phone(row['phone']) != phone(settings.whatsapp_staging_wake_phone)):
         raise ValueError('Saída fora do teste autorizado ou já processada.')
+
+
+def _validate_production_item(item):
+    from app.db.supabase import get_admin_client
+    oid, tid, mid = [str(UUID(str(item.get(k)))) for k in ('id', 'ticket_id', 'message_id')]
+    rows = (get_admin_client().table('whatsapp_outbox')
+        .select('id,ticket_id,message_id,phone,status,provider_message_id')
+        .eq('id', oid).limit(1).execute().data or [])
+    def phone(value):
+        value = re.sub(r'\D', '', str(value or ''))
+        if not re.fullmatch(r'55\d{10,11}', value):
+            raise ValueError('Telefone de saida invalido.')
+        return value[:4]+value[5:] if len(value)==13 and value[4]=='9' else value
+    allowed = {phone(p) for p in os.environ.get('VENDRA_BRIDGE_ALLOWED_PHONES', '').split(',') if p.strip()}
+    if (len(rows) != 1 or rows[0]['ticket_id'] != tid or rows[0]['message_id'] != mid
+            or rows[0]['status'] != 'pending' or rows[0].get('provider_message_id')
+            or (phone(rows[0]['phone']) not in allowed
+                and os.environ.get('VENDRA_BRIDGE_ALLOW_ALL_PHONES', 'false') != 'true')):
+        raise ValueError('Saida fora do escopo autorizado ou ja processada.')
 
 
 def _now() -> str:
@@ -111,6 +145,10 @@ def send_make_outbox_wake(item: dict[str, Any], *, event: str = "whatsapp_outbox
         if get_settings().app_env == 'staging':
             _validate_staging_item(item)
             payload['wake_secret'] = get_settings().whatsapp_staging_wake_token
+            timeout = max(timeout, 10.0)
+        elif config.get('_production_protected'):
+            _validate_production_item(item)
+            payload['wake_secret'] = config['_wake_secret']
             timeout = max(timeout, 10.0)
         status, response_sample = _post_json(url, payload, timeout=timeout)
         if 200 <= status < 300:

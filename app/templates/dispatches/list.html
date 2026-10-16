@@ -26,6 +26,7 @@
             </div>
             <form method="post" action="/disparos" class="registration-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="request_id" value="{{ dispatch_request_id }}">
                 <div class="form-fields">
                     <div class="field">
                         <label for="dispatch-name">Nome do cliente <span class="required">*</span></label>
@@ -68,7 +69,7 @@
                     <strong>Como funciona</strong>
                     <span>Procure usar cabeçalhos como <b>Nome</b> e <b>Telefone</b>. Telefones inválidos e repetidos serão exibidos na lista, mas não poderão ser disparados.</span>
                 </div>
-                <button class="button secondary" type="submit">Importar e revisar</button>
+                <button class="button secondary" type="submit" {% if not bulk_dispatch_enabled %}disabled{% endif %}>Importar e revisar</button>
             </form>
         </section>
     </div>
@@ -118,7 +119,7 @@
             </div>
             <form method="post" action="/disparos/listas/{{ selected_batch.id }}/enviar-todos" class="dispatch-bulk-form" data-ready-count="{{ ready_count }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <button class="button primary dispatch-all-button" type="submit" {% if not settings.enabled or ready_count == 0 or bulk_state.status in ['queued','running'] %}disabled{% endif %}>Enviar todos{% if ready_count %} ({{ ready_count }}){% endif %}</button>
+                <button class="button primary dispatch-all-button" type="submit" {% if not bulk_dispatch_enabled or not settings.enabled or ready_count == 0 or bulk_state.status in ['queued','running'] %}disabled{% endif %}>Enviar todos{% if ready_count %} ({{ ready_count }}){% endif %}</button>
             </form>
         </div>
         {% for warning in selected_batch.warnings or [] %}<div class="integration-note">{{ warning }}</div>{% endfor %}
@@ -136,12 +137,12 @@
                         {% if item.status == 'ready' %}
                         <form method="post" action="/disparos/listas/{{ selected_batch.id }}/contatos/{{ item.id }}/disparar">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                            <button class="button primary mini dispatch-contact-button" type="submit" {% if not settings.enabled %}disabled{% endif %}>Disparar</button>
+                            <button class="button primary mini dispatch-contact-button" type="submit" {% if not bulk_dispatch_enabled or not settings.enabled %}disabled{% endif %}>Disparar</button>
                         </form>
                         {% elif item.status in ['failed','cancelled'] %}
                         <form method="post" action="/disparos/listas/{{ selected_batch.id }}/contatos/{{ item.id }}/disparar">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                            <button class="button secondary mini" type="submit" {% if not settings.enabled %}disabled{% endif %}>Tentar novamente</button>
+                            <button class="button secondary mini" type="submit" {% if not bulk_dispatch_enabled or not settings.enabled %}disabled{% endif %}>Tentar novamente</button>
                         </form>
                         {% elif item.dispatch_id %}
                         <span class="dispatch-done">Solicitado</span>

@@ -46,3 +46,7 @@ python -X utf8 -m tools.production_start
 ```
 
 railway.json continua aceito nesta publicação; a CLI informou migração futura do formato antes de 01/12/2026. Não é motivo para refazer a aplicação agora. Próxima etapa concreta: promoção seletiva da integração homologada STAGING para a produção, reconciliando SQL/Make/configuração e preservando o design. Não religar disparos automaticamente.
+
+## Integração original hospedada e conversas liberadas - 16/10/2026
+SQL21 original autorizado/aplicado, dez callbacks Make migrados para Railway; IA e texto humano reais concluíram com WAMID, tentativa única e READ. Após autorização explícita, IA e respostas humanas estão ligadas para clientes reais. Não dependem de túnel/Windows. Disparo individual preparado, envio ainda bloqueado, autorização de teste temporário solicitada. Importação/lote/mídia ficam posteriores. Ler docs/OPERACAO_ORIGINAL_ONLINE.md para evidências, limites, comandos e pendências atuais; checkpoints anteriores descrevem o estado histórico, não o atual.
+

@@ -11,9 +11,9 @@ class WakeGuardTests(TestCase):
         self.settings=SimpleNamespace(app_env='staging',demo_mode=False,whatsapp_persistent_control_enabled=True,
             supabase_url='https://ljufhqnadzltqbtdaulv.supabase.co',whatsapp_staging_wake_enabled=True,
             whatsapp_staging_wake_url='https://hook.us2.make.com/'+'a'*32,whatsapp_staging_wake_token='PRIVATE'+'s'*40,
-            whatsapp_staging_wake_ticket_id=self.tid,whatsapp_staging_wake_phone='5587988216094')
+            whatsapp_staging_wake_ticket_id=self.tid,whatsapp_staging_wake_phone='5511988765432')
         self.item=dict(id=self.oid,ticket_id=self.tid,message_id=self.mid)
-        self.row={**self.item,'phone':'558788216094','status':'pending','provider_message_id':None}
+        self.row={**self.item,'phone':'551188765432','status':'pending','provider_message_id':None}
         self.db=MagicMock();self.db.table.return_value.select.return_value.eq.return_value.limit.return_value.execute.return_value.data=[self.row]
         for target,value in [('app.services.outbox_wake_service.get_settings',self.settings),('app.db.supabase.get_admin_client',self.db)]:
             p=patch(target,return_value=value);p.start();self.addCleanup(p.stop)

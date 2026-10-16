@@ -27,7 +27,11 @@ def _new_lead_destination():
 
 def channel_ready() -> bool:
     settings = get_settings()
-    return bool(settings.dispatch_transport_enabled and not settings.demo_mode)
+    ready = bool(settings.dispatch_transport_enabled and not settings.demo_mode)
+    if ready and settings.app_env == 'production':
+        from app.services.admin_settings_service import get_dispatch_settings
+        return bool(get_dispatch_settings().get('enabled'))
+    return ready
 
 
 def _transport():

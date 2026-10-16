@@ -43,3 +43,11 @@ O texto humano O fechou uma lacuna concreta: antes havia gravação/outbox sem c
 
 ## Checkpoint de publicação
 Base comercial online: https://vendra-original-production.up.railway.app/login. Login/logout, páginas, gravação e persistência após reinício aprovados; Silas Comercial com bloqueios de áreas administrativas validado. H04 hospedagem básica fechada; callbacks/fluxo WhatsApp de produção continuam pendentes. Ler PUBLICACAO_ORIGINAL_RAILWAY.md. Domínio Railway mantido por decisão do usuário.
+
+## Integração original hospedada e conversas liberadas - 16/10/2026
+SQL21 original autorizado/aplicado, dez callbacks Make migrados para Railway; IA e texto humano reais concluíram com WAMID, tentativa única e READ. Após autorização explícita, IA e respostas humanas estão ligadas para clientes reais. Não dependem de túnel/Windows. Disparo individual preparado, envio ainda bloqueado, autorização de teste temporário solicitada. Importação/lote/mídia ficam posteriores. Ler docs/OPERACAO_ORIGINAL_ONLINE.md para evidências, limites, comandos e pendências atuais; checkpoints anteriores descrevem o estado histórico, não o atual.
+
+
+## Disparo individual original concluído - 16/10/2026
+Autorização específica recebida; um POST real do formulário original retornou303/sent. Make6561096 execução8ae8ba54b8e5478a8d1fcbed9e04ce31, cinco módulos uma vez, um template enviado. Banco original: dispatch5eb1de1d-7e9c-4da1-bd3a-577e9e2cf6d8, WAMID presente, status delivered, tentativa1, transporte200, vínculos cliente/atendimento/mensagem/oportunidade completos, etapa Novo Lead. Canal dispatch_bridge/dispatches desligado e filtro Make novamente constantefalse ao concluir. IA e make_outbox continuam true conforme liberação regular. Sem lote/importação. Próximo: consolidar promoção seletiva/pacote e recuperação mínima; não repetir o template nem solicitar novo teste para a mesma migração.
+

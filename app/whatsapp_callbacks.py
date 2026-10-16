@@ -46,6 +46,7 @@ class BridgeConfig:
     ai_enabled: bool = False
     dispatch_enabled: bool = False
     human_enabled: bool = False
+    allow_all_phones: bool = False
 
     def validate(self) -> None:
         if type(self.ai_enabled) is not bool:
@@ -54,6 +55,8 @@ class BridgeConfig:
             raise ValueError('Flag de disparos precisa ser booleana explicita.')
         if type(self.human_enabled) is not bool:
             raise ValueError('Flag de saida humana precisa ser booleana explicita.')
+        if type(self.allow_all_phones) is not bool or (self.allow_all_phones and self.environment != 'production'):
+            raise ValueError('Escopo geral exige producao e autorizacao explicita.')
         if self.environment not in {'staging', 'production'}:
             raise ValueError('Ambiente explicito obrigatorio.')
         parsed = urlsplit(self.supabase_url)
@@ -66,7 +69,7 @@ class BridgeConfig:
             raise ValueError('Credenciais backend/webhook ausentes ou invalidas.')
         if not self.phone_number_id.isdigit() or not self.business_account_id.isdigit():
             raise ValueError('Conta/remetente Meta obrigatorios.')
-        if not self.allowed_phones:
+        if not self.allowed_phones and not self.allow_all_phones:
             raise ValueError('Destinatarios explicitamente autorizados obrigatorios.')
         for phone in self.allowed_phones:
             canonical_phone(phone)
@@ -245,7 +248,8 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
                 or payload.business_account_id != config.business_account_id):
             raise HTTPException(403, 'Conta/remetente Meta divergentes.')
         try:
-            return canonical_phone(phone) in allowed
+            normalized = canonical_phone(phone)
+            return config.allow_all_phones or normalized in allowed
         except ValueError:
             raise HTTPException(422, 'Telefone invalido.') from None
 
@@ -275,7 +279,7 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
     def check_entity_phone(phone: str | None, supplied_phone: str | None = None) -> None:
         try:
             actual = canonical_phone(phone or '')
-            valid = actual in allowed and (supplied_phone is None or actual == canonical_phone(supplied_phone))
+            valid = (config.allow_all_phones or actual in allowed) and (supplied_phone is None or actual == canonical_phone(supplied_phone))
         except ValueError:
             valid = False
         if not valid:
@@ -292,6 +296,7 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
     def health():
         return {'status': 'ok', 'environment': config.environment,
                 'component': 'whatsapp_callbacks_v1', 'external_sends_enabled': False,
+                'recipient_scope': 'production' if config.allow_all_phones else 'restricted',
                 'ai_enabled': config.ai_enabled, 'dispatch_enabled': config.dispatch_enabled,
                 'human_enabled': config.human_enabled,
                 'persistence': 'supabase'}

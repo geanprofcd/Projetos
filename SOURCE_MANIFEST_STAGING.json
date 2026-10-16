@@ -75,7 +75,7 @@
     },
     {
       "path": "app/routers/dispatches.py",
-      "sha256": "62825b9acd2168068e6f062a5347a655793fc3f0c6cf1ee5ee66083e5e210295"
+      "sha256": "1ac197553502cef374e6b5e78d5403ce706f28758ea2fc7b8286d36d5462692b"
     },
     {
       "path": "app/routers/funnels.py",
@@ -231,7 +231,7 @@
     },
     {
       "path": "app/services/outbox_wake_service.py",
-      "sha256": "1d60f2ab7f4fa1a65869c07496a8eaea223aa771e39ef45689740d5d03982260"
+      "sha256": "851e1f250875fae6b6bdfa89f497460b72688ac3bd32b96282dad0d2bc754417"
     },
     {
       "path": "app/services/product_service.py",
@@ -547,7 +547,7 @@
     },
     {
       "path": "app/templates/dispatches/list.html",
-      "sha256": "7231c11673a02481c49b812606db3d2add068cf157ecc2e09a27ca0d4417b75b"
+      "sha256": "e5e9229c47326b657ea08099ec18306639a5a6ba072e28c6a8d3e570f169a557"
     },
     {
       "path": "app/templates/funnels/detail.html",
@@ -667,7 +667,7 @@
     },
     {
       "path": "app/whatsapp_callbacks.py",
-      "sha256": "48e5198b1de4e2ecdf49e999ef6f9db61fbae7a491b8e8062f1cbc1fd43a393e"
+      "sha256": "d93b26454edaa56c16ed5ee88b00006a393298943fcbdc72952adde4e9850984"
     },
     {
       "path": "docs/ANALISE_INICIAL.md",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "ffbd91a480d35d6f1d93b2ca063bb3f68dedd90df26f4bb679ecc2816fb47a79"
+      "sha256": "4ae9b66083168eb119acb2c83d881f49c250ab237ebd6ac1d9744e9a1d5dd81d"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1091,7 +1091,7 @@
     },
     {
       "path": "app/services/dispatch_command_service.py",
-      "sha256": "6122400222e7f234bc2108a827e4763cc34d64970ed33a43864732364c68a180"
+      "sha256": "42cf40a0564c4d0a7903705b115c5bb3bbb49c22657cb5df001f508bdd094a20"
     },
     {
       "path": "app/routers/dispatch_commands.py",
@@ -1215,7 +1215,7 @@
     },
     {
       "path": "docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
-      "sha256": "84b8f8ebcf570afc771771cb4eb157981945049af79dd5a50d6a0cea95e228f0"
+      "sha256": "6e8782e3bac435498ca3f2deb8c3d730bc2e283ab3380b4b660e19ff9a10a29b"
     },
     {
       "path": "app/services/whatsapp_human_command_service.py",
@@ -1239,7 +1239,7 @@
     },
     {
       "path": "tests/test_outbox_wake_guard.py",
-      "sha256": "19c6a5c1b642d7f92e4d482037dcfb111a83d7071b44b716f4764be04f23cb8d"
+      "sha256": "188d5583cb98b0a488c7d6653dfe1227328c28d5e7748a977759befc6c39e038"
     },
     {
       "path": "docs/VALIDACAO_WAKE_AUTOMATICO_H1_006Q.md",
@@ -1255,7 +1255,7 @@
     },
     {
       "path": "docs/PUBLICACAO_ORIGINAL_RAILWAY.md",
-      "sha256": "b24a78f2d4ee74c152b8eed329f3b095bbbedac94b03879a939c2819ed3c69e8"
+      "sha256": "0a4fa7a5b511ff885fae38d14764c6d795dffdfdff25ee85e69d6904f7f1cfb7"
     },
     {
       "path": "docs/VALIDACAO_PADRAO_INICIAL_H1_006R.md",
@@ -1268,6 +1268,34 @@
     {
       "path": "sql/20_ROLLBACK_COMPATIBILIDADE_ORIGINAL.sql",
       "sha256": "a08403cf5006238a9f571d7280a3fa61aca6b7529d25205c2adca4fe2ff51d5d"
+    },
+    {
+      "path": "app/hosted_callbacks.py",
+      "sha256": "91cf158a1e6a5180dfaa46f2078a3a6127252a45c19d3b7b1c957868e1b434a9"
+    },
+    {
+      "path": "tests/test_hosted_callbacks.py",
+      "sha256": "a5826cb72791a512226d995e1299cb1cfd1982f156d7db98c274a87bcd7642eb"
+    },
+    {
+      "path": "tests/test_production_wake_guard.py",
+      "sha256": "c1169d061a1e48d6ec99ab1585b6b99b4c64fd5820b7b4cbc683fe21d31abdcc"
+    },
+    {
+      "path": "tests/test_production_phone_policy.py",
+      "sha256": "a053f310666b29a4a6d26ad36770cc58e7c61d60396f415424e91256843a2951"
+    },
+    {
+      "path": "docs/OPERACAO_ORIGINAL_ONLINE.md",
+      "sha256": "5797e73c08979e123c8a1effe5ba22455c2ad7778f6809591007c0c1b625ad47"
+    },
+    {
+      "path": "sql/21_PREPARAR_INTEGRACAO_WHATSAPP_ORIGINAL.sql",
+      "sha256": "2416be461405cffd01818d8cde6cbacb20308e277f09d1a160d83ef9239cbce3"
+    },
+    {
+      "path": "sql/22_ROLLBACK_INTEGRACAO_WHATSAPP_ORIGINAL.sql",
+      "sha256": "a3877e7394e2d169b59b8801b19d46f2d7b26e2aefeded4b34fd7fc8983e79e6"
     }
   ]
 }

@@ -1,0 +1,52 @@
+# VENDRA original online - integração e operação
+
+Atualizado em 16/10/2026. Portal: https://vendra-original-production.up.railway.app/login
+
+## Situação efetiva
+
+O portal comercial, o banco original e os callbacks WhatsApp estão hospedados. O fluxo de conversas funciona com Railway, Supabase, Make e Meta, sem depender do Windows ou de túnel temporário. Os arquivos SQL antigos não são carregados na execução: as funções aplicadas ficam no banco. A máquina local continua sendo um local de desenvolvimento e backup.
+
+Após autorização específica do usuário, IA e respostas humanas foram liberadas para clientes reais. `ai_automation` e `make_outbox` estão habilitados no original. O modo humano de atendimentos existentes permanece preservado. Disparos, importação e lote não foram incluídos nessa autorização.
+
+## Evidências reaproveitadas e migração
+
+- SQL21 aplicado exclusivamente no original após autorização: 12 funções homologadas, EXECUTE somente service_role, sem copiar dados STAGING. SQL22 de reversão preparado, não executado.
+- Dez callbacks dos cenários originais Make foram migrados para HTTPS no Railway com segredo próprio. Cenários: REV9 6534261 e Disparo Inicial 6561096. Saída humana hospedada: 6659974.
+- IA real hospedada: execução `07e22a12e2c042068f85cf5ff5f67330`; uma tentativa, WAMID e status READ no banco original.
+- Texto humano real pelo formulário: execução `b1e46f9308ae4362a04e0851103a906d`; um envio, uma tentativa, WAMID e READ no banco original. Evidências reais preservadas.
+- Login, permissões Comercial, gravação e persistência após reinício já validados na primeira publicação. Não é necessário repetir esses blocos sem alteração relevante.
+- Escopo de destinatários foi liberado explicitamente para conversas de produção. Segredo, conta Meta, telefone válido, reservas e políticas de envio permanecem obrigatórios. Quinze testes distintos dos controles de destinatário/wake passaram após a alteração.
+
+O design comercial permanece preservado. Alterações em formulários são campos ocultos de segurança/idempotência e controles de funções indisponíveis; não houve substituição de layouts pelo protótipo STAGING. Nenhum snapshot integral, credencial ou dado de simulação foi promovido.
+
+## Disparo individual: próximo bloco
+
+Adaptador do formulário comercial preparado a partir do contrato já homologado no STAGING. Vinte e três testes relevantes de contrato/histórico passaram; uma conferência HTTP da tela original confirmou o nonce oculto e bloqueio antes de RPC/transporte quando o canal está desligado. Isso não equivale a envio funcional hospedado.
+
+Release privada `fbbfb26f-0f6e-4e70-b893-ea3412a3bd41` enviada ao Railway. Transporte tem segredo próprio e destinatário de teste restrito. Configurações `dispatch_bridge`/`dispatches` permanecem desligadas e o template Make permanece bloqueado. Autorização específica de um único teste temporário foi solicitada, separadamente da liberação de conversas. Não anunciar Disparo homologado no original antes de WAMID/entrega real pelo portal.
+
+## O que falta
+
+1. Conferir o deploy do adaptador e, com autorização específica, executar um disparo individual pelo portal, conferir vínculo/status e bloquear novamente ao concluir.
+2. Consolidar promoção seletiva na pasta original local, backup, hashes e pacote de continuidade. Não expor os arquivos privados do produto no GitHub público.
+3. Registrar recuperação mínima e acompanhar prazo/saldo do trial Railway. Nenhum plano pago ou domínio próprio contratado.
+4. Encerrar as contas CODEX somente quando o escopo de homologação acordado estiver concluído; preservar administrador e Comercial reais.
+
+Mídia, importação, lote, SMTP/convites e melhorias ficam para uma fase posterior, conforme prioridade do usuário. Não são critérios novos para impedir a operação das conversas já liberadas.
+
+## Comandos de acompanhamento
+
+Não há comando necessário para usar o portal. Manutenção requer token privado já carregado, sem incluí-lo em arquivos públicos:
+
+```powershell
+Invoke-RestMethod https://vendra-original-production.up.railway.app/health
+Invoke-RestMethod https://vendra-original-production.up.railway.app/callbacks/health
+railway deployment list --project caad2a82-373d-441c-8403-f3a7903a264f --environment production --service vendra-original --limit 1 --json
+railway logs --project caad2a82-373d-441c-8403-f3a7903a264f --environment production --service vendra-original --lines 30
+```
+
+Para publicar, usar somente o caminho absoluto da release privada limpa e conferida, com `--path-as-root`; nunca subir a pasta STAGING ou arquivos `.env`, estado e runtime. SQL e ativação Make são operações separadas da entrega de arquivos. Python Windows deve usar `-X utf8`.
+
+## Disparo individual original concluído - 16/10/2026
+Autorização específica recebida; um POST real do formulário original retornou303/sent. Make6561096 execução8ae8ba54b8e5478a8d1fcbed9e04ce31, cinco módulos uma vez, um template enviado. Banco original: dispatch5eb1de1d-7e9c-4da1-bd3a-577e9e2cf6d8, WAMID presente, status delivered, tentativa1, transporte200, vínculos cliente/atendimento/mensagem/oportunidade completos, etapa Novo Lead. Canal dispatch_bridge/dispatches desligado e filtro Make novamente constantefalse ao concluir. IA e make_outbox continuam true conforme liberação regular. Sem lote/importação. Próximo: consolidar promoção seletiva/pacote e recuperação mínima; não repetir o template nem solicitar novo teste para a mesma migração.
+
