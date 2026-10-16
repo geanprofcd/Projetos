@@ -1,0 +1,51 @@
+{
+  "files": [
+    {
+      "path": "aplicar.py",
+      "sha256": "19555a2dbc2a4daf55697d2b9f9d1ad58f95a3fa1747eabb642423dab9f9cdfe"
+    },
+    {
+      "path": "files/.env.example",
+      "sha256": "b480473bf343b3ad0809dca1aca85c16eeacae407e618655ebbe3d8a97fe7739"
+    },
+    {
+      "path": "files/app/core/config.py",
+      "sha256": "1f3037cbe41c4089d16430a579e30f76bdbbb9ea832c17b42373270d9c97b458"
+    },
+    {
+      "path": "files/app/routers/users.py",
+      "sha256": "cfe46988ac2651ecf2eec4088ac9c2c463cee96a3c3557f8921b3433b4b4ea7c"
+    },
+    {
+      "path": "files/app/services/user_service.py",
+      "sha256": "b1ad3f7d3bc223568321bd946f3b1c62b21950221f15c1b0ff56b4de598eeb0d"
+    },
+    {
+      "path": "files/app/templates/users/index.html",
+      "sha256": "f8fde190604f00053f400487bcb15890f4b62ea935ba3a42234f67f039fbb821"
+    },
+    {
+      "path": "files/docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
+      "sha256": "c3dc8895cf0768ac40d3e5c2d0702528d6282c5fd9de01cd63ab6713b29c3889"
+    },
+    {
+      "path": "files/docs/OPERACAO_ORIGINAL_ONLINE.md",
+      "sha256": "694add60e76fb2b6e9aa2edbf4bd02c9463858e1d961e82d5616d8dedb4a1fc4"
+    },
+    {
+      "path": "files/docs/PARIDADE_ORIGINAL_ONLINE_20261016.md",
+      "sha256": "1c95e37c5ede2b58f1616fffbd827021d9044a86bc43068986412eb3f2d8f4d0"
+    },
+    {
+      "path": "files/tests/test_user_invitation_link.py",
+      "sha256": "373b06a0798e9eb6208049ec0fafd3bcacf3282474fc85f43acb59bf79db706b"
+    },
+    {
+      "path": "INSTRUCOES.md",
+      "sha256": "1116a027bed21fe8137d0117986b0e202360d75ba790f14a4ec3ec13b5c8c5fc"
+    }
+  ],
+  "source_commit": "86f34658fa287af65235004472c5c44e535e6fa7",
+  "automatic_sql": false,
+  "automatic_storage": false
+}
