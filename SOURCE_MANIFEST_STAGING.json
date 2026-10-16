@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "1c5cfa8a9fe8a3339425a5fa6ca11bffe14c965bf834f237ca0b49f2275f12a4"
+      "sha256": "aef229d42e6be4eaffca681f3ff7678227f1cf80dbb9ed1059389070e3b26677"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1287,7 +1287,7 @@
     },
     {
       "path": "docs/OPERACAO_ORIGINAL_ONLINE.md",
-      "sha256": "694e6192c708e2288cbb2b05b79bc7c47278d70f8e999ce226411925d4f955bf"
+      "sha256": "12ee76d7fd00d6c259cc88e1923d23d66cb52e074349b8c14fd8ccf670f5c3ef"
     },
     {
       "path": "sql/21_PREPARAR_INTEGRACAO_WHATSAPP_ORIGINAL.sql",
@@ -1368,6 +1368,26 @@
     {
       "path": "docs/VALIDACAO_FUNIS_COMERCIAL_20261016.md",
       "sha256": "b757f4a16440770a04b61fc4b163e00c3dc019a1ab567045d5ccc8dba9a8f229"
+    },
+    {
+      "path": "sql/28_REGRAS_COMERCIAIS_POR_ETAPA.sql",
+      "sha256": "9942ac6d83a0f4523103a9814a9815784177e76ddb009b4b1d9bcc7bfb704e78"
+    },
+    {
+      "path": "sql/28_VALIDAR_REGRAS_POR_ETAPA_TRANSACAO.sql",
+      "sha256": "f20182a0b330946aa5ac9a6144c98bba8ef116dedd593769f86fd7d80af630f7"
+    },
+    {
+      "path": "sql/28_RECONCILIAR_CARDS_AFETADOS.sql",
+      "sha256": "2f1a1a733aeee9f25d442a3e9c0b906fd7cc5d5c92329ec3f25f57c59a0287fa"
+    },
+    {
+      "path": "sql/29_ROLLBACK_REGRAS_COMERCIAIS_POR_ETAPA.sql",
+      "sha256": "72c5f0723d1914bae36cb22543cd1f8f45f1e11aefbe97ec2a08d40beed5ce05"
+    },
+    {
+      "path": "docs/CORRECAO_REGRAS_POR_ETAPA_20261016.md",
+      "sha256": "33c4e3f286536b1fe338d6af84fc1e1f35edb92697eb0eccdfad4464177822f0"
     }
   ]
 }
