@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "5d5808b3a3f425f611e393415675162ca4051a3b50b06e6ed546709c2f8b9520"
+      "sha256": "d0811c7c7955b7634b9f3975576cacd7c6faeaeb77d092d790d15c6e1a8b5f57"
     },
     {
       "path": "README.md",
@@ -135,7 +135,7 @@
     },
     {
       "path": "app/routers/tickets.py",
-      "sha256": "e5645675031541a3188bbc1e30894de4db5dc9815ea63d5ad74a538b5a463c92"
+      "sha256": "6e8c4fa0363ef779d4db62a576814aeaa9d3d9e286c193fe71e91d06e62d95d9"
     },
     {
       "path": "app/routers/users.py",
@@ -267,7 +267,7 @@
     },
     {
       "path": "app/services/ticket_service.py",
-      "sha256": "1701ec752569485014975bddca678c5e8d0a740f5d5e86a90e12d35714edc568"
+      "sha256": "0ce54acc48c1c6f3b13d9b184a51671e3a5b8129a3b2e6cd2c664fe303575028"
     },
     {
       "path": "app/services/user_service.py",
@@ -647,7 +647,7 @@
     },
     {
       "path": "app/templates/tickets/detail.html",
-      "sha256": "bd08bacbe1784bbcb74f6d5665fef051e6673548d4cd88f4f47f2024309e7ac4"
+      "sha256": "7ecb8f1984b47098873ab2f9b1f701393adb04870b494db2383e8b7fda4f93c0"
     },
     {
       "path": "app/templates/tickets/form.html",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "20fa7aae6eb71a1502c5c90f93610adc8bf2edd03520ead4dd0954d67bbc5f92"
+      "sha256": "2ffe315c9cb6084c3907632cc5437af4b922d37e29aade6664955f37aca45bb4"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1180,6 +1180,14 @@
     {
       "path": "docs/VALIDACAO_EQUIPE_GLOBAL_H1_006L.md",
       "sha256": "0b4f78e9ff87d3fab65be9598ed6439c4419048c885475cea7375d20d2a101b0"
+    },
+    {
+      "path": "tests/test_commercial_composer.py",
+      "sha256": "c4e3d9032622486deacf8898f92f7a282424b243b2ce20163aa27c6c554ad8ea"
+    },
+    {
+      "path": "docs/VALIDACAO_COMPOSER_ANEXOS_H1_006M.md",
+      "sha256": "167a4fe9aeeabe3500d8d953f2a2bcf86629d8caa2455238cb5f13ca33fbb0ec"
     }
   ]
 }

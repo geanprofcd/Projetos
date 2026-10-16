@@ -395,6 +395,9 @@ def add_message(ticket_id: str, user: dict, body: str, is_internal: bool = False
     if not ticket:
         raise ValueError("Atendimento não encontrado.")
     payload = {"ticket_id": ticket_id, "sender_id": user["id"], "body": body, "channel": "internal", "direction": "outbound" if user.get("role") != "agronomo" else "inbound", "is_internal": is_internal, "created_at": _now()}
+    if (not get_settings().demo_mode and getattr(get_settings(), 'whatsapp_persistent_control_enabled', False)
+            and ticket.get('source') == 'whatsapp' and not is_internal):
+        payload.update(channel='whatsapp',sender_kind='human')
     if get_settings().demo_mode:
         payload.update({"id": new_id("message"), "sender_name": user["full_name"]})
         DEMO_MESSAGES.setdefault(ticket_id, []).append(payload)

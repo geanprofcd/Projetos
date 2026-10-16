@@ -495,7 +495,9 @@ async def send_message(
     body: str = Form(""),
     is_internal: bool = Form(False),
     files: list[UploadFile] = File(default=[]),
+    csrf_token: str | None = Form(default=None),
 ):
+    _require_tickets_csrf(request, csrf_token or "")
     ticket = get_ticket(ticket_id, user)
     if not ticket:
         raise HTTPException(status_code=404, detail="Atendimento não encontrado.")
@@ -540,6 +542,17 @@ async def send_message(
 
     message = None
     saved_attachments = []
+    human_whatsapp = (not is_internal and user.get("role") in {"responsavel", "administrador"}
+                      and ticket.get("source") == "whatsapp")
+    if human_whatsapp:
+        try:
+            # Falha no controle interrompe antes de persistir mensagem/anexos/outbox.
+            set_ticket_ai_mode(ticket_id, mode="human", actor_id=str(user.get("id") or "") or None, source="human_message")
+        except ValueError as exc:
+            return templates.TemplateResponse(
+                request=request, name="tickets/detail.html", status_code=422,
+                context=_detail_context(ticket_id, user, request=request, composer_error=str(exc), composer_body=body),
+            )
     try:
         message = add_message(ticket_id, user, body, is_internal=is_internal, allow_empty=bool(prepared_files))
         for prepared in prepared_files:
@@ -551,13 +564,7 @@ async def send_message(
                     prepared=prepared,
                 )
             )
-        if not is_internal and user.get("role") in {"responsavel", "administrador"} and ticket.get("source") == "whatsapp":
-            # Uma resposta humana sempre assume a conversa antes de entrar na outbox.
-            # Isso invalida qualquer resposta de IA que ainda esteja sendo processada.
-            try:
-                set_ticket_ai_mode(ticket_id, mode="human", actor_id=str(user.get("id") or "") or None, source="human_message")
-            except ValueError:
-                pass
+        if human_whatsapp:
             queue_whatsapp_outbound(ticket_id=ticket_id, message_id=str(message["id"]))
     except Exception:
         logger.exception("Falha ao persistir mensagem/anexo do atendimento %s", ticket_id)
