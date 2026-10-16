@@ -263,7 +263,7 @@
     },
     {
       "path": "app/services/ticket_attention_service.py",
-      "sha256": "367cadb0a4414fa047f4b8e3597854ed38aa8d43db511bd254db7bf3e486ed2c"
+      "sha256": "c10e1502af91b32705fc64d6aaeb736f8220b97d21334cfa8b66c5698e8992ec"
     },
     {
       "path": "app/services/ticket_service.py",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "97d1d6f35fef05e306f630fcb0e0f2f872436defa0bdced5605ef1fd420c856a"
+      "sha256": "d0b4c9eb1ca46cb8d5294c3894e781a4e4d0da15057982776d6d3df9641084c5"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1392,6 +1392,14 @@
     {
       "path": "docs/VALIDACAO_REAL_CALENDLY_20261016.md",
       "sha256": "19473f0dd613b493fa75756b056c3e1c4801f11d534567de8b7358f7ec9de95b"
+    },
+    {
+      "path": "tests/test_ticket_attention.py",
+      "sha256": "8d815cd2f2a465a7635d3fc4a93712f4e6ed5b7e36aa3a26816cc5e4168a4a75"
+    },
+    {
+      "path": "docs/VALIDACAO_ALERTAS_20261016.md",
+      "sha256": "78d57914609df5b7c94bc195fdf76b5d3dc1bcbbf3cb059af2a6fd893cf87d8b"
     }
   ]
 }

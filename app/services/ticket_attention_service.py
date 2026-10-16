@@ -118,7 +118,8 @@ def summarize_ticket(ticket: dict, messages: list[dict], *, now: datetime | None
                 first_inbound = moment
             last_external = moment
             last_direction = 'inbound'
-        elif direction == 'outbound' and row.get('delivery_status') not in ('failed','cancelled','pending'):
+        # claimed apenas reserva a mensagem no Make; ainda não houve envio.
+        elif direction == 'outbound' and row.get('delivery_status') not in ('failed','cancelled','pending','claimed'):
             last_external = moment
             last_direction = 'outbound'
     pending = (
