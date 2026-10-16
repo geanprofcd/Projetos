@@ -24,3 +24,6 @@ Usuario determinou que o VENDRA original possui UX/UI e design comercial proprio
 
 ## H1-006J
 Interface /conversas homologada somente no STAGING;235testesWindows e14 verificacoes funcionais reais aprovados. Conta CODEX administrativa especificamente autorizada, depois inativada/sessoes revogadas. Nao promover telas/menus/factories STAGING ao original. Backend original automation_service ainda bloqueiaSupabaseReal; adaptar aos controles Desconectar/Reconectar existentes sem mudar templates/design. Ler docs/VALIDACAO_CONVERSAS_STAGING_H1_006J.md.
+
+## H1-006K em validacao comercial
+Ler docs/VALIDACAO_BACKEND_COMERCIAL_H1_006K.md. Backend persistente sob flagdefaultfalse, preview LOCAL8014/copiaSTAGING. Main/router/template/componente comercial semalteracoes; originalfisico intocado. 248testesWindows e6funcionaisreais nosbotoescomerciais, autoriaIA/read/versao/semoutboxnovo. Contaadminnovamenteinativa/sessoesrevogadas/flagremovida. SQL11/rollback12 separados preparados NAO executados; autorizacao especifica equipe/global solicitada pendente. Nao aplicarDDL nemampliarrolesporinstalar. PublicacaoK nao e promocaooriginal; prototipoUIJ nao promover. RailwaysoProjetovazioVENDRAproduction. Originaldisparo/import/lote ainda bloqueiaSupabaseReal; composer/anexos/configglobal devemhomologar antesdehosting. UIoriginalpreservar.

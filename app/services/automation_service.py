@@ -85,6 +85,10 @@ def get_ticket_ai_control(ticket_id: str) -> dict[str, Any]:
             "assistant_name": _assistant_name(config),
         }
 
+    if getattr(get_settings(), 'whatsapp_persistent_control_enabled', False):
+        from app.services.whatsapp_control_service import read_control
+        return read_control(ticket_id, assistant_name=_assistant_name(config))
+
     # O Supabase real permanece fora da linha ativa atual. Quando a migration
     # de controle da IA for homologada, estes campos passam a ser lidos da
     # tabela tickets. Enquanto isso, retornamos modo humano por segurança.
@@ -114,6 +118,10 @@ def set_ticket_ai_mode(ticket_id: str, *, mode: str, actor_id: str | None, sourc
     if mode not in AI_MODES:
         raise ValueError("Modo de atendimento inválido.")
     if not get_settings().demo_mode:
+        if getattr(get_settings(), 'whatsapp_persistent_control_enabled', False):
+            from app.services.whatsapp_control_service import change_mode
+            return change_mode(ticket_id,mode=mode,actor_id=actor_id,
+                assistant_name=_assistant_name(get_ai_settings()))
         raise ValueError("O controle de IA no Supabase real ainda depende da migration de tickets desta camada.")
     with _CONTROL_LOCK:
         ticket = _demo_ticket(ticket_id)
@@ -145,6 +153,8 @@ def disconnect_ticket_from_ai(ticket_id: str, *, actor_id: str | None, source: s
 
 def connect_ticket_to_ai(ticket_id: str, *, actor_id: str | None, source: str = "ui_reconnect") -> dict[str, Any]:
     """Reconecta o ticket ao fluxo de IA, desde que a automação global esteja habilitada."""
+    if not get_settings().demo_mode and getattr(get_settings(), 'whatsapp_persistent_control_enabled', False):
+        return set_ticket_ai_mode(ticket_id, mode='ai', actor_id=actor_id, source=source)
     config = get_ai_settings()
     if not config.get("enabled"):
         raise ValueError("Ative a IA em Configurações antes de reconectar este atendimento.")

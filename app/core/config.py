@@ -37,6 +37,7 @@ class Settings(BaseSettings):
     dispatch_transport_url: str | None = None
     dispatch_transport_secret: str | None = None
     dispatch_allowed_phones: str = ''
+    whatsapp_persistent_control_enabled: bool = False
     attachment_bucket: str = "ticket-attachments"
     attachment_max_mb: int = 15
     attachment_video_max_mb: int = 50

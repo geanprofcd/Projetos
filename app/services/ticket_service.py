@@ -335,7 +335,10 @@ def list_messages(ticket_id: str, user: dict) -> list[dict]:
     if get_settings().demo_mode:
         rows = [row.copy() for row in DEMO_MESSAGES.get(ticket_id, []) if not (hide_internal and row.get("is_internal"))]
     else:
-        query = get_admin_client().table("messages").select("id,sender_id,body,channel,direction,is_internal,external_message_id,delivery_status,external_status_updated_at,created_at").eq("ticket_id", ticket_id)
+        fields = "id,sender_id,body,channel,direction,is_internal,external_message_id,delivery_status,external_status_updated_at,created_at"
+        if getattr(get_settings(), 'whatsapp_persistent_control_enabled', False):
+            fields += ',sender_kind'
+        query = get_admin_client().table("messages").select(fields).eq("ticket_id", ticket_id)
         if hide_internal:
             query = query.eq("is_internal", False)
         rows = query.order("created_at").execute().data or []
@@ -347,7 +350,12 @@ def list_messages(ticket_id: str, user: dict) -> list[dict]:
         if ticket_rows and ticket_rows[0].get("customer_id"):
             ticket_customer = _customer_rows({ticket_rows[0]["customer_id"]}).get(ticket_rows[0]["customer_id"])
         for row in rows:
-            row["sender_name"] = profiles.get(row.get("sender_id")) or customers.get(row.get("sender_id")) or ticket_customer or "WhatsApp/Cliente"
+            if row.get('sender_kind') == 'ai':
+                row['sender_name'] = 'Assistente de IA'
+            else:
+                row["sender_name"] = profiles.get(row.get("sender_id")) or customers.get(row.get("sender_id")) or (
+                    'Equipe' if row.get('direction') == 'outbound' and getattr(
+                        get_settings(), 'whatsapp_persistent_control_enabled', False) else ticket_customer or 'WhatsApp/Cliente')
 
     message_ids = [str(row["id"]) for row in rows if row.get("id")]
     delivery_errors: dict[str, str] = {}

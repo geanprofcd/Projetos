@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "d078d279cbb9baf5aa9612ece0361d032e4bee1da2a79e8558cc082cbf359166"
+      "sha256": "c3b4d0a3449e444a7d1c100a74b8dd036626acc005069773ee3a310becc6686e"
     },
     {
       "path": "README.md",
@@ -31,7 +31,7 @@
     },
     {
       "path": "app/core/config.py",
-      "sha256": "1882da3ebe05fefa9befd2ce8660c29c1e262d3515d2f04157258c3364d715c2"
+      "sha256": "0dda789cbe44db805378777ef0184ae4f3b45e67b72fd09cefc30e343556c23d"
     },
     {
       "path": "app/core/ui.py",
@@ -171,7 +171,7 @@
     },
     {
       "path": "app/services/automation_service.py",
-      "sha256": "281e1ea49b2bcfa653fb60a134c12960a579f74eb7ab76e76f5b6cfd2aa8d416"
+      "sha256": "87a56d1044c3450df925bb39bce558343d8b472c70f5a23b62447e9c3cc0e490"
     },
     {
       "path": "app/services/commercial_metrics_service.py",
@@ -267,7 +267,7 @@
     },
     {
       "path": "app/services/ticket_service.py",
-      "sha256": "bcbf8bb3a0698f28509ce1ec6c2ce4f1bd16bb047661108ded897fb25a9abc0e"
+      "sha256": "1701ec752569485014975bddca678c5e8d0a740f5d5e86a90e12d35714edc568"
     },
     {
       "path": "app/services/user_service.py",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "a8c79c5467c5b450d2078be7f39b4f587cc72916f5f28e1756e06399e25b9a7e"
+      "sha256": "b0b5022a301e06252554e80bf9b2e152ce3a1a07f2e8bee872c655feda5c6e2b"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1152,6 +1152,30 @@
     {
       "path": "docs/VALIDACAO_CONVERSAS_STAGING_H1_006J.md",
       "sha256": "d0f673e2eecaf8afe33cbdee902ed731049bd152d023ea0ee7aa0c6c5254055c"
+    },
+    {
+      "path": "app/services/whatsapp_control_service.py",
+      "sha256": "7ae8c0aa4887725a41170d2df7fe3c8fc60b529d1ba4da87f0167871d37638a3"
+    },
+    {
+      "path": "tools/commercial_preview_start.py",
+      "sha256": "5fbdea5cca5b8741633e385aa644de6cc1cbf1d67fe7316bfcffc9d930c5ce08"
+    },
+    {
+      "path": "tests/test_whatsapp_commercial_backend.py",
+      "sha256": "55457b04b3b4cd52c1e8862f6420042877631a8721b54fe263a66f6ea566f1d3"
+    },
+    {
+      "path": "docs/VALIDACAO_BACKEND_COMERCIAL_H1_006K.md",
+      "sha256": "e02024f6fb14d276d02131e0140de5305b61b8d9a55228534e779f6845ba2662"
+    },
+    {
+      "path": "sql/11_ALINHAR_CONTROLE_EQUIPE_STAGING.sql",
+      "sha256": "27117e39d0846aa2c3edf43185ac1d9a754efce93ced281b4d776bf1b2c7a4fc"
+    },
+    {
+      "path": "sql/12_ROLLBACK_CONTROLE_EQUIPE_STAGING.sql",
+      "sha256": "90c6c4ff733f2488185a9634b79985f88e18cdd58706d2bc273aede64e1d26ab"
     }
   ]
 }
