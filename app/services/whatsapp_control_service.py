@@ -50,8 +50,8 @@ def change_mode(ticket_id, *, mode, actor_id, assistant_name='Assistente de IA',
     db = _db();ticket_id=_uuid(ticket_id);actor_id=_uuid(actor_id)
     # Match the ACL of the currently homologated SQL, without impersonation or implicit grants.
     profiles = db.table('profiles').select('access_level,status').eq('id',actor_id).limit(1).execute().data or []
-    if not profiles or profiles[0].get('status')!='active' or profiles[0].get('access_level')!='administrativo':
-        raise ValueError('Somente administradores podem alterar a automação persistente.')
+    if not profiles or profiles[0].get('status')!='active' or profiles[0].get('access_level') not in ('administrativo','comercial','gerencial'):
+        raise ValueError('Somente a equipe de atendimento ativa pode alterar a automação persistente.')
     control = read_control(ticket_id,assistant_name=assistant_name)
     if expected_version is not None and (isinstance(expected_version,bool) or not isinstance(expected_version,int)
             or expected_version!=control['control_version']):

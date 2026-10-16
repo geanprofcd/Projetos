@@ -55,11 +55,22 @@ class PersistentControlTests(TestCase):
         self.assertEqual(self.db.rpc.call_args.args,('vendra_whatsapp_mode_v1',{
             'p_ticket_id':self.ticket,'p_mode':'human','p_expected_version':2,'p_actor_id':self.actor}))
 
-    def test_commercial_is_not_implicitly_granted_admin_privilege(self):
-        self.db.table.return_value.select.return_value.eq.return_value.limit.return_value.execute.return_value.data=[
-            {'access_level':'comercial','status':'active'}]
-        with self.assertRaises(ValueError):service.change_mode(self.ticket,mode='human',actor_id=self.actor)
+    def test_common_inactive_and_missing_profiles_never_write(self):
+        for profiles in [[],[{'access_level':'comum','status':'active'}],
+                         [{'access_level':'comercial','status':'inactive'}],
+                         [{'access_level':'gerencial','status':'inactive'}]]:
+            self.db.table.return_value.select.return_value.eq.return_value.limit.return_value.execute.return_value.data=profiles
+            with self.assertRaises(ValueError):service.change_mode(self.ticket,mode='human',actor_id=self.actor)
         self.db.rpc.assert_not_called()
+
+    def test_active_commercial_and_manager_use_their_own_identity(self):
+        for level in ('comercial','gerencial'):
+            self.db.table.return_value.select.return_value.eq.return_value.limit.return_value.execute.return_value.data=[
+                {'access_level':level,'status':'active'}]
+            self.db.rpc.return_value.execute.side_effect=[SimpleNamespace(data=self.value),
+                SimpleNamespace(data={**self.value,'mode':'human','connected':False,'route_to_ai':False,'control_version':3})]
+            self.assertEqual(service.change_mode(self.ticket,mode='human',actor_id=self.actor)['mode'],'human')
+            self.assertEqual(self.db.rpc.call_args.args[1]['p_actor_id'],self.actor)
 
     def test_stale_expected_version_never_writes(self):
         with self.assertRaises(service.ControlConflict):

@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "c3b4d0a3449e444a7d1c100a74b8dd036626acc005069773ee3a310becc6686e"
+      "sha256": "5d5808b3a3f425f611e393415675162ca4051a3b50b06e6ed546709c2f8b9520"
     },
     {
       "path": "README.md",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "b0b5022a301e06252554e80bf9b2e152ce3a1a07f2e8bee872c655feda5c6e2b"
+      "sha256": "20fa7aae6eb71a1502c5c90f93610adc8bf2edd03520ead4dd0954d67bbc5f92"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1155,7 +1155,7 @@
     },
     {
       "path": "app/services/whatsapp_control_service.py",
-      "sha256": "7ae8c0aa4887725a41170d2df7fe3c8fc60b529d1ba4da87f0167871d37638a3"
+      "sha256": "2d069e7e6185b15681bdd44766ac799e502dbca3041778a32b4d59659a377fef"
     },
     {
       "path": "tools/commercial_preview_start.py",
@@ -1163,19 +1163,23 @@
     },
     {
       "path": "tests/test_whatsapp_commercial_backend.py",
-      "sha256": "55457b04b3b4cd52c1e8862f6420042877631a8721b54fe263a66f6ea566f1d3"
+      "sha256": "e2f663ce49e6df6c00f27c5ec21f83305caff625b351275581ee8e009e1cea41"
     },
     {
       "path": "docs/VALIDACAO_BACKEND_COMERCIAL_H1_006K.md",
-      "sha256": "e02024f6fb14d276d02131e0140de5305b61b8d9a55228534e779f6845ba2662"
+      "sha256": "4f07ec1db2895784687086aaa50ee42ccede0e0793acee921b007a88e731a4eb"
     },
     {
       "path": "sql/11_ALINHAR_CONTROLE_EQUIPE_STAGING.sql",
-      "sha256": "27117e39d0846aa2c3edf43185ac1d9a754efce93ced281b4d776bf1b2c7a4fc"
+      "sha256": "2b443880a323540d71f2f3f01b3385d6abb663efa8833d80a66de85cb8ab0835"
     },
     {
       "path": "sql/12_ROLLBACK_CONTROLE_EQUIPE_STAGING.sql",
       "sha256": "90c6c4ff733f2488185a9634b79985f88e18cdd58706d2bc273aede64e1d26ab"
+    },
+    {
+      "path": "docs/VALIDACAO_EQUIPE_GLOBAL_H1_006L.md",
+      "sha256": "0b4f78e9ff87d3fab65be9598ed6439c4419048c885475cea7375d20d2a101b0"
     }
   ]
 }

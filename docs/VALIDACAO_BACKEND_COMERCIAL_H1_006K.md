@@ -45,5 +45,5 @@ Regressão completa, com UTF8, snapshot e hashes. Original não atualizado, nenh
 - [Prévia comercial local de testes](http://127.0.0.1:8014/atendimentos)
 
 
-SQL11 e rollback12 estao preparados separadamente e ainda nao executados. Autorizacao especifica solicitada para alinhar equipe/controle e configuracao global somente STAGING. Nenhuma permissao ampliada por instalar este pacote.
+Estado histórico K: SQL11 e rollback12 estavam preparados, não executados. Atualização H1-006L: após autorização específica, SQL11 aplicado somente no STAGING e backend da cópia alinhado; SQL12 não executado. Ler [validação H1-006L](VALIDACAO_EQUIPE_GLOBAL_H1_006L.md). Instalar arquivos não executa SQL ou altera permissões do banco original.
 

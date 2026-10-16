@@ -1,4 +1,5 @@
--- PREPARADO, NAO APLICADO. Exige autorizacao especifica: somente VENDRA-STAGING.
+-- APLICADO em 15/10/2026 somente VENDRA-STAGING, com autorizacao especifica.
+-- Migration: vendra_whatsapp_team_global_control_v1. Copiar arquivo nao executa SQL.
 -- Duas funcoes existentes; sem tabelas/RLS/worker/envio. Override whatsapp_bridge prevalece.
 BEGIN;
 DO $guard$ BEGIN
