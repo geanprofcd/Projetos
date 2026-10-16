@@ -36,3 +36,5 @@ Ler docs/VALIDACAO_COMPOSER_ANEXOS_H1_006M.md. ComposerCSRFinputoculto/semredese
 
 ## H1-006N validado
 Ler docs/VALIDACAO_HISTORICO_COMERCIAL_H1_006N.md. HistoricoComercialDBrealsobflag, reenvioexplicitobloqueado. 263testesWindows e8funcionaisreaisaprovados,nenhumdisparoalterado/envio/SQL/Make/worker. M22funcionais composer/anexosprivadospassaram,fixtureslimpas. Previewlocal8014PID6428, originaldesign/pasta/banco intactos. MakeVENDRA7cenarios2ativos,REV2Outboxinativo eentradaMeta/IA/enviodiretoantigaconexao;nao e workerhumanohomologado. Proximo contratooutboxhumana/idempotencia+comercialDisparos/import/lote+padraonovosleads+backup/promocaoseletiva/hostingoriginal. Nao parar por documento. Railwaysemdeploy.
+
+M/N entregue: ler checkpoint final em docs/VALIDACAO_ATUAL.md. Fonte85c76ba/pacote1a98808/Mestre148220p,299hashes,263testesWindows,47funcionaisL/M/Ndistintas. Proximo contratooutboxhumana atomico/idempotente; reserve_whatsapp_outbox legado read-then-update/claimed nao e exclusao segura entreworkers(inspecao,naotesteconcorrente). Original/Make/Railwaypreservadosnestaentrega.
