@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "4ae9b66083168eb119acb2c83d881f49c250ab237ebd6ac1d9744e9a1d5dd81d"
+      "sha256": "7cbf43ccfc63c8412b97f791dbe2ad72bd421d93231f1ed8a9d760401c40fb10"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1287,7 +1287,7 @@
     },
     {
       "path": "docs/OPERACAO_ORIGINAL_ONLINE.md",
-      "sha256": "5797e73c08979e123c8a1effe5ba22455c2ad7778f6809591007c0c1b625ad47"
+      "sha256": "b9bcca4768ea0eb76941313a6314fa6d6adb5b86e9bbff76f49530b4dd963cdf"
     },
     {
       "path": "sql/21_PREPARAR_INTEGRACAO_WHATSAPP_ORIGINAL.sql",
