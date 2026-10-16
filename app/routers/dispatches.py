@@ -23,6 +23,7 @@ from app.services.dispatch_import_service import (
 )
 from app.services.dispatch_service import create_dispatch, list_dispatches, retry_dispatch
 from app.services import dispatch_command_service
+from app.services import dispatch_list_service
 
 router = APIRouter(prefix="/disparos", tags=["disparos"])
 
@@ -66,7 +67,7 @@ def _page_context(
         "settings": get_dispatch_settings(),
         "csrf_token": _csrf(request),
         "dispatch_request_id": (form or {}).get('request_id') or str(uuid4()),
-        "bulk_dispatch_enabled": get_settings().demo_mode,
+        "bulk_dispatch_enabled": get_settings().demo_mode or dispatch_list_service.enabled(),
         "success": success,
         "error": error,
         "form": form,
@@ -207,7 +208,7 @@ def dispatch_import_contact(
     if not batch:
         raise HTTPException(status_code=404, detail="Lista importada não encontrada.")
     try:
-        result = dispatch_import_item(item_id=item_id, requested_by=str(user.get("id") or "") or None)
+        result = dispatch_import_item(item_id=item_id, batch_id=batch_id, requested_by=str(user.get("id") or "") or None)
     except ValueError as exc:
         return templates.TemplateResponse(
             request=request,
@@ -238,6 +239,7 @@ def dispatch_import_bulk_start(
     batch_id: str,
     request: Request,
     csrf_token: str = Form(...),
+    quantity: int | None = Form(default=None),
     user: dict = Depends(current_user),
 ):
     _require_dispatch_access(user)
@@ -245,7 +247,7 @@ def dispatch_import_bulk_start(
     if not get_import_batch(batch_id):
         raise HTTPException(status_code=404, detail="Lista importada não encontrada.")
     try:
-        state = start_bulk_dispatch(batch_id=batch_id, requested_by=str(user.get("id") or "") or None)
+        state = start_bulk_dispatch(batch_id=batch_id, requested_by=str(user.get("id") or "") or None, quantity=quantity)
     except ValueError as exc:
         return templates.TemplateResponse(
             request=request,

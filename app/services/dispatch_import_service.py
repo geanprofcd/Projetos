@@ -16,7 +16,7 @@ from app.services.demo_store import DEMO_DISPATCH_IMPORT_BATCHES, DEMO_DISPATCH_
 from app.services.dispatch_service import create_dispatch, get_dispatch, retry_dispatch
 
 MAX_UPLOAD_BYTES = 12 * 1024 * 1024
-MAX_IMPORTED_ROWS = 5000
+MAX_IMPORTED_ROWS = 20000
 SUPPORTED_EXTENSIONS = {".csv", ".xlsx", ".xls", ".ods", ".pdf", ".docx"}
 NAME_ALIASES = {
     "nome", "nome cliente", "nome do cliente", "cliente", "contato", "nome contato",
@@ -305,7 +305,8 @@ def parse_contact_file(*, filename: str, content: bytes) -> tuple[list[dict[str,
 
 def import_contact_file(*, filename: str, content: bytes, imported_by: str | None) -> dict[str, Any]:
     if not get_settings().demo_mode:
-        raise ValueError("Importação de listas no Supabase real ainda depende da migration desta camada.")
+        from app.services.dispatch_list_service import import_file
+        return import_file(filename=filename,content=content,imported_by=imported_by)
     records, warnings = parse_contact_file(filename=filename, content=content)
     batch_id = new_id("dispatch-list")
     now = _now()
@@ -364,13 +365,17 @@ def import_contact_file(*, filename: str, content: bytes, imported_by: str | Non
 
 def list_import_batches(limit: int = 30) -> list[dict[str, Any]]:
     if not get_settings().demo_mode:
-        return []
+        from app.services.dispatch_list_service import batches
+        return batches(limit)
     rows = sorted(DEMO_DISPATCH_IMPORT_BATCHES, key=lambda row: row.get("created_at") or "", reverse=True)
     return [dict(row) for row in rows[: max(1, min(limit, 100))]]
 
 
 def get_import_batch(batch_id: str | None) -> dict[str, Any] | None:
-    if not batch_id or not get_settings().demo_mode:
+    if not get_settings().demo_mode:
+        from app.services.dispatch_list_service import batch
+        return batch(batch_id)
+    if not batch_id:
         return None
     row = next((row for row in DEMO_DISPATCH_IMPORT_BATCHES if str(row.get("id")) == str(batch_id)), None)
     return dict(row) if row else None
@@ -379,6 +384,8 @@ def get_import_batch(batch_id: str | None) -> dict[str, Any] | None:
 def _status_label(status: str) -> str:
     labels = {
         "ready": "Pronto",
+        "queued": "Na fila",
+        "processing": "Reservado",
         "invalid": "Inválido",
         "duplicate": "Duplicado",
         "pending": "Pendente",
@@ -394,7 +401,8 @@ def _status_label(status: str) -> str:
 
 def list_import_items(batch_id: str) -> list[dict[str, Any]]:
     if not get_settings().demo_mode:
-        return []
+        from app.services.dispatch_list_service import items
+        return items(batch_id)
     rows = [row for row in DEMO_DISPATCH_IMPORT_ITEMS if str(row.get("batch_id")) == str(batch_id)]
     rows.sort(key=lambda row: (int(row.get("row_number") or 0), str(row.get("id") or "")))
     public: list[dict[str, Any]] = []
@@ -447,6 +455,9 @@ def _bulk_public(batch: dict[str, Any] | None) -> dict[str, Any]:
 
 
 def get_bulk_dispatch_state(batch_id: str) -> dict[str, Any]:
+    if not get_settings().demo_mode:
+        from app.services.dispatch_list_service import state
+        return state(batch_id)
     batch = next((row for row in DEMO_DISPATCH_IMPORT_BATCHES if str(row.get("id")) == str(batch_id)), None)
     if not batch:
         raise ValueError("Lista importada não encontrada.")
@@ -540,9 +551,10 @@ def _bulk_worker(batch_id: str, item_ids: list[str], requested_by: str | None) -
             _BULK_WORKERS.pop(str(batch_id), None)
 
 
-def start_bulk_dispatch(*, batch_id: str, requested_by: str | None) -> dict[str, Any]:
+def start_bulk_dispatch(*, batch_id: str, requested_by: str | None, quantity: int | None = None) -> dict[str, Any]:
     if not get_settings().demo_mode:
-        raise ValueError("Envio em lote no Supabase real ainda depende da migration desta camada.")
+        from app.services.dispatch_list_service import start
+        return start(batch_id=batch_id,requested_by=requested_by,quantity=quantity)
     batch = next((row for row in DEMO_DISPATCH_IMPORT_BATCHES if str(row.get("id")) == str(batch_id)), None)
     if not batch:
         raise ValueError("Lista importada não encontrada.")
@@ -553,6 +565,10 @@ def start_bulk_dispatch(*, batch_id: str, requested_by: str | None) -> dict[str,
     ]
     if not ready_ids:
         raise ValueError("Não existem contatos prontos para envio nesta lista.")
+    if quantity is not None:
+        if quantity < 1 or quantity > len(ready_ids):
+            raise ValueError('Informe uma quantidade entre 1 e o total de contatos prontos.')
+        ready_ids = ready_ids[:quantity]
     with _BULK_LOCK:
         active = _BULK_WORKERS.get(str(batch_id))
         if active and active.is_alive():
@@ -578,9 +594,10 @@ def start_bulk_dispatch(*, batch_id: str, requested_by: str | None) -> dict[str,
         worker.start()
     return _bulk_public(batch)
 
-def dispatch_import_item(*, item_id: str, requested_by: str | None) -> dict[str, Any]:
+def dispatch_import_item(*, item_id: str, requested_by: str | None, batch_id: str | None = None) -> dict[str, Any]:
     if not get_settings().demo_mode:
-        raise ValueError("Disparo por lista no Supabase real ainda depende da migration desta camada.")
+        from app.services.dispatch_list_service import send_item
+        return send_item(item_id=item_id,requested_by=requested_by,batch_id=batch_id)
     item = next((row for row in DEMO_DISPATCH_IMPORT_ITEMS if str(row.get("id")) == str(item_id)), None)
     if not item:
         raise ValueError("Contato importado não encontrado.")

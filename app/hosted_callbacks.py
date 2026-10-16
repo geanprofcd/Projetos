@@ -44,7 +44,15 @@ def mount_callbacks(portal, config, *, client=None):
         async with AsyncExitStack() as stack:
             await stack.enter_async_context(portal.router.lifespan_context(portal))
             await stack.enter_async_context(bridge.router.lifespan_context(bridge))
-            yield
+            from app.services.dispatch_list_service import start_worker
+            stop,worker=start_worker()
+            try:
+                yield
+            finally:
+                stop.set()
+                if worker is not None:
+                    import asyncio
+                    await asyncio.to_thread(worker.join,15)
     root = FastAPI(title='VENDRA', docs_url=None, redoc_url=None,
                    openapi_url=None, lifespan=lifespan)
     root.mount('/callbacks', bridge)

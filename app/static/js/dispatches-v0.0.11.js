@@ -11,7 +11,12 @@
 
   if (form && button) {
     form.addEventListener('submit', (event) => {
-      const count = Number(form.dataset.readyCount || '0');
+      const quantity = form.querySelector('[name="quantity"]');
+      const count = Number(quantity ? quantity.value : (form.dataset.readyCount || '0'));
+      if (!Number.isInteger(count) || count < 1 || count > Number(form.dataset.readyCount || '0')) {
+        event.preventDefault();
+        return;
+      }
       if (count <= 0) return;
       if (!window.confirm(`Enviar ${count} contato(s) um por vez para o Make?`)) {
         event.preventDefault();

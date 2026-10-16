@@ -84,10 +84,20 @@ def request_dispatch(*, user: dict, name: str, phone: str, request_id: str) -> d
     if (not isinstance(row, dict) or not row.get('id') or row.get('phone') != phone
         or row.get('name') != name or row.get('template_key') != 'continuar_atendimento_vendra'):
         raise RuntimeError('O banco não confirmou o pedido de envio.')
+    return transmit_dispatch(row, url=url, secret=secret, allowed=allowed)
+
+
+def transmit_dispatch(row: dict, *, url=None, secret=None, allowed=None) -> dict:
+    """Transporte do mesmo pedido atomico; a fila nao cria outro UUID de envio."""
+    if url is None:
+        url, secret, allowed = _transport()
+    if allowed and canonical_phone(str(row.get('phone') or '')) not in allowed:
+        raise ValueError('Este telefone não está autorizado para o teste.')
+    db = get_admin_client()
     if row.get('status') != 'pending':
         return {**row, 'transport_confirmed': row.get('status') in {'submitted', 'sent', 'delivered', 'read'}}
     # An uncertain HTTP result never causes a new command or an automatic retry.
-    payload = {'dispatch_id': row['id'], 'phone': phone, 'name': name,
+    payload = {'dispatch_id': row['id'], 'phone': row['phone'], 'name': row['name'],
                'template_key': row['template_key'], 'dispatch_secret': secret}
     request = urllib.request.Request(url, data=json.dumps(payload, ensure_ascii=False).encode('utf8'),
         headers={'Content-Type': 'application/json', 'User-Agent': 'VENDRA-Dispatch/1'}, method='POST')

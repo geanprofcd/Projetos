@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     supabase_service_role_key: str | None = None
     make_webhook_secret: str | None = None
     dispatch_transport_enabled: bool = False
+    dispatch_lists_enabled: bool = False
     dispatch_transport_url: str | None = None
     dispatch_transport_secret: str | None = None
     dispatch_allowed_phones: str = ''

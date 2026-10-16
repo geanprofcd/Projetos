@@ -62,7 +62,7 @@
                 <label class="dispatch-dropzone" for="dispatch-file">
                     <span class="dispatch-drop-icon">↑</span>
                     <strong>Selecionar arquivo com tabela</strong>
-                    <small>PDF, Excel, CSV, ODS ou DOCX · até {{ max_upload_mb }} MB · máximo de 5.000 contatos por importação.</small>
+                    <small>PDF, Excel, CSV, ODS ou DOCX · até {{ max_upload_mb }} MB · máximo de 20.000 contatos por importação.</small>
                     <input id="dispatch-file" type="file" name="arquivo" accept=".csv,.xlsx,.xls,.ods,.pdf,.docx" required>
                 </label>
                 <div class="dispatch-upload-note">
@@ -119,7 +119,8 @@
             </div>
             <form method="post" action="/disparos/listas/{{ selected_batch.id }}/enviar-todos" class="dispatch-bulk-form" data-ready-count="{{ ready_count }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <button class="button primary dispatch-all-button" type="submit" {% if not bulk_dispatch_enabled or not settings.enabled or ready_count == 0 or bulk_state.status in ['queued','running'] %}disabled{% endif %}>Enviar todos{% if ready_count %} ({{ ready_count }}){% endif %}</button>
+                <label>Quantidade <input name="quantity" type="number" min="1" max="{{ ready_count }}" value="{{ ready_count }}" required {% if not bulk_dispatch_enabled or not ready_count %}disabled{% endif %}></label>
+                <button class="button primary dispatch-all-button" type="submit" {% if not bulk_dispatch_enabled or not settings.enabled or ready_count == 0 or bulk_state.status in ['queued','running'] %}disabled{% endif %}>Enviar quantidade</button>
             </form>
         </div>
         {% for warning in selected_batch.warnings or [] %}<div class="integration-note">{{ warning }}</div>{% endfor %}
@@ -155,7 +156,7 @@
                 </tbody>
             </table>
         </div>
-        <p class="dispatch-manual-note">O botão “Enviar todos” cria uma fila e encaminha apenas os contatos com status Pronto, um por vez para o Make. Inválidos, duplicados e contatos já solicitados são ignorados.</p>
+        <p class="dispatch-manual-note">Informe a quantidade e clique em “Enviar quantidade”. A fila encaminha os primeiros contatos com status Pronto, um por vez. Inválidos, duplicados e contatos já solicitados são ignorados.</p>
         {% else %}
         <div class="empty dispatch-list-empty">Nenhuma lista importada ainda. Use o formulário acima para começar.</div>
         {% endif %}
