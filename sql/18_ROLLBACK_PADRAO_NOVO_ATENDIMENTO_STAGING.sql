@@ -87,7 +87,7 @@ BEGIN
     'ticket_id',v_ticket.id,'message_id',v_message.id,'external_message_id',p_external_message_id,
     'created_ticket',v_created_ticket);
 END;
-$function$
+$function$;
 
 REVOKE ALL ON FUNCTION public.vendra_whatsapp_receive_v1(text,text,text,text,timestamptz) FROM PUBLIC,anon,authenticated;
 GRANT EXECUTE ON FUNCTION public.vendra_whatsapp_receive_v1(text,text,text,text,timestamptz) TO service_role;

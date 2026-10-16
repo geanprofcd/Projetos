@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "1441a1fd1f67b911cda410263560e76d511f1708d297b2a30136d14e61d6ab13"
+      "sha256": "ffbd91a480d35d6f1d93b2ca063bb3f68dedd90df26f4bb679ecc2816fb47a79"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1215,7 +1215,7 @@
     },
     {
       "path": "docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
-      "sha256": "3120d645d5b9ca4e57429da7dd28dd4844b2b551e7918df877dca900da754c4e"
+      "sha256": "84b8f8ebcf570afc771771cb4eb157981945049af79dd5a50d6a0cea95e228f0"
     },
     {
       "path": "app/services/whatsapp_human_command_service.py",
@@ -1247,11 +1247,27 @@
     },
     {
       "path": "sql/17_ALINHAR_PADRAO_NOVO_ATENDIMENTO_STAGING.sql",
-      "sha256": "96162e1a8b8c96cd2805ac996d0f85a76966bef073f7b02cbad319a1a3bd2f9d"
+      "sha256": "3fb97094ecfebd63967075adfedfa4bc63082ecfac89eb8727737b44bf20a039"
     },
     {
       "path": "sql/18_ROLLBACK_PADRAO_NOVO_ATENDIMENTO_STAGING.sql",
-      "sha256": "993a7e0abcba93d81a3784041bcc190d3a229a0288812446df6f8e8c2b56713c"
+      "sha256": "db4aab654e318a0806ea8e07d6691fa1b8e9d651b3a3487bf0688ba07ae4839b"
+    },
+    {
+      "path": "docs/PUBLICACAO_ORIGINAL_RAILWAY.md",
+      "sha256": "b24a78f2d4ee74c152b8eed329f3b095bbbedac94b03879a939c2819ed3c69e8"
+    },
+    {
+      "path": "docs/VALIDACAO_PADRAO_INICIAL_H1_006R.md",
+      "sha256": "f589ff0f86f34b23169c6a672bf7bc1825ab236ba840c4200d99827560d7b735"
+    },
+    {
+      "path": "sql/19_PREPARAR_COMPATIBILIDADE_ORIGINAL.sql",
+      "sha256": "ef018db3e6cd1b9ebe8196ce8c9260ca1c255645371edb8905bcb748955c6d2d"
+    },
+    {
+      "path": "sql/20_ROLLBACK_COMPATIBILIDADE_ORIGINAL.sql",
+      "sha256": "a08403cf5006238a9f571d7280a3fa61aca6b7529d25205c2adca4fe2ff51d5d"
     }
   ]
 }

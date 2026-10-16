@@ -1,0 +1,17 @@
+# H1-006R — configuração inicial de novos atendimentos
+
+SQL17 autorizado explicitamente e aplicado apenas VENDRA-STAGING em16/10/2026, migration vendra_whatsapp_new_ticket_default_v1. A recepção consulta ai_automation.enabled/default_mode somente quando cria atendimento novo. IA habilitada/defaultai → ai; default humano ou IA desabilitada/configuração ausente → human. Atendimento existente e replay não têm modo sobrescrito. Mesma ACL postgres/service_role, SECURITY INVOKER, sem tabelas/RLS novas ou envio/worker ativados. SQL18 reversão preparada, não executada.
+
+Validação funcional no banco em transação integralmente revertida: quatro configurações, repetição sem mensagem duplicada, handoff pela RPC existente preservado em nova mensagem e replay, nenhuma saída criada. Tickets/eventos fixture remanescentes=0. Utilizado telefone sintético exclusivo, sem HTTP/Meta; não equivale a nova recepção real, já homologada I. Regressão287 Windows Q reaproveitada, nenhuma nova alteração Python nesta etapa.
+
+Primeira aplicação foi recusada por ponto e vírgula ausente após pg_get_functiondef; nada aplicado naquela tentativa. Delimitador corrigido no SQL17 e18 antes da aplicação bem-sucedida. Primeiro teste interrompido pela precondição de exclusividade do telefone existente; não alterou dados. Passou a usar fixture isolada; erro de variável phone ambígua somente no script de teste corrigido antes da execução aprovada. Não contabilizar tentativas recusadas como evidência de aprovação.
+
+## Mudança de prioridade do usuário
+
+Usuário pediu em16/10/2026 congelar novas funcionalidades e validar somente o indispensável para publicar o original. Mídia/lote/melhorias ficam para depois. H01 padrão inicial encerrado; próximos trabalhos são preparação de release comercial original, credenciais próprias/banco original/login, hospedagem e validação essencial. Nenhuma migration STAGING será aplicada cegamente no original.
+
+Levantamento original somente leitura: tabelas operacionais existentes, profiles=0 e auth.users=0; .env original permanece demo/URLplaceholder, sem chaves reais. Release separado preparado a partir do app comercial original,131arquivos/hash por arquivo, sem runtime/.env/contas/fixturesSTAGING. app/main.py, templates/CSS/layout preservados. Docker/Railway e starter produção fail-closed acrescentados fora da pasta original. Linuxbuild/hosting não homologados ainda.
+
+Railway autenticado, projeto VENDRA caad2a82-373d-441c-8403-f3a7903a264f vazio/environmentproduction d4a67a07-5075-4b3a-82bd-338d50126d3f. Conta LimitedTrial, sem compra/upgrade. GitHubOAuth bloqueado inicialmente pela revisão automática por falta de escopo; usuário autorizou conexão somentegeanprofcd/Projetos, abriu loginGitHub, participação do usuário pendente. ChavesSupabaseoriginal bloqueadas inicialmente; usuário autorizou acessar/configurar privadamente no Railway e criar primeiro administrador gean.profcd@gmail.com, senha nova privada. SupabaseDashboard abriu login, participação pendente. SenhaRailway informada anteriormente não é senhaGitHub/Supabase; não reutilizar por suposição.
+
+bootstrap_original_admin.py preparado no diretório privado: somente Auth/profiles originais vazios, sem email enviado, sem schema/RLS alterado; não executado enquanto faltam chaves/acesso. Nenhuma conta original criada nem segredo/configuração Railway aplicado nesta etapa. Continua necessária a validação real de login/permissões/persistência/reinício no servidor antes de declarar disponível operacionalmente.

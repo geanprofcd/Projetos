@@ -322,3 +322,59 @@ https://raw.githubusercontent.com/geanprofcd/Projetos/entregas/staging-20261014/
 
 ## H1-006Q — saída humana automática homologada (16/10/2026)
 STAGING somente, semSQLnovo/promoção/designalterado. Nova exceção privada wake com flagfalse padrão/projetoSTAGING exato/URLMakeHTTPS/segredo/ticket/telefone e consultaoutboxpending antesHTTP; bridgeexpected_ticket_id antesRPC. Cenário separado6655228 webhookaprendido/autenticado/reservaSQL13/SendIsrael/vinculoSQLexistente. DoisPOSTs concorrentes303/mensagem eoutboxúnicas acionaram99a4fe8576d14263abb13f25418cd9d3 auto00:50:22,512BR4,232smod1..6/umSend e116d91286d21487399070e686af6c804 auto00:50:23,731mod1/2/3/zeroSend. Delivered370c1d32fe3f42e180fc457adb0f2c6b auto00:50:28,877BR83HTTP202acceptedtrueupdatedtruependingmatchfalse. BancoWAMIDreal/tentativa1/deliveredmsg/outboxconfirmados. Ticketexclusivorestauradocanceladohumano/responsavelanterior,sessaorevogada; quintaoutboxrealpreservada(naoutilizarhelpersantigoscontagem4semreconciliar). MakeQinativo/filtro4constantfalsefinal03:51:18,990UTCconferidoMCP. Perfisprivadosrestauradosbackup; bridgePID30412/previewPID9020startupcompleto. ConferenciaHTTPhealthfinalNÃOexecutada:revisaoautomaticaatingiulimitedeuso,nãoavaliaçãoderisco;naoalegarhealthfinalaprovado. 287testesWindows2,951s/snapshotstaging_20261016_004725_851_e3c0f088passaram. Ler docs/VALIDACAO_WAKE_AUTOMATICO_H1_006Q.md. Fonte/pacote/Mestre150emandamento,publicação/cópiasexternasaindanaoconfirmadas. ProximoH01midia/recuperacao/defaultIA; SQL17/18preparadosapartirfunçãorecepçãoviva,humanhardcodedidentificado,autorizacaoespecificapendente. Originalpastabancodesign8010/8012preservados,Railwaysemdeploy.
+
+## Prioridade de publicacao original — 16/10/2026
+Usuario determinou validar apenas indispensavel para colocar original online; melhorias/midia/lote ficam posteriores. SQL17 STAGING autorizado/aplicado (migration vendra_whatsapp_new_ticket_default_v1), validacao real em transacao integralmente revertida passou:4configuracoes/defaultIA/humano/off/ausente,preservacaohandoff/replay,semoutbox,fixturesrestantes0. ACLservice_role/securityinvokerconferido. PrimeiraDDLsemsemicolonrecusada/semalteracao;corrigidoSQL17/18. Testeprecondicaotelefoneexistenteabortado,replanejadofixtureexclusiva;ambiguidadedavariaveldoSCRIPTcorrigida;funcaodeproducaoSQL17naoexigiusegundacorrecao. Ler docs/VALIDACAO_PADRAO_INICIAL_H1_006R.md.
+Releasecomercialoriginalpreparadoforaoriginal emdiretorioprivado vendra-original-release:131arquivosmanaged+manifesto,app122arquivosbyteidenticosoriginal,mainhashbaseigual,DockerPython3.12/requirementsdiretasversoestestadas/starterproducao failclosed. NaoehostednemhomologadoLinuxainda. PublicacaoemGitHubpublicobloqueadaauto-reviewporfaltadeautorizacaoespecificaparaexpororiginal; verificacao114appfilesjapublicos/8naopublicos(incluidesign),naopublicarsemconsentimento. PreferiruploaddiretoRailwayprivadocomoalternativasegura,CLIoficialempreparacao. Nenhumpushreleaseexecutado. FonteQSTAGING2d43be127f3af52a643ffa5caf4c4e0361871bc2publicada; RdocsSQLalteradoslocalsaindanaopublicados/pacoteMestre150pendentes.
+RailwayGitHubOAuthinicialmentebloqueadoescopo,usuarioautorizougeanprofcd/Projetossomente,loginGitHubpendente;senhainformadahistoricamenteRailwaynaoGitHub. OriginalSupabaseprofiles/Auth0/tabelasoperacionaisexistentes;envoriginaldemoURLplaceholder/chavesausentes. Usuarioautorizouacesso/configuracaoprivadadaschavesoriginaisnoRailwayeprimeiroadministradorgean.profcd@gmail.com,senhanovaprivada/sememail/semcopiarSTAGING/schema/RLS. SupabaseDashboardloginconcluidopelousuario;configuracaoprivadaempreparacao,chaveNÃOtransferidaaindaporclipboardvazio. Nenhummodooriginal/banco/conta/variavelRailwayalteradoainda. Bootstraporiginaladminpreparadosomente. Acesso sensiveldashboardteveautoreviewbloqueioantesautorizacaoespecifica,resolvidopelousuario.
+
+## Original online - 16/10/2026
+# Publicação inicial do VENDRA original - 16/10/2026
+
+URL: https://vendra-original-production.up.railway.app/login
+Projeto: https://railway.com/project/caad2a82-373d-441c-8403-f3a7903a264f
+Serviço vendra-original: 6279f29b-4264-4165-aada-95c260685fa6
+Production: d4a67a07-5075-4b3a-82bd-338d50126d3f
+Deploy/build Linux: 3948ab61-9a52-45de-a4cb-aaa0bf41152d
+
+## Executado
+
+- Release enviada diretamente ao Railway privado, sem publicar o código original privado no GitHub. 122 arquivos app conferidos iguais ao original, inclusive templates/CSS/design.
+- Cinco arquivos de hospedagem aplicados na pasta original: Dockerfile, .dockerignore, railway.json, requirements.production.txt e tools/production_start.py. .env, runtime, estado local e venv preservados. Backup de referência: output/backups/hosting-original-20261016-091013 na cópia Windows de acompanhamento.
+- Variáveis privadas reais de produção configuradas no Railway; DEMO_MODE=false e COOKIE_SECURE=true. Chaves, token, senhas e sessões não integram este documento/pacote.
+- Primeiro administrador original criado conforme autorização. Silas cadastrado como Comercial pelo portal HTTPS, com CSRF e auditoria; sem permissão para gerenciar usuários. Contas reais, não CODEX.
+- SQL19 autorizado, CRUD/RLS/ACL validados no STAGING em transação revertida, depois aplicado no original. Migration vendra_original_legacy_ui_compatibility: farms (unidades/locais), crops e categories, vazias/RLS/acesso backend. Corrige PGRST205 das telas originais sem alterá-las. SQL20 reversão preparada, não executada; aborta se houver dados.
+
+## Evidência funcional hospedada
+
+23 verificações passaram: health real, login/logout, cookies Secure/HttpOnly/SameSite, bloqueio sem sessão, nove páginas essenciais, gravação e leitura de cliente/atendimento/nota interna e persistência dos três após reinício do mesmo deploy. Registros exclusivos CODEX-HOST e auditorias próprias limpos depois da validação; contas reais preservadas. Login comercial Silas e oito verificações de acesso/bloqueio aprovados. 24 tabelas públicas com RLS e SELECT negado a anon/authenticated; backend autorizado. Nenhum WhatsApp enviado nesta validação.
+
+NÃO declarar homologação total: integrações Make/WhatsApp/IA continuam no STAGING e dependem de promoção seletiva/configuração/callbacks de produção e teste real. SMTP/convites, anexos em produção, importação/lote e recuperação completa não foram homologados por esta publicação. Contas CODEX STAGING permanecem para limpeza no final da homologação total. Original não recebeu snapshot nem dados STAGING.
+
+## Endereço e operação
+
+Usuário decidiu manter Railway por enquanto; nenhuma compra/domínio próprio/upgrade feito. Conta em trial: disponibilidade contínua depende do saldo/prazo do Railway; não foi contratado plano recorrente. Domínio atual usa HTTPS. Um domínio próprio poderá ser conectado posteriormente sem trocar o sistema.
+
+Não há comandos pendentes para entrar. Comandos de manutenção, somente com token privado carregado no ambiente e CLI oficial:
+
+```powershell
+railway deployment list --project caad2a82-373d-441c-8403-f3a7903a264f --environment production --service vendra-original --limit 1 --json
+railway logs --project caad2a82-373d-441c-8403-f3a7903a264f --environment production --service vendra-original --lines 30
+railway restart --project caad2a82-373d-441c-8403-f3a7903a264f --environment production --service vendra-original --yes
+Invoke-RestMethod https://vendra-original-production.up.railway.app/health
+```
+
+Atualizar somente a release limpa conferida; nunca enviar a pasta de trabalho com .env/estado:
+
+```powershell
+railway up . --path-as-root --project caad2a82-373d-441c-8403-f3a7903a264f --environment production --service vendra-original --detach
+```
+
+Startup local de produção é opcional, exige variáveis privadas do original já carregadas e porta livre; não aponta a STAGING:
+
+```powershell
+python -X utf8 -m tools.production_start
+```
+
+railway.json continua aceito nesta publicação; a CLI informou migração futura do formato antes de 01/12/2026. Não é motivo para refazer a aplicação agora. Próxima etapa concreta: promoção seletiva da integração homologada STAGING para a produção, reconciliando SQL/Make/configuração e preservando o design. Não religar disparos automaticamente.
+
