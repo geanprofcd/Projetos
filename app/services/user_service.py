@@ -1,4 +1,4 @@
-"""Gestão de convites: token aleatório de uso único; SMTP em produção.
+"""Gestão de convites: link compartilhável de uso único; SMTP opcional.
 
 A modalidade demo apresenta link de teste ao administrador, SEM declarar email enviado.
 Nunca armazenar senha em texto livre nem token de convite em banco.
@@ -85,6 +85,11 @@ def create_invite(*, actor: dict, name: str, email: str, access_level: str) -> d
            'token_hash':token_hash,'expires_at':expires,'status':'pending','created_at':now_iso(),'consumed_at':None}
     settings = get_settings()
     base_url = (settings.public_app_url or 'http://127.0.0.1:8010').rstrip('/')
+    delivery = getattr(settings, 'invitation_delivery', 'link')
+    if delivery not in ('link', 'smtp'):
+        raise UserError('Forma de entrega de convite inválida.')
+    if not settings.demo_mode and settings.is_production and not base_url.startswith('https://'):
+        raise UserError('Configure PUBLIC_APP_URL com HTTPS antes de gerar convites.')
     url = f'{base_url}/convite/{token}'
     if settings.demo_mode:
         with LOCK:
@@ -98,8 +103,11 @@ def create_invite(*, actor: dict, name: str, email: str, access_level: str) -> d
     if admin.table('profiles').select('id').eq('email',email).limit(1).execute().data:
         raise UserError('Esse e-mail já está cadastrado.')
     # Revoga convites pendentes: um só link válido por endereço.
-    admin.table('user_invitations').update({'status':'revoked'}).eq('email',email).eq('status','pending').execute()
+    admin.table('user_invitations').update({'status':'revoked'}).eq('email',email).in_('status',['pending','sent']).execute()
     admin.table('user_invitations').insert(row).execute()
+    if delivery == 'link':
+        # O token aparece somente ao operador; o banco guarda apenas seu hash.
+        return {'status':'manual_link','invitation_url':url,'email':email}
     try:
         _smtp_send(email,name,url)
     except UserError:

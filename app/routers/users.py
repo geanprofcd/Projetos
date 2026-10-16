@@ -44,9 +44,13 @@ def invite_user(request: Request, full_name: str = Form(...), email: str = Form(
                                           context=_context(request,user,error=str(exc)))
     record_audit(actor_id=user['id'], entity_type='user_invitation', entity_id=result['email'],
                  action='user.invited', payload={'access_level':access_level,'mode':result['status']})
+    message = {'sent':'Convite enviado ao e-mail informado.',
+               'manual_link':'Convite criado. Copie o link abaixo e compartilhe diretamente com o convidado. Nenhum e-mail foi enviado.',
+               'demo_preview':'Convite de demonstração criado. Nenhum e-mail foi enviado.'}[result['status']]
     return templates.TemplateResponse(request=request,name='users/index.html',
-                                      context=_context(request,user,success=('Convite enviado ao e-mail informado.' if result['status']=='sent' else 'Convite de demonstração criado. Nenhum e-mail foi enviado.'),
-                                                       demo_preview=result.get('preview_url')))
+                                      headers={'Cache-Control':'no-store','Referrer-Policy':'no-referrer'},
+                                      context=_context(request,user,success=message,
+                                                       demo_preview=result.get('preview_url'), invitation_url=result.get('invitation_url')))
 
 
 @router.post('/usuarios/criar-direto')
@@ -85,7 +89,7 @@ def permissions_change(user_id: str, request: Request, access_level: str = Form(
 @router.get('/convite/{token}')
 def accept_page(token: str, request: Request):
     row = find_invitation(token)
-    return templates.TemplateResponse(request=request,name='users/accept.html',
+    return templates.TemplateResponse(request=request,name='users/accept.html',headers={'Cache-Control':'no-store','Referrer-Policy':'no-referrer'},
                                       context={'invitation':row,'token':token,'error':None})
 
 

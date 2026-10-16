@@ -31,7 +31,7 @@
     },
     {
       "path": "app/core/config.py",
-      "sha256": "39e4f1fe1c6080b71acecce4d3a9ea014e48073d5b6cc68b40246add480a5948"
+      "sha256": "1f3037cbe41c4089d16430a579e30f76bdbbb9ea832c17b42373270d9c97b458"
     },
     {
       "path": "app/core/ui.py",
@@ -139,7 +139,7 @@
     },
     {
       "path": "app/routers/users.py",
-      "sha256": "4c219b832dffb2bc0e6b945e5f49749a21f51e4046e9eb7bc8ade67b7e07affb"
+      "sha256": "cfe46988ac2651ecf2eec4088ac9c2c463cee96a3c3557f8921b3433b4b4ea7c"
     },
     {
       "path": "app/services/__init__.py",
@@ -271,7 +271,7 @@
     },
     {
       "path": "app/services/user_service.py",
-      "sha256": "bda233d133adbe4a265d17e1fea4b0e6529ee17029caf5a0b0d923097e6e7aec"
+      "sha256": "b1ad3f7d3bc223568321bd946f3b1c62b21950221f15c1b0ff56b4de598eeb0d"
     },
     {
       "path": "app/services/whatsapp_provider_catalog.py",
@@ -663,7 +663,7 @@
     },
     {
       "path": "app/templates/users/index.html",
-      "sha256": "7803448140f9635264c2771cf70e0d3591a5f4826558970956058ae0be52963e"
+      "sha256": "f8fde190604f00053f400487bcb15890f4b62ea935ba3a42234f67f039fbb821"
     },
     {
       "path": "app/whatsapp_callbacks.py",
@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "036ad0871a22a1958857deb36bfce4c5409c9175f6d1d194c0b65a21209f5a15"
+      "sha256": "23adcbcfcddc0eaedf6351268f41f750bf42d3c7a43f3dac338b88ce550180ad"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1215,7 +1215,7 @@
     },
     {
       "path": "docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
-      "sha256": "63fb9a767e6d164451f904ab5d899977ce0a16169a119772e9946383031329f5"
+      "sha256": "c3dc8895cf0768ac40d3e5c2d0702528d6282c5fd9de01cd63ab6713b29c3889"
     },
     {
       "path": "app/services/whatsapp_human_command_service.py",
@@ -1287,7 +1287,7 @@
     },
     {
       "path": "docs/OPERACAO_ORIGINAL_ONLINE.md",
-      "sha256": "12ee76d7fd00d6c259cc88e1923d23d66cb52e074349b8c14fd8ccf670f5c3ef"
+      "sha256": "694add60e76fb2b6e9aa2edbf4bd02c9463858e1d961e82d5616d8dedb4a1fc4"
     },
     {
       "path": "sql/21_PREPARAR_INTEGRACAO_WHATSAPP_ORIGINAL.sql",
@@ -1400,6 +1400,18 @@
     {
       "path": "docs/VALIDACAO_ALERTAS_20261016.md",
       "sha256": "78d57914609df5b7c94bc195fdf76b5d3dc1bcbbf3cb059af2a6fd893cf87d8b"
+    },
+    {
+      "path": "tests/test_user_invitation_link.py",
+      "sha256": "373b06a0798e9eb6208049ec0fafd3bcacf3282474fc85f43acb59bf79db706b"
+    },
+    {
+      "path": ".env.example",
+      "sha256": "b480473bf343b3ad0809dca1aca85c16eeacae407e618655ebbe3d8a97fe7739"
+    },
+    {
+      "path": "docs/PARIDADE_ORIGINAL_ONLINE_20261016.md",
+      "sha256": "1c95e37c5ede2b58f1616fffbd827021d9044a86bc43068986412eb3f2d8f4d0"
     }
   ]
 }

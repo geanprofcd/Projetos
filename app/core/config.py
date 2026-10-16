@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     smtp_password: str | None = None
     smtp_from: str | None = None
     smtp_ssl: bool = False
+    invitation_delivery: str = "link"
 
     supabase_url: str | None = None
     supabase_anon_key: str | None = None

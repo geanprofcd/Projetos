@@ -1,5 +1,9 @@
 # Mapa de homologação do VENDRA original
 
+## Quadro vigente após levantamento de paridade - 16/10/2026
+
+A matriz atual está em [PARIDADE_ORIGINAL_ONLINE_20261016.md](PARIDADE_ORIGINAL_ONLINE_20261016.md). Código original Windows/release:130 arquivos app iguais/nenhum faltante;104 rotas nativas catalogadas/15 páginas administrativas200. Hospedagem, conversas/IA/humano, disparos individuais/listas, funil completo, Calendly e alertas já integrados. Anexos privados e convite por link sem SMTP integrados nesta rodada, com testes reais STAGING e original. Pendente funcional: transmissão de mídia WhatsApp com vínculo/status por arquivo e gestão Meta no portal com token apropriado. Não contar exemplos demo como cadastros reais a importar, nem leituraHTTP200 como homologação de todas as ações. Recuperação integral/carga ampliada permanecem sem comprovação. Checkpoints abaixo são históricos; não reabrir blocos já encerrados sem alteração relevante.
+
 Atualizado em 16/10/2026. Este é o quadro de pendências; o histórico detalhado permanece no Documento Mestre e em VALIDACAO_ATUAL.md. Regressão repetida após alteração não conta como nova funcionalidade homologada.
 
 Prioridade atual determinada pelo usuário: publicar o original com o design preservado e validar somente o indispensável para colocá-lo online. Mídia, lote, melhorias e homologação ampliada ficam para depois; não são bloqueios automáticos da primeira publicação. Primeira release usa a base comercial original, não promove automaticamente o snapshot STAGING. Critérios imediatos: configuração real e isolada, primeiro administrador, build/start, login/permissões, persistência básica e reinício no servidor. GitHub é público; oito arquivos do original ainda não publicados devem seguir por upload privado ao Railway.

@@ -4,6 +4,7 @@
 <header class="page-header"><div><span class="eyebrow">ADMINISTRAÇÃO</span><h1>Usuários</h1><p>Convide sua equipe e controle o acesso às áreas do VENDRA.</p></div></header>
 {% if error %}<div class="users-alert error" role="alert">{{ error }}</div>{% endif %}
 {% if success %}<div class="users-alert" role="status">{{ success }}
+{% if invitation_url %}<p class="users-demo-link"><label>Link do convite (48 horas)<input aria-label="Link do convite" value="{{ invitation_url }}" readonly onclick="this.select()" autocomplete="off" style="width:100%"></label></p>{% endif %}
 {% if demo_preview %}<p class="users-demo-link"><a href="{{ demo_preview }}">Abrir convite de teste</a></p>{% endif %}</div>{% endif %}
 {% if request.query_params.get('created') %}<div class="users-alert" role="status">Usuário criado com o perfil selecionado.</div>{% endif %}
 {% if request.query_params.get('updated') %}<div class="users-alert" role="status">Permissões atualizadas.</div>{% endif %}

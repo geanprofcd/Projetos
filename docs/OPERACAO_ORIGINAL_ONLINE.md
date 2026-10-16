@@ -1,5 +1,9 @@
 # VENDRA original online - integração e operação
 
+## Estado vigente: paridade em 16/10/2026
+
+Leia [PARIDADE_ORIGINAL_ONLINE_20261016.md](PARIDADE_ORIGINAL_ONLINE_20261016.md) antes dos checkpoints históricos abaixo. IA, respostas humanas, disparos individuais/listas, cinco etapas do funil e alertas estão integrados. Esta rodada acrescentou Storage privado e convites por link, sem SMTP. Comparação:130 arquivos app idênticos no original Windows/release,104 rotas catalogadas,15 páginas administrativas200. Deploy vigente68d979f1-19c5-4631-b039-32c83dac3648 SUCCESS. Restam transmissão de mídia WhatsApp e gestão Meta no portal com credencial específica; arquivo salvo não significa mensagem enviada. Nenhum dado demo foi promovido. Seções posteriores descrevem a evolução histórica e podem conter pendências já encerradas.
+
 Atualizado em 16/10/2026. Portal: https://vendra-original-production.up.railway.app/login
 
 ## Situação efetiva
