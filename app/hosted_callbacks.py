@@ -31,6 +31,7 @@ def configuration_from_environment(settings, values=None):
         ai_enabled=flag('VENDRA_BRIDGE_AI_ENABLED'),
         dispatch_enabled=flag('VENDRA_BRIDGE_DISPATCH_ENABLED'),
         human_enabled=flag('VENDRA_BRIDGE_HUMAN_ENABLED'),
+        media_enabled=flag('VENDRA_BRIDGE_MEDIA_ENABLED'),
         allow_all_phones=flag('VENDRA_BRIDGE_ALLOW_ALL_PHONES'))
     config.validate()
     return config

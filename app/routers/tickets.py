@@ -556,6 +556,19 @@ async def send_message(
     human_whatsapp = (not is_internal and user.get("role") in {"responsavel", "administrador"}
                       and ticket.get("source") == "whatsapp")
     settings = get_settings()
+    if (human_whatsapp and prepared_files and settings.whatsapp_persistent_control_enabled
+            and not settings.demo_mode):
+        from app.services.whatsapp_media_service import request_human_media, notify_media_batch
+        try:
+            command = request_human_media(actor_id=user.get('id'), ticket_id=ticket_id,
+                        body=body, request_id=request_id, files=prepared_files)
+        except ValueError as exc:
+            status = 409 if isinstance(exc, HumanCommandConflict) else 503 if isinstance(exc, HumanCommandUnavailable) else 422
+            return templates.TemplateResponse(request=request,name='tickets/detail.html',status_code=status,
+                context=_detail_context(ticket_id,user,request=request,composer_error=str(exc),
+                                       composer_body=body,composer_request_id=request_id or ''))
+        notify_media_batch(command['outboxes'])
+        return RedirectResponse(url=f'/atendimentos/{ticket_id}',status_code=303)
     if (human_whatsapp and not prepared_files
             and getattr(settings, 'whatsapp_persistent_control_enabled', False)
             and not getattr(settings, 'demo_mode', True)):

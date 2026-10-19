@@ -47,8 +47,11 @@ class BridgeConfig:
     dispatch_enabled: bool = False
     human_enabled: bool = False
     allow_all_phones: bool = False
+    media_enabled: bool = False
 
     def validate(self) -> None:
+        if type(self.media_enabled) is not bool or (self.media_enabled and not self.human_enabled):
+            raise ValueError('Midia exige flag booleana e canal humano habilitado.')
         if type(self.ai_enabled) is not bool:
             raise ValueError('Flag IA precisa ser booleana explicita.')
         if type(self.dispatch_enabled) is not bool:
@@ -92,6 +95,9 @@ def load_config(path: Path) -> BridgeConfig:
     if dispatch_flag not in {'true', 'false'}:
         raise ValueError('VENDRA_BRIDGE_DISPATCH_ENABLED exige true ou false explicito.')
     human_flag = values.get('VENDRA_BRIDGE_HUMAN_ENABLED', 'false')
+    media_flag = values.get('VENDRA_BRIDGE_MEDIA_ENABLED', 'false')
+    if media_flag not in {'true','false'}:
+        raise ValueError('VENDRA_BRIDGE_MEDIA_ENABLED exige true ou false explicito.')
     if human_flag not in {'true', 'false'}:
         raise ValueError('VENDRA_BRIDGE_HUMAN_ENABLED exige true ou false explicito.')
     config = BridgeConfig(
@@ -100,7 +106,7 @@ def load_config(path: Path) -> BridgeConfig:
         webhook_secret=values['MAKE_WEBHOOK_SECRET'], phone_number_id=values['META_PHONE_NUMBER_ID'],
         business_account_id=values['META_WABA_ID'],
         allowed_phones=tuple(p.strip() for p in values['VENDRA_BRIDGE_ALLOWED_PHONES'].split(',') if p.strip()),
-        ai_enabled=ai_flag == 'true', dispatch_enabled=dispatch_flag == 'true', human_enabled=human_flag == 'true')
+        ai_enabled=ai_flag == 'true', dispatch_enabled=dispatch_flag == 'true', human_enabled=human_flag == 'true', media_enabled=media_flag == 'true')
     config.validate()
     return config
 
@@ -191,8 +197,13 @@ class DispatchBinding(OutboxBinding):
 
 
 class HumanPrepare(MetaSource):
-    phone: str = Field(min_length=8, max_length=30)
+    phone: str | None = Field(default=None,min_length=8, max_length=30)
     expected_ticket_id: UUID | None = None
+
+
+class UncertainSend(MetaSource):
+    recipient_id: str = Field(min_length=8,max_length=30)
+    claim_token: SecretStr = Field(min_length=32,max_length=100)
 
 
 def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
@@ -242,11 +253,14 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
         if not secret or not hmac.compare_digest(secret.encode('utf-8'), config.webhook_secret.encode('utf-8')):
             raise HTTPException(401, 'Webhook nao autorizado.')
 
-    def authorize(secret: str | None, payload: MetaSource, phone: str) -> bool:
+    def authorize_source(secret: str | None, payload: MetaSource) -> None:
         authenticate(secret)
         if (payload.phone_number_id != config.phone_number_id
                 or payload.business_account_id != config.business_account_id):
             raise HTTPException(403, 'Conta/remetente Meta divergentes.')
+
+    def authorize(secret: str | None, payload: MetaSource, phone: str) -> bool:
+        authorize_source(secret,payload)
         try:
             normalized = canonical_phone(phone)
             return config.allow_all_phones or normalized in allowed
@@ -299,6 +313,7 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
                 'recipient_scope': 'production' if config.allow_all_phones else 'restricted',
                 'ai_enabled': config.ai_enabled, 'dispatch_enabled': config.dispatch_enabled,
                 'human_enabled': config.human_enabled,
+                'media_enabled': config.media_enabled,
                 'persistence': 'supabase'}
 
     @app.post('/webhooks/make/whatsapp', status_code=202)
@@ -377,17 +392,29 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
                 'p_claim_token': payload.claim_token.get_secret_value()})
 
     if config.human_enabled:
+        @app.post('/webhooks/make/whatsapp/outbox/{outbox_id}/uncertain',status_code=202)
+        def uncertain_send(outbox_id:UUID,payload:UncertainSend,x_webhook_secret:str|None=Header(default=None)):
+            if not authorize(x_webhook_secret,payload,payload.recipient_id):
+                raise HTTPException(403,'Destinatario fora do escopo autorizado.')
+            item=lookup('whatsapp_outbox','phone',outbox_id)
+            check_entity_phone(item['phone'],payload.recipient_id)
+            return rpc('vendra_whatsapp_uncertain_v1',{'p_outbox_id':str(outbox_id),
+                       'p_claim_token':payload.claim_token.get_secret_value()})
+
         @app.post('/webhooks/make/whatsapp/outbox/{outbox_id}/prepare-human', status_code=202)
         def human_prepare(outbox_id: UUID, payload: HumanPrepare,
                           x_webhook_secret: str | None = Header(default=None)):
-            if not authorize(x_webhook_secret, payload, payload.phone):
-                raise HTTPException(403, 'Destinatario fora do escopo autorizado.')
+            authorize_source(x_webhook_secret,payload)
             item = lookup('whatsapp_outbox', 'phone,ticket_id', outbox_id)
+            actual_phone=payload.phone or item.get('phone')
+            if not authorize(x_webhook_secret,payload,actual_phone):
+                raise HTTPException(403,'Destinatario fora do escopo autorizado.')
             if payload.expected_ticket_id and str(payload.expected_ticket_id) != str(item.get('ticket_id')):
                 raise HTTPException(403, 'Saida fora do atendimento autorizado.')
             check_entity_phone(item.get('phone'), payload.phone)
-            ticket_scope(UUID(item['ticket_id']), payload.phone)
-            result = rpc('vendra_whatsapp_human_prepare_v1', {'p_outbox_id': str(outbox_id)})
+            ticket_scope(UUID(item['ticket_id']), actual_phone)
+            name = 'vendra_whatsapp_human_or_media_prepare_v1' if config.media_enabled else 'vendra_whatsapp_human_prepare_v1'
+            result = rpc(name, {'p_outbox_id': str(outbox_id)})
             if type(result.get('authorized')) is not bool:
                 raise HTTPException(503, 'Banco nao confirmou a autorizacao humana.')
             if result.get('authorized') is True:
@@ -400,6 +427,23 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
                         or policy.get('template_required') is not False):
                     raise HTTPException(503, 'Banco nao confirmou a reserva humana.')
                 check_entity_phone(outbox.get('phone'), payload.phone)
+                kind = outbox.setdefault('message_type', 'text')
+                if kind != 'text':
+                    from app.services.whatsapp_media_service import media_type
+                    media = outbox.get('media') or {}
+                    attachment = lookup('attachments','message_id,file_name,mime_type,storage_path',media.get('id',''))
+                    if (not config.media_enabled or attachment['message_id'] != result.get('message_id')
+                            or media_type(attachment['mime_type']) != kind):
+                        raise HTTPException(503,'Vinculo ou formato de midia divergente.')
+                    try:
+                        signed = client.storage.from_('ticket-attachments').create_signed_url(attachment['storage_path'],600)
+                        url = signed.get('signedURL') or signed.get('signedUrl')
+                        parsed = urlsplit(url or '')
+                        if parsed.scheme!='https' or parsed.netloc!=config.project_ref+'.supabase.co':
+                            raise ValueError('URL de armazenamento divergente')
+                    except Exception:
+                        raise HTTPException(503,'Nao foi possivel preparar acesso temporario ao arquivo.') from None
+                    media['url']=url
             elif 'outbox' in result:
                 raise HTTPException(503, 'Reserva humana suprimida com dados de envio divergentes.')
             return result

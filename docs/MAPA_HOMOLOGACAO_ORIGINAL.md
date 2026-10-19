@@ -1,5 +1,10 @@
 # Mapa de homologação do VENDRA original
 
+## Estado vigente v1.59 - 18/10/2026
+
+Envio de mídias liberado para clientes reais após autorização específica. PNG/PDF/MP3/MP4 aceitos em teste real STAGING; PDF delivered pelo portal original. Quatro arquivos backend e SQL30 promovidos seletivamente. Deploy abca256d-5fbc-4d3a-8fa0-a158f45ede37. Os três cenários originais Make permanecem ativos: não pausar para desenvolvimento/testes. Recebimento de mídias e gestão Meta pelo portal continuam pendentes. Evidência, limites, segurança e reversão: [VALIDACAO_MIDIA_WHATSAPP_20261016.md](VALIDACAO_MIDIA_WHATSAPP_20261016.md). Seções anteriores a este checkpoint são históricas; pendência antiga de envio de mídia está encerrada.
+
+
 ## Quadro vigente após levantamento de paridade - 16/10/2026
 
 A matriz atual está em [PARIDADE_ORIGINAL_ONLINE_20261016.md](PARIDADE_ORIGINAL_ONLINE_20261016.md). Código original Windows/release:130 arquivos app iguais/nenhum faltante;104 rotas nativas catalogadas/15 páginas administrativas200. Hospedagem, conversas/IA/humano, disparos individuais/listas, funil completo, Calendly e alertas já integrados. Anexos privados e convite por link sem SMTP integrados nesta rodada, com testes reais STAGING e original. Pendente funcional: transmissão de mídia WhatsApp com vínculo/status por arquivo e gestão Meta no portal com token apropriado. Não contar exemplos demo como cadastros reais a importar, nem leituraHTTP200 como homologação de todas as ações. Recuperação integral/carga ampliada permanecem sem comprovação. Checkpoints abaixo são históricos; não reabrir blocos já encerrados sem alteração relevante.

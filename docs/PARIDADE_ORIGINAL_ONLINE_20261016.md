@@ -1,5 +1,10 @@
 # Original local e original hospedado: integração
 
+## Estado vigente v1.59 - 18/10/2026
+
+Envio de mídias liberado para clientes reais após autorização específica. PNG/PDF/MP3/MP4 aceitos em teste real STAGING; PDF delivered pelo portal original. Quatro arquivos backend e SQL30 promovidos seletivamente. Deploy abca256d-5fbc-4d3a-8fa0-a158f45ede37. Os três cenários originais Make permanecem ativos: não pausar para desenvolvimento/testes. Recebimento de mídias e gestão Meta pelo portal continuam pendentes. Evidência, limites, segurança e reversão: [VALIDACAO_MIDIA_WHATSAPP_20261016.md](VALIDACAO_MIDIA_WHATSAPP_20261016.md). Seções anteriores a este checkpoint são históricas; pendência antiga de envio de mídia está encerrada.
+
+
 Atualizado em 16/10/2026. Esta matriz substitui listas históricas de pendências; não declara que páginas HTTP200 equivalem a homologação completa de todas as ações.
 
 ## Levantamento executado
@@ -22,7 +27,7 @@ Os dados locais não foram copiados. O estado demo contém clientes, senhas, fil
 | Indicadores, auditoria, configurações e permissões | Código/rotas integrados | Páginas200; permissões funcionais já verificadas. Não simular indicadores a partir de dados demo |
 | Arquivos e notas internas com anexos | Integrados nesta rodada | Bucket privado faltava no original; criado e testado pelo formulário/Storage/banco reais |
 | Convite para equipe sem SMTP | Integrado nesta rodada | Link de uso único/48 horas, aceite cria conta real, login e perfil Comercial conferidos |
-| Transmissão de áudio/imagem/PDF/vídeo pelo WhatsApp | **Pendente** | Armazenar no portal não envia pelo WhatsApp. Reserva humana atual retorna media_contract_required; requer contrato por item/WAMID e integração Make/Meta |
+| Transmissão de áudio/imagem/PDF/vídeo pelo WhatsApp | **Envio integrado v1.59** | Reserva/WAMID por arquivo; quatro formatos aceitos STAGING e PDF delivered original. Recepção de mídia ainda pendente |
 | Gestão de modelos Meta dentro do portal | **Pendente de credencial** | Código original usa META_ACCESS_TOKEN; token ausente tanto no .env original local quanto na configuração disponível. Templates fixos de disparo pelo Make já funcionam |
 
 ## Convites por link: alternativa ao e-mail

@@ -46,6 +46,21 @@ class HumanBridgeTests(TestCase):
         with TestClient(create_app(replace(self.config,human_enabled=False),client=self.db)) as client:
             self.assertEqual(client.post(self.url,json=self.payload,headers=self.headers).status_code,404)
         self.assertFalse(self.db.calls)
+    def test_phone_can_be_derived_from_owned_outbox_without_wake_phone(self):
+        payload={k:v for k,v in self.payload.items() if k!='phone'}
+        self.assertEqual(self.post(payload=payload).status_code,202)
+        self.assertEqual(self.db.calls[0][0],'vendra_whatsapp_human_prepare_v1')
+
+    def test_production_other_customer_uses_database_recipient(self):
+        other='551100000001'
+        self.db.rows['whatsapp_outbox']['phone']=other
+        self.db.rows['customers']['phone_normalized']=other
+        self.db.result['outbox']['phone']=other
+        config=replace(self.config,environment='production',allow_all_phones=True)
+        with TestClient(create_app(config,client=self.db)) as client:
+            response=client.post(self.url,json={k:v for k,v in self.payload.items() if k!='phone'},headers=self.headers)
+        self.assertEqual(response.status_code,202)
+        self.assertEqual(response.json()['outbox']['phone'],other)
     def test_authentication_and_account_rejected_before_reservation(self):
         self.assertEqual(self.post(headers={}).status_code,401)
         self.assertEqual(self.post(payload={**self.payload,'business_account_id':'999'}).status_code,403)
