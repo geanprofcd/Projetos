@@ -1,5 +1,10 @@
 # VENDRA original online - integração e operação
 
+## Desenvolvimento v1.60 - 19/10/2026 (somente STAGING)
+
+Recepção de mídia implementada e validada com52 testes Windows,18 verificações funcionais e quatro arquivos próprios pela cópia Make. Ainda falta evento real do WhatsApp e promoção/SQL autorizados para o original. Produção permanece na v1.59, envio de mídias/texto/IA/disparos preservados; os três cenários originais não foram pausados. Ler [VALIDACAO_RECEPCAO_MIDIA_20261019.md](VALIDACAO_RECEPCAO_MIDIA_20261019.md). Não contar upload/download de arquivo próprio como recepção real de lead.
+
+
 ## Estado vigente v1.59 - 18/10/2026
 
 Envio de mídias liberado para clientes reais após autorização específica. PNG/PDF/MP3/MP4 aceitos em teste real STAGING; PDF delivered pelo portal original. Quatro arquivos backend e SQL30 promovidos seletivamente. Deploy abca256d-5fbc-4d3a-8fa0-a158f45ede37. Os três cenários originais Make permanecem ativos: não pausar para desenvolvimento/testes. Recebimento de mídias e gestão Meta pelo portal continuam pendentes. Evidência, limites, segurança e reversão: [VALIDACAO_MIDIA_WHATSAPP_20261016.md](VALIDACAO_MIDIA_WHATSAPP_20261016.md). Seções anteriores a este checkpoint são históricas; pendência antiga de envio de mídia está encerrada.

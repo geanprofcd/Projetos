@@ -6,7 +6,7 @@ app.main, demo_store nem os routers do portal. Reutilizavel na hospedagem.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import hmac
 import base64
@@ -48,8 +48,11 @@ class BridgeConfig:
     human_enabled: bool = False
     allow_all_phones: bool = False
     media_enabled: bool = False
+    inbound_media_enabled: bool = False
 
     def validate(self) -> None:
+        if type(self.inbound_media_enabled) is not bool:
+            raise ValueError('Flag de recepcao de midia precisa ser booleana explicita.')
         if type(self.media_enabled) is not bool or (self.media_enabled and not self.human_enabled):
             raise ValueError('Midia exige flag booleana e canal humano habilitado.')
         if type(self.ai_enabled) is not bool:
@@ -96,6 +99,9 @@ def load_config(path: Path) -> BridgeConfig:
         raise ValueError('VENDRA_BRIDGE_DISPATCH_ENABLED exige true ou false explicito.')
     human_flag = values.get('VENDRA_BRIDGE_HUMAN_ENABLED', 'false')
     media_flag = values.get('VENDRA_BRIDGE_MEDIA_ENABLED', 'false')
+    inbound_media_flag = values.get('VENDRA_BRIDGE_INBOUND_MEDIA_ENABLED', 'false')
+    if inbound_media_flag not in {'true','false'}:
+        raise ValueError('VENDRA_BRIDGE_INBOUND_MEDIA_ENABLED exige true ou false explicito.')
     if media_flag not in {'true','false'}:
         raise ValueError('VENDRA_BRIDGE_MEDIA_ENABLED exige true ou false explicito.')
     if human_flag not in {'true', 'false'}:
@@ -106,7 +112,8 @@ def load_config(path: Path) -> BridgeConfig:
         webhook_secret=values['MAKE_WEBHOOK_SECRET'], phone_number_id=values['META_PHONE_NUMBER_ID'],
         business_account_id=values['META_WABA_ID'],
         allowed_phones=tuple(p.strip() for p in values['VENDRA_BRIDGE_ALLOWED_PHONES'].split(',') if p.strip()),
-        ai_enabled=ai_flag == 'true', dispatch_enabled=dispatch_flag == 'true', human_enabled=human_flag == 'true', media_enabled=media_flag == 'true')
+        ai_enabled=ai_flag == 'true', dispatch_enabled=dispatch_flag == 'true', human_enabled=human_flag == 'true', media_enabled=media_flag == 'true',
+        inbound_media_enabled=inbound_media_flag == 'true')
     config.validate()
     return config
 
@@ -155,6 +162,31 @@ class ProviderStatus(MetaSource):
     status: str = Field(pattern='^(sent|delivered|read|failed)$')
     recipient_id: str = Field(min_length=8, max_length=30)
     error_message: str | None = Field(default=None, max_length=1000)
+
+
+class InboundMedia(MetaSource):
+    phone: str = Field(min_length=8, max_length=30)
+    name_base64: str = Field(default='', max_length=1000)
+    caption_base64: str = Field(default='', max_length=56000)
+    external_message_id: str = Field(min_length=1, max_length=430)
+    media_id: str = Field(pattern=r'^\d{1,80}$')
+    media_type: str = Field(pattern='^(image|document|audio|video)$')
+    mime_type: str = Field(min_length=1, max_length=80)
+    file_name_base64: str = Field(default='', max_length=1200)
+    content_base64: SecretStr = Field(min_length=1, max_length=22369624)
+    sha256: str = Field(min_length=40, max_length=64)
+
+    @field_validator('mime_type')
+    @classmethod
+    def canonical_mime(cls, value):
+        return value.split(';', 1)[0].strip().lower()
+
+    @field_validator('occurred_at')
+    @classmethod
+    def valid_media_timestamp(cls, value):
+        if value < datetime(2020,1,1,tzinfo=timezone.utc) or value > datetime.now(timezone.utc)+timedelta(seconds=60):
+            raise ValueError('Timestamp de midia fora do intervalo permitido.')
+        return value
 
 
 class AIReply(Inbound):
@@ -231,17 +263,38 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
     app = FastAPI(title='VENDRA - callbacks WhatsApp', docs_url=None,
                   redoc_url=None, openapi_url=None, lifespan=lifespan)
 
+    def media_path(path):
+        return path.rstrip('/').endswith('/webhooks/make/whatsapp/media')
+
+    from fastapi.exceptions import RequestValidationError
+    from fastapi.exception_handlers import request_validation_exception_handler
+    from fastapi.responses import JSONResponse
+
+    @app.exception_handler(RequestValidationError)
+    async def safe_media_validation(request, exc):
+        if media_path(request.url.path):
+            # O JSON do erro padrão pode reproduzir o arquivo inteiro e dados pessoais.
+            return JSONResponse({'detail': 'Payload de midia invalido.'}, status_code=422)
+        return await request_validation_exception_handler(request, exc)
+
     @app.middleware('http')
     async def headers(request, call_next):
         # Limite aplicado antes de desserializar JSON (inclui corpos chunked).
         if request.method == 'POST':
+            limit = 65536
+            if media_path(request.url.path) and config.inbound_media_enabled:
+                secret = request.headers.get('x-webhook-secret', '')
+                if not hmac.compare_digest(secret.encode('utf8'), config.webhook_secret.encode('utf8')):
+                    return JSONResponse({'detail': 'Webhook nao autorizado.'}, status_code=401,
+                                        headers={'Cache-Control': 'no-store'})
+                limit = 23 * 1024 * 1024
             size = 0
             chunks = []
             async for chunk in request.stream():
                 size += len(chunk)
-                if size > 65536:
-                    from fastapi.responses import JSONResponse
-                    return JSONResponse({'detail': 'Payload excede 64 KB.'}, status_code=413)
+                if size > limit:
+                    return JSONResponse({'detail': 'Payload excede o limite da rota.'}, status_code=413,
+                                        headers={'Cache-Control': 'no-store'})
                 chunks.append(chunk)
             request._body = b''.join(chunks)
         response = await call_next(request)
@@ -314,6 +367,7 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
                 'ai_enabled': config.ai_enabled, 'dispatch_enabled': config.dispatch_enabled,
                 'human_enabled': config.human_enabled,
                 'media_enabled': config.media_enabled,
+                'inbound_media_enabled': config.inbound_media_enabled,
                 'persistence': 'supabase'}
 
     @app.post('/webhooks/make/whatsapp', status_code=202)
@@ -334,6 +388,50 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
                            make_instruction='CONTINUE_TO_AI' if route else 'STOP_AT_VENDRA')
             result['automation'] = control
         return result
+
+    if config.inbound_media_enabled:
+        @app.post('/webhooks/make/whatsapp/media', status_code=202)
+        def inbound_media(payload: InboundMedia, x_webhook_secret: str | None = Header(default=None)):
+            if not authorize(x_webhook_secret, payload, payload.phone):
+                return {'accepted': True, 'ignored': True, 'reason': 'outside_test_scope'}
+            from app.whatsapp_inbound_media import prepare_received_file, store_received_file, remove_unreferenced_file, MediaInvalid, MediaUnavailable
+            try:
+                def decode(value, limit):
+                    decoded = base64.b64decode(value, validate=True).decode('utf8')
+                    if len(decoded)>limit: raise ValueError()
+                    return decoded
+                name = decode(payload.name_base64, 180)
+                caption = decode(payload.caption_base64, 9000)
+                file_name = decode(payload.file_name_base64, 180)
+                prepared = prepare_received_file(message_id=payload.external_message_id,
+                    media_type=payload.media_type, mime_type=payload.mime_type, file_name=file_name,
+                    content_base64=payload.content_base64.get_secret_value(), expected_sha256=payload.sha256)
+            except (ValueError, binascii.Error, UnicodeError):
+                raise HTTPException(422, 'Arquivo, checksum ou metadados de midia invalidos.') from None
+            try:
+                store_received_file(client, prepared)
+            except MediaInvalid:
+                raise HTTPException(409, 'Arquivo privado divergente; revisar evento.') from None
+            except MediaUnavailable:
+                raise HTTPException(503, 'Arquivo nao confirmado; repetir o mesmo evento.') from None
+            body = 'Arquivo recebido: '+prepared.metadata['file_name']
+            if caption.strip(): body += '\n'+caption.strip()
+            try:
+                result = rpc('vendra_whatsapp_media_receive_v1', {
+                    'p_phone': payload.phone, 'p_name': name or None, 'p_body': body,
+                    'p_external_message_id': payload.external_message_id,
+                    'p_occurred_at': payload.occurred_at.isoformat(),
+                    'p_media_id': payload.media_id, 'p_attachment': prepared.metadata})
+            except HTTPException as exc:
+                if exc.status_code in (403,409,422):
+                    remove_unreferenced_file(client, prepared)
+                raise
+            if result.get('media_stored') is not True or not result.get('attachment_id'):
+                raise HTTPException(503, 'Banco nao confirmou o vinculo da midia; repetir o mesmo evento.')
+            # A configuração do atendimento é preservada. Só este evento binário não vai à IA.
+            result['automation'] = {'route_to_ai': False, 'should_respond': False,
+                'make_instruction': 'STOP_AT_VENDRA', 'reason': 'media_requires_human_review'}
+            return result
 
     @app.post('/webhooks/make/whatsapp/provider-status', status_code=202)
     def provider_status(payload: ProviderStatus, x_webhook_secret: str | None = Header(default=None)):
