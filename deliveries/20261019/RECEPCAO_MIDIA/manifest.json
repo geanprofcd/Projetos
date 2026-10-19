@@ -1,0 +1,59 @@
+{
+  "files": [
+    {
+      "path": "aplicar.py",
+      "sha256": "5bd9597ff6896ce81fa306266143aa837acf1f5844fd52aef4b4e61737f45170"
+    },
+    {
+      "path": "files/.env.example",
+      "sha256": "f2a46c3d690d77adbb8ee146288486f7649995951f41f019d20a765982b70c0d"
+    },
+    {
+      "path": "files/app/hosted_callbacks.py",
+      "sha256": "29b01fa1a0739dd1492f6afc49a93c0348cd5482f22144b602919c71e26aa5df"
+    },
+    {
+      "path": "files/app/whatsapp_callbacks.py",
+      "sha256": "d1e974b4959a8c3c1c3d5db4e5aad20a3fbf5e96a1a2db241a8ed47379b7cba4"
+    },
+    {
+      "path": "files/app/whatsapp_inbound_media.py",
+      "sha256": "86f885f1eb958e7c81d8f3a4c30d0b7db96db276ed4950574661b2185be17b20"
+    },
+    {
+      "path": "files/docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
+      "sha256": "11a360ddcf22bf5ab5ec7a70050b703df7e629b435ae6465e46a25faa540a924"
+    },
+    {
+      "path": "files/docs/OPERACAO_ORIGINAL_ONLINE.md",
+      "sha256": "4558d72241ddc9688517d2dec67e3d4f6738993d554f6a5fa33946d1e064a0ca"
+    },
+    {
+      "path": "files/docs/PARIDADE_ORIGINAL_ONLINE_20261016.md",
+      "sha256": "b83c6439fe3c726811e4275c2d3e7241a69b8d0507ef28c1faf674036709a7eb"
+    },
+    {
+      "path": "files/docs/VALIDACAO_RECEPCAO_MIDIA_20261019.md",
+      "sha256": "59cffd8509e17fd15697dbbc3c67c8c2f2f0b3a12d20b47fa20539b5ee933236"
+    },
+    {
+      "path": "files/sql/32_RECEBER_MIDIA_WHATSAPP.sql",
+      "sha256": "3217180118682af39d60bdf1e7c823916f48b2e52b557a075f6df1ffb1e4d529"
+    },
+    {
+      "path": "files/sql/33_ROLLBACK_RECEPCAO_MIDIA.sql",
+      "sha256": "f9ae38b07f943967b2604522958f157a076fa0ed3adcfade376e9ce0b13be52f"
+    },
+    {
+      "path": "files/tests/test_whatsapp_inbound_media.py",
+      "sha256": "6a024b26eadfa178d020660c1fa3203f078340a40aba264b6c618c2440b15dff"
+    },
+    {
+      "path": "INSTRUCOES.md",
+      "sha256": "340e5bd6c5fbc9445097e4b983c137d717532f2cfb75a06be67ca010a3c584f7"
+    }
+  ],
+  "source_commit": "fb2cc3f1437cb51ae35da4aad310f2c6aaa7dff3",
+  "automatic_sql": false,
+  "automatic_storage": false
+}
