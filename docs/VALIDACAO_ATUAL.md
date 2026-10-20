@@ -490,3 +490,7 @@ apenas após desativar consumidores. Não pausar cenários originais.
 Solicitação de rolagem interna/paginação concluída. Pendências históricas seguem
 separadas no mapa: restauração integral isolada, Meta no portal, Auth,
 carga ampliada/concorrência e limpeza finalCODEX; não bloqueiam os serviços ativos.
+
+Pacote recepcao STAGING: 29arquivos + manifesto; SHA256 629632875b0cd8e0e95435c498a2b106e10b6404d83cd93330f0df50c74fa11a; fontefuncional1bf9873ed2c5801a6575d1cdb131f90b7b349cf7; entrega5a6d91448a0af93718fff53a2c5d015d07c91670; downloadimutavel/hashconferido; instaladorsimulacao/aplicacao/backupverificados emdestinoisolado.
+Instrucoes: https://github.com/geanprofcd/Projetos/blob/5a6d91448a0af93718fff53a2c5d015d07c91670/deliveries/20261019/PAGINACAO_ORIGINAL_162/INSTRUCOES.md
+Download: https://raw.githubusercontent.com/geanprofcd/Projetos/5a6d91448a0af93718fff53a2c5d015d07c91670/deliveries/20261019/PAGINACAO_ORIGINAL_162/VENDRA_PAGINACAO_ORIGINAL_162_20261019.zip
