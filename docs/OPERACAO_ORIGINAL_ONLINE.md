@@ -82,3 +82,9 @@ SQL28 aplicado no STAGING e original, sem novo deploy da aplicacao. Novo Lead re
 
 Funil original completo e regras de primeira resposta/Calendly/ordenacao aplicadas. Deploy final797c35cf-6a1b-4237-ad3b-f4035bb36b99. Ler docs/VALIDACAO_FUNIS_COMERCIAL_20261016.md; checkpoint vigente sobrepoe pendencias historicas abaixo. SQL25/26 ja executados; SQL27 apenas reversao. Nao reaplicar por copiar o pacote. Comercial preserva controle humano e movimentos manuais; nenhuma campanha iniciada nesta entrega.
 
+
+## Atualização19/10 — v1.61
+Recepção de mídia: SQL32 original autorizado/aplicado, backend e ramo85/86+handlers87/88 ativos no Railway/REV9, healthinboundtrue. Teste automático de novo arquivo solicitado/pendente. Scroll interno sem barra vertical publicado. Evolução10.000cards aprovadaSTAGING (17verificações/74Windows), SQL34somenteSTAGING; promoçãoSQL34originalaguardaautorizaçãoespecífica. Não pausar cenários originais. Ver VALIDACAO_ROLAGEM_FUNIS_20261019.md e VALIDACAO_RECEPCAO_MIDIA_20261019.md.
+
+### Recepção automática original concluída — estado mais recente19/10/2026
+Run be3add398da242f18a94b5033408e40b, iniciado00:08:11.930Z20/10 (=21:08Brasília19/10), AUTO, sucesso4,603s/3operações/3créditos. Módulos71/85/86, uma invocação cada, zero erros; nenhum módulo de envio. Callback202accepted/media_storedtrue/duplicatefalse. Nove verificações reais no original: remetente/conta, WAMID gravado, vínculo único, hashMeta, loginadministrativo hospedado, chat, feed, download privado e arquivo completoSHA256. Evidência real preservada. Recepção automática hospedada homologada; solicitação de arquivo final atendida. Pendência separada permaneceSQL34original/paginação10k, não autorizada ainda.

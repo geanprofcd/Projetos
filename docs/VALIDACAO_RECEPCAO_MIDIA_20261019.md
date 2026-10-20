@@ -48,3 +48,43 @@ Comando de verificação na cópia, sem envio externo:
 Não há comando a executar no principal nesta etapa. Não aplicar SQL32/33 no original por efeito do pacote. Gestão Meta no portal, restauração integral, carga de20mil, proteção Auth e limpeza CODEX final continuam separados e pendentes.
 
 Ao encerrar esta rodada, somente a copia Make6689575 foi deixada inativa e os processos proprios de ponte/tunel8013 foram encerrados. Arquivo real ainda pode chegar ao gatilho Meta original; para validar no STAGING, reabrir somente a ponte/copia de teste e renovar seu callback. Os tres cenarios originais permanecem ativos. Conferencia por hash:131 arquivos app do original Windows seguem identicos a release hospedada anterior; nenhum backend de recepcao foi promovido.
+
+## Atualização vigente após v1.60 — 19/10/2026
+
+O PDF REAL do usuário, sem legenda, chegou ao gatilho original no run
+64b859c18b614aeb863c51c81b7eb664. A cópia isolada STAGING o baixou e gravou no
+run 4b9cd31f8c924af3b03f6c898b4cc59b. Conferidos arquivo completo, SHA256 Meta,
+chat Comercial e download privado: oito verificações reais aprovadas. O arquivo
+real foi preservado no STAGING. Não confundir cópia desse evento com recepção
+contínua automática original.
+
+O arquivo tem 23.505.335 bytes. O primeiro recebimento excedeu o limite inicial;
+a implementação passou a aceitar PDF até25MiB, imagem5MiB, TXT15MiB e áudio/vídeo
+16MiB. Corpo HTTP até35MiB com autenticação prévia e uma mídia simultânea por
+processo; callbacks pequenos continuam independentes. Nova rodada funcional18
+aprovada, além de74 testes Windows no conjunto final. Falha temporária ao assinar
+download agora retorna503 sanitizado; não repetir POST de mensagem por isso.
+
+Usuário autorizou SQL32 também no ORIGINAL e o ramo Make. Função aplicada em
+znkjibqcikuigfwfsbjb, migration vendra_whatsapp_inbound_media_pdf25_v1. ACL:
+service_role somente, SECURITY INVOKER/search_path vazio. SQL33 não executado.
+Backup seletivo físico: output/backups/recepcao-rolagem-original-20261019.
+Nove arquivos homologados copiados ao original e release privado, preservando
+.env/main/base. Nenhum snapshot STAGING ou credencial foi promovido.
+
+Railway publicação18c69b6e-8f07-4a05-94a3-d269a79f7443 concluída; variável aplicada
+separadamente e nova publicaçãoe2c63287-222a-4654-8df0-8bbcfdf92afb servindo
+/callbacks/health200 com inbound_media_enabled=true. Make REV9 original6534261
+permanece ativo/zero incompletos. Novo ramo85 Download→86 HTTP Railway, com
+tratadores87/88 para erro sem pausar original. Filtro ativado paraimage/document/
+audio/video; todos os outros módulos permaneceram estruturalmente iguais nessa
+ativação. Última revisão2026-10-20T00:04:05.456Z (19/10 às21:04 Brasília).
+
+Solicitado novo arquivo pequeno para validar UMA entrada automática pela rota
+hospedada. Essa conferência final ainda pendente; não declarar recepção contínua
+homologada apenas com healthcheck. Texto/IA/status/disparos preservados e nenhum
+WhatsApp enviado nesta rodada. Advisors mantêm somente os avisos anteriores:
+RLS backend sem policies públicas e proteção Auth de senhas vazadas desabilitada.
+
+### Recepção automática original concluída — estado mais recente19/10/2026
+Run be3add398da242f18a94b5033408e40b, iniciado00:08:11.930Z20/10 (=21:08Brasília19/10), AUTO, sucesso4,603s/3operações/3créditos. Módulos71/85/86, uma invocação cada, zero erros; nenhum módulo de envio. Callback202accepted/media_storedtrue/duplicatefalse. Nove verificações reais no original: remetente/conta, WAMID gravado, vínculo único, hashMeta, loginadministrativo hospedado, chat, feed, download privado e arquivo completoSHA256. Evidência real preservada. Recepção automática hospedada homologada; solicitação de arquivo final atendida. Pendência separada permaneceSQL34original/paginação10k, não autorizada ainda.

@@ -5,12 +5,12 @@ import binascii
 import hashlib
 import re
 
-MAX_MEDIA_BYTES = 16 * 1024 * 1024
+MAX_MEDIA_BYTES = 25 * 1024 * 1024
 MAX_BASE64_CHARS = 4 * ((MAX_MEDIA_BYTES + 2) // 3)
 FORMATS = {
     'image/jpeg': ('image', 'jpg', 5),
     'image/png': ('image', 'png', 5),
-    'application/pdf': ('document', 'pdf', 15),
+    'application/pdf': ('document', 'pdf', 25),
     'text/plain': ('document', 'txt', 15),
     'audio/mpeg': ('audio', 'mp3', 16),
     'audio/mp4': ('audio', 'm4a', 16),

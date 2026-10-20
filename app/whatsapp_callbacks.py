@@ -13,6 +13,7 @@ import base64
 import binascii
 import re
 import logging
+import asyncio
 from urllib.parse import urlsplit
 from uuid import UUID
 from contextlib import asynccontextmanager
@@ -173,7 +174,7 @@ class InboundMedia(MetaSource):
     media_type: str = Field(pattern='^(image|document|audio|video)$')
     mime_type: str = Field(min_length=1, max_length=80)
     file_name_base64: str = Field(default='', max_length=1200)
-    content_base64: SecretStr = Field(min_length=1, max_length=22369624)
+    content_base64: SecretStr = Field(min_length=1, max_length=34952536)
     sha256: str = Field(min_length=40, max_length=64)
 
     @field_validator('mime_type')
@@ -277,17 +278,11 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
             return JSONResponse({'detail': 'Payload de midia invalido.'}, status_code=422)
         return await request_validation_exception_handler(request, exc)
 
-    @app.middleware('http')
-    async def headers(request, call_next):
+    media_gate = asyncio.Semaphore(1)
+
+    async def read_and_dispatch(request, call_next, limit):
         # Limite aplicado antes de desserializar JSON (inclui corpos chunked).
         if request.method == 'POST':
-            limit = 65536
-            if media_path(request.url.path) and config.inbound_media_enabled:
-                secret = request.headers.get('x-webhook-secret', '')
-                if not hmac.compare_digest(secret.encode('utf8'), config.webhook_secret.encode('utf8')):
-                    return JSONResponse({'detail': 'Webhook nao autorizado.'}, status_code=401,
-                                        headers={'Cache-Control': 'no-store'})
-                limit = 23 * 1024 * 1024
             size = 0
             chunks = []
             async for chunk in request.stream():
@@ -297,10 +292,23 @@ def create_app(config: BridgeConfig, *, client=None) -> FastAPI:
                                         headers={'Cache-Control': 'no-store'})
                 chunks.append(chunk)
             request._body = b''.join(chunks)
+            chunks.clear()
         response = await call_next(request)
         response.headers['Cache-Control'] = 'no-store'
         response.headers['X-Content-Type-Options'] = 'nosniff'
         return response
+
+    @app.middleware('http')
+    async def headers(request, call_next):
+        if request.method == 'POST' and media_path(request.url.path) and config.inbound_media_enabled:
+            secret = request.headers.get('x-webhook-secret', '')
+            if not hmac.compare_digest(secret.encode('utf8'), config.webhook_secret.encode('utf8')):
+                return JSONResponse({'detail': 'Webhook nao autorizado.'}, status_code=401,
+                                    headers={'Cache-Control': 'no-store'})
+            # Uma transferência pesada por processo; texto/status não usam esta fila.
+            async with media_gate:
+                return await read_and_dispatch(request, call_next, 35 * 1024 * 1024)
+        return await read_and_dispatch(request, call_next, 65536)
 
     def authenticate(secret: str | None) -> None:
         if not secret or not hmac.compare_digest(secret.encode('utf-8'), config.webhook_secret.encode('utf-8')):

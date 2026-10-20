@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import logging
 import mimetypes
 import re
 from dataclasses import dataclass
@@ -14,6 +15,7 @@ from app.services.demo_store import DEMO_ATTACHMENTS
 
 ROOT = Path(__file__).resolve().parents[2]
 DEMO_STORAGE_ROOT = ROOT / "runtime" / "demo_storage" / "attachments"
+logger = logging.getLogger(__name__)
 
 ALLOWED_MIME_TYPES = {
     "image/jpeg",
@@ -302,11 +304,15 @@ def demo_file_path(attachment: dict) -> Path:
 
 def signed_download_url(attachment: dict, expires_seconds: int = 300) -> str:
     settings = get_settings()
-    response = (
-        get_admin_client()
-        .storage.from_(settings.attachment_bucket)
-        .create_signed_url(attachment["storage_path"], expires_seconds)
-    )
+    try:
+        response = (
+            get_admin_client()
+            .storage.from_(settings.attachment_bucket)
+            .create_signed_url(attachment["storage_path"], expires_seconds)
+        )
+    except Exception as exc:
+        logger.warning('Falha temporaria ao assinar anexo: %s',type(exc).__name__)
+        raise AttachmentError('Download temporariamente indisponível. Tente novamente.') from None
     if isinstance(response, dict):
         url = response.get("signedURL") or response.get("signedUrl") or response.get("signed_url")
         if url:

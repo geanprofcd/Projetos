@@ -40,6 +40,7 @@ class Settings(BaseSettings):
     dispatch_transport_secret: str | None = None
     dispatch_allowed_phones: str = ''
     whatsapp_persistent_control_enabled: bool = False
+    kanban_window_enabled: bool = False
     whatsapp_staging_wake_enabled: bool = False
     whatsapp_staging_wake_url: str = ''
     whatsapp_staging_wake_token: str = ''

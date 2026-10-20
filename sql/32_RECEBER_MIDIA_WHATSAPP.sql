@@ -23,7 +23,7 @@ BEGIN
   WHEN 'application/pdf' THEN 'pdf' WHEN 'text/plain' THEN 'txt'
   WHEN 'audio/mpeg' THEN 'mp3' WHEN 'audio/mp4' THEN 'm4a'
   WHEN 'audio/ogg' THEN 'ogg' WHEN 'video/mp4' THEN 'mp4' END;
- size_limit:=(CASE WHEN mime LIKE 'image/%' THEN 5 WHEN mime IN ('application/pdf','text/plain') THEN 15 ELSE 16 END)::bigint*1024*1024;
+ size_limit:=(CASE WHEN mime LIKE 'image/%' THEN 5 WHEN mime='application/pdf' THEN 25 WHEN mime='text/plain' THEN 15 ELSE 16 END)::bigint*1024*1024;
  expected_path:='whatsapp-inbound/'||encode(sha256(convert_to(p_external_message_id,'UTF8')),'hex')
   ||'/'||(p_attachment->>'checksum_sha256')||'.'||ext;
  IF ext IS NULL OR (p_attachment->>'size_bytes')::bigint NOT BETWEEN 1 AND size_limit

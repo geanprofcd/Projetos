@@ -5,6 +5,7 @@ import hashlib
 from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import MagicMock
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 from app.whatsapp_callbacks import BridgeConfig,create_app
 from app.whatsapp_inbound_media import prepare_received_file,MediaInvalid,MAX_BASE64_CHARS
@@ -35,6 +36,18 @@ class ReceivedMediaTests(TestCase):
             if accepted:self.assertEqual(prepare_received_file(**args).metadata['mime_type'],'audio/ogg')
             else:
                 with self.assertRaises(MediaInvalid):prepare_received_file(**args)
+    def test_pdf_accepts_above_old_limit_and_rejects_above_25_mib(self):
+        content=b'%PDF-1.7\n'+b'x'*(16*1024*1024)
+        args={**self.args,'content_base64':encoded(content),'expected_sha256':hashlib.sha256(content).hexdigest()}
+        self.assertEqual(prepare_received_file(**args).metadata['size_bytes'],len(content))
+        content=b'%PDF-'+b'x'*(25*1024*1024)
+        with self.assertRaises(MediaInvalid):prepare_received_file(**{**args,'content_base64':encoded(content),'expected_sha256':hashlib.sha256(content).hexdigest()})
+    def test_private_download_failure_is_controlled_without_secret(self):
+        from app.services.attachment_service import signed_download_url,AttachmentError
+        with patch('app.services.attachment_service.get_admin_client') as db:
+            db.return_value.storage.from_.return_value.create_signed_url.side_effect=RuntimeError('private secret')
+            with self.assertRaises(AttachmentError) as error:signed_download_url({'storage_path':'private/file.pdf'})
+            self.assertNotIn('private secret',str(error.exception))
 
 
 class InboundMediaBridgeTests(TestCase):

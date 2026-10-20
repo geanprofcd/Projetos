@@ -41,6 +41,7 @@ from app.services.automation_service import (
 from app.services.product_service import money_label, parse_money
 from app.services.ticket_attention_service import summarize_ticket, summarize_tickets, date_br
 from app.services.conversation_order_service import activity_key
+from app.services.kanban_window_service import list_kanban_windows
 from app.services.ticket_service import (
     TICKET_STATUSES,
     add_message,
@@ -168,7 +169,7 @@ def _kanban_signature(columns: list[dict]) -> str:
     return hashlib.sha256(json.dumps(snapshot, ensure_ascii=False, sort_keys=True, default=str).encode("utf-8")).hexdigest()
 
 
-def _kanban_context(*, funnel_id: str | None, search: str | None, assigned_user_id: str | None, user: dict) -> dict:
+def _kanban_context(*, funnel_id: str | None, search: str | None, assigned_user_id: str | None, user: dict, windows: dict | None = None) -> dict:
     funnels = [f for f in list_funnels(include_inactive=False) if any(bool(s.get("is_active", True)) for s in (f.get("stages") or []))]
     selected = next((f for f in funnels if str(f.get("id")) == str(funnel_id)), None) or (funnels[0] if funnels else None)
     if not selected:
@@ -181,6 +182,12 @@ def _kanban_context(*, funnel_id: str | None, search: str | None, assigned_user_
             "kanban_assigned": assigned_user_id or "",
             "kanban_signature": _kanban_signature([]),
         }
+
+    if get_settings().kanban_window_enabled and not get_settings().demo_mode:
+        columns = list_kanban_windows(selected, search=search, assigned_user_id=assigned_user_id, windows=windows)
+        return {"funnels": funnels, "selected_funnel": selected, "columns": columns,
+            "responsibles": list_internal_users(), "kanban_search": search or "",
+            "kanban_assigned": assigned_user_id or "", "kanban_signature": _kanban_signature(columns)}
 
     opportunities = list_opportunities(search=search, status="open", funnel_id=str(selected["id"]))
     if assigned_user_id:
@@ -230,7 +237,7 @@ def tickets_page(
     selected_view = "funil" if view == "funil" and can_use_crm else "lista"
     context = {
         "user": user,
-        "tickets": list_tickets(user),
+        "tickets": list_tickets(user) if selected_view == "lista" else [],
         "active_page": "tickets",
         "poll_seconds": max(2, get_settings().live_poll_seconds),
         "selected_view": selected_view,
@@ -251,10 +258,17 @@ def ticket_kanban_feed(
     funil: str | None = None,
     q: str | None = None,
     responsavel: str | None = None,
+    windows: str = "{}",
     user: dict = Depends(current_user),
 ):
     internal_user(user)
-    context = _kanban_context(funnel_id=funil, search=q, assigned_user_id=responsavel, user=user)
+    try:
+        if len(windows) > 10000:
+            raise ValueError('Janelas inválidas.')
+        positions = json.loads(windows)
+        context = _kanban_context(funnel_id=funil, search=q, assigned_user_id=responsavel, user=user, windows=positions)
+    except (ValueError, TypeError) as exc:
+        raise HTTPException(status_code=422, detail='Filtros ou posição do funil inválidos.') from exc
     selected = context.get("selected_funnel")
     if not selected:
         return JSONResponse({

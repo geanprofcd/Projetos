@@ -16,6 +16,7 @@
 {% endif %}
 
 {% if selected_view == 'funil' and user.role in ['responsavel','administrador'] %}
+<link rel="stylesheet" href="/static/css/kanban-scroll-v0.0.26.css">
 <div class="kanban-shell" data-kanban-root data-csrf-token="{{ csrf_token }}" data-funnel-id="{{ selected_funnel.id if selected_funnel else '' }}" data-poll-seconds="{{ poll_seconds }}" data-kanban-signature="{{ kanban_signature }}" data-search="{{ kanban_search }}" data-assigned-user="{{ kanban_assigned }}">
     {% if kanban_conflict %}<div class="alert error kanban-alert">A oportunidade foi alterada por outra ação. O quadro foi recarregado com os dados mais recentes.</div>{% endif %}
     {% if kanban_deleted %}<div class="alert success kanban-alert"><strong>Card excluído.</strong><span>A oportunidade foi arquivada e retirada do funil, preservando a auditoria.</span></div>{% endif %}
@@ -51,7 +52,7 @@
     <div class="panel kanban-no-funnel"><h2>Nenhum funil ativo configurado</h2><p>Crie um funil e pelo menos uma etapa ativa para usar esta visualização.</p>{% if user.role == 'administrador' %}<a class="button primary" href="/configuracoes/funis/novo">Criar funil</a>{% endif %}</div>
     {% endif %}
 </div>
-<script src="/static/js/kanban-v0.0.16.js"></script>
+<script src="/static/js/kanban-v0.0.26.js"></script>
 {% else %}
 <div id="ticketsLiveRoot" data-poll-seconds="{{ poll_seconds }}">
     <div class="ticket-list-toolbar">

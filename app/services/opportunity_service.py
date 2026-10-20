@@ -170,14 +170,22 @@ def list_lost_reasons(*, active_only: bool = True) -> list[dict]:
     return sorted(rows, key=lambda row: (row.get("name") or "").casefold())
 
 
-def _decorate(row: dict, *, include_items: bool = False, include_history: bool = False) -> dict:
+def _decorate(row: dict, *, include_items: bool = False, include_history: bool = False, lookups: dict | None = None) -> dict:
     item = row.copy()
-    customer = get_customer(str(item.get("customer_id"))) if item.get("customer_id") else None
-    ticket = _raw_ticket(str(item.get("ticket_id"))) if item.get("ticket_id") else None
-    funnel = get_funnel(str(item.get("funnel_id"))) if item.get("funnel_id") else None
-    stage = get_stage(str(item.get("stage_id"))) if item.get("stage_id") else None
-    assignee = _assignee(str(item.get("assigned_user_id"))) if item.get("assigned_user_id") else None
-    reason = next((r for r in list_lost_reasons(active_only=False) if str(r.get("id")) == str(item.get("lost_reason_id"))), None)
+    if lookups is None:
+        customer = get_customer(str(item.get("customer_id"))) if item.get("customer_id") else None
+        ticket = _raw_ticket(str(item.get("ticket_id"))) if item.get("ticket_id") else None
+        funnel = get_funnel(str(item.get("funnel_id"))) if item.get("funnel_id") else None
+        stage = get_stage(str(item.get("stage_id"))) if item.get("stage_id") else None
+        assignee = _assignee(str(item.get("assigned_user_id"))) if item.get("assigned_user_id") else None
+        reason = next((r for r in list_lost_reasons(active_only=False) if str(r.get("id")) == str(item.get("lost_reason_id"))), None)
+    else:
+        customer = lookups['customers'].get(str(item.get('customer_id')))
+        ticket = lookups['tickets'].get(str(item.get('ticket_id')))
+        funnel = lookups['funnels'].get(str(item.get('funnel_id')))
+        stage = lookups['stages'].get(str(item.get('stage_id')))
+        assignee = lookups['assignees'].get(str(item.get('assigned_user_id')))
+        reason = lookups['reasons'].get(str(item.get('lost_reason_id')))
     item["customer_name"] = (customer or {}).get("name") or "Cliente"
     item["ticket_title"] = (ticket or {}).get("title") or None
     item["ticket_created_at"] = (ticket or {}).get("created_at")
@@ -199,16 +207,60 @@ def _decorate(row: dict, *, include_items: bool = False, include_history: bool =
         item["items"] = _item_rows(str(item["id"]))
         item["item_count"] = len(item["items"])
     else:
-        item["item_count"] = sum(1 for r in (_item_rows(str(item["id"]))))
+        item["item_count"] = (lookups['item_counts'].get(str(item['id']),0) if lookups is not None
+                              else sum(1 for r in (_item_rows(str(item["id"])))))
     if include_history:
         item["stage_history"] = _stage_history(str(item["id"]))
     return item
 
 
+def _list_lookups(rows: list[dict]) -> dict:
+    """Leituras por lote e por requisicao; sem cache global de permissoes/dados."""
+    db = get_admin_client()
+    def fetch(table, columns, key):
+        ids = sorted({str(row[key]) for row in rows if row.get(key)})
+        found = {}
+        for start in range(0,len(ids),200):
+            batch = db.table(table).select(columns).in_('id',ids[start:start+200]).execute().data or []
+            found.update({str(item['id']):item for item in batch})
+        return found
+    counts = {}
+    ids = [str(row['id']) for row in rows]
+    for start in range(0,len(ids),200):
+        offset = 0
+        while True:
+            batch = (db.table('opportunity_items').select('id,opportunity_id')
+                     .in_('opportunity_id',ids[start:start+200]).order('id').range(offset,offset+999).execute().data or [])
+            for item in batch:
+                key = str(item['opportunity_id']);counts[key]=counts.get(key,0)+1
+            if len(batch)<1000:break
+            offset += 1000
+    return dict(customers=fetch('customers','id,name','customer_id'),
+        tickets=fetch('tickets','id,title,created_at,status','ticket_id'),
+        funnels=fetch('sales_funnels','id,name','funnel_id'),
+        stages=fetch('funnel_stages','id,name,color','stage_id'),
+        assignees={str(u['id']):u for u in list_internal_users(active_only=True)},
+        reasons={str(r['id']):r for r in list_lost_reasons(active_only=False)},item_counts=counts)
+
+
 def list_opportunities(*, search: str | None = None, status: str = "all", funnel_id: str | None = None, customer_id: str | None = None, ticket_id: str | None = None) -> list[dict]:
     if status not in {"all", *OPPORTUNITY_STATUSES.keys()}:
         status = "all"
-    rows = _raw_opportunities()
+    if get_settings().demo_mode:
+        rows = _raw_opportunities()
+    else:
+        rows = []
+        cursor = None
+        while True:
+            query = get_admin_client().table('opportunities').select('*').is_('archived_at','null')
+            for key,value in (('status',None if status=='all' else status),('funnel_id',funnel_id),
+                              ('customer_id',customer_id),('ticket_id',ticket_id)):
+                if value: query = query.eq(key,value)
+            if cursor: query = query.gt('id',cursor)
+            batch = query.order('id').limit(1000).execute().data or []
+            rows.extend(batch)
+            if len(batch)<1000:break
+            cursor = str(batch[-1]['id'])
     if status != "all":
         rows = [row for row in rows if row.get("status") == status]
     if funnel_id:
@@ -217,7 +269,8 @@ def list_opportunities(*, search: str | None = None, status: str = "all", funnel
         rows = [row for row in rows if str(row.get("customer_id")) == str(customer_id)]
     if ticket_id:
         rows = [row for row in rows if str(row.get("ticket_id")) == str(ticket_id)]
-    result = [_decorate(row) for row in rows]
+    lookups = _list_lookups(rows) if rows and not get_settings().demo_mode else None
+    result = [_decorate(row, lookups=lookups) for row in rows]
     if search:
         needle = search.strip().casefold()
         result = [row for row in result if needle in " ".join(str(row.get(k) or "") for k in ("title", "customer_name", "funnel_name", "stage_name", "assigned_name")).casefold()]
