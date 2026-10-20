@@ -1,0 +1,123 @@
+{
+  "files": [
+    {
+      "path": "aplicar.py",
+      "sha256": "5bd9597ff6896ce81fa306266143aa837acf1f5844fd52aef4b4e61737f45170"
+    },
+    {
+      "path": "files/.env.example",
+      "sha256": "e3e272153e17cd0bbae728380cdc96b0ec1f27fddf9a7ee218900843281ad029"
+    },
+    {
+      "path": "files/app/core/config.py",
+      "sha256": "b21cf49b1fd84ca9c26fb287d475ce05f0bf164f4ff20ca19a9362ed40692b94"
+    },
+    {
+      "path": "files/app/hosted_callbacks.py",
+      "sha256": "29b01fa1a0739dd1492f6afc49a93c0348cd5482f22144b602919c71e26aa5df"
+    },
+    {
+      "path": "files/app/routers/tickets.py",
+      "sha256": "ad8ac9055239a801dc8947bc0856a0413edce9f0c1b978ce317118b9a5539749"
+    },
+    {
+      "path": "files/app/services/attachment_service.py",
+      "sha256": "0dec7310e1ce9aac6478a57f6e9b8caa1411c9c0299b310eb84b1eb3262e02e4"
+    },
+    {
+      "path": "files/app/services/kanban_window_service.py",
+      "sha256": "3c5bc5de7b9afe306239d966368ce918abd1076cde9ce460ab4af397db491f5f"
+    },
+    {
+      "path": "files/app/services/opportunity_service.py",
+      "sha256": "65fe2ff362d2238bd29f28cf120bf4aeac9f3554c0071879cff07cc224bf9121"
+    },
+    {
+      "path": "files/app/static/css/kanban-scroll-v0.0.26.css",
+      "sha256": "32fe28cf2738a3ca09f36a72a991bbd38bd43a4b84de823d7ad776224a10c054"
+    },
+    {
+      "path": "files/app/static/js/kanban-v0.0.26.js",
+      "sha256": "701f599772d0b8d28443355b1c2fcf78de13a97915f158f4c51d4f926e7a8648"
+    },
+    {
+      "path": "files/app/templates/tickets/_kanban_cards.html",
+      "sha256": "b92c9c0665e3d77060b116ba1c89e2edd834f69f3f2dc4eb752ae36b8e940dee"
+    },
+    {
+      "path": "files/app/templates/tickets/_kanban_columns.html",
+      "sha256": "95beb4f9521dce1b213e146661094730b250a58373b5fdb2c978014b7eb06c6b"
+    },
+    {
+      "path": "files/app/templates/tickets/list.html",
+      "sha256": "f9cdae2e052026565e6ed11981dfa4a01a324b4d62d6b57bae1c3544a7a4c697"
+    },
+    {
+      "path": "files/app/whatsapp_callbacks.py",
+      "sha256": "beb29cb561f65f6dc6d5d98c6b629405b888f8ce96c4b6c7afe6dd3b883dd734"
+    },
+    {
+      "path": "files/app/whatsapp_inbound_media.py",
+      "sha256": "adddc1e5cd1b7811bf103e76051beec32846af725dd6066a29bc0648af19a650"
+    },
+    {
+      "path": "files/docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
+      "sha256": "62c3eeea80107b99317c8d8e5c3170905db352a5969c9610d9ce6cfd6714f688"
+    },
+    {
+      "path": "files/docs/OPERACAO_ORIGINAL_ONLINE.md",
+      "sha256": "61496049794383411c22a2e0ac00aad85976516fa6bb521f2025baffa2530920"
+    },
+    {
+      "path": "files/docs/PARIDADE_ORIGINAL_ONLINE_20261016.md",
+      "sha256": "0e79cddb7af5a5cde41707545144569a75dabd617106cf2fcecaf537e2e00c95"
+    },
+    {
+      "path": "files/docs/VALIDACAO_RECEPCAO_MIDIA_20261019.md",
+      "sha256": "484f86db66df2a409f297d85c4a7e8c963f5424a1f429c13727ba47a209b1431"
+    },
+    {
+      "path": "files/docs/VALIDACAO_ROLAGEM_FUNIS_20261019.md",
+      "sha256": "91b3ecbc0cf8ad5aa8572a86444c3101e71ff9db7c25d1cf8edb7f8032462169"
+    },
+    {
+      "path": "files/sql/32_RECEBER_MIDIA_WHATSAPP.sql",
+      "sha256": "be80695afa992cb812ba549f55669d89bf5c7065a40f48411c583a8bb97cc39c"
+    },
+    {
+      "path": "files/sql/33_ROLLBACK_RECEPCAO_MIDIA.sql",
+      "sha256": "f9ae38b07f943967b2604522958f157a076fa0ed3adcfade376e9ce0b13be52f"
+    },
+    {
+      "path": "files/sql/34_PAGINAR_FUNIL.sql",
+      "sha256": "fbe801f3df2e57f57a51fed7d6c8d8593c629071dad8f4d9335fa79c8bf882f0"
+    },
+    {
+      "path": "files/sql/34_VALIDAR_PAGINACAO_TRANSACAO.sql",
+      "sha256": "bb52e181899d7d8e5ed1266a4d9b329b94c10946d164ab1853ccda1743047c27"
+    },
+    {
+      "path": "files/sql/35_ROLLBACK_PAGINACAO_FUNIL.sql",
+      "sha256": "9b697d50f4fe89eee6b1598c0535ad86eb2fc49b584fb0530a4647793144d312"
+    },
+    {
+      "path": "files/tests/test_kanban_window.py",
+      "sha256": "6eb2076254c33fab5f2511233d679aa5c3ad43a5f72d4a9d69f5141b344a3a0f"
+    },
+    {
+      "path": "files/tests/test_opportunity_bulk.py",
+      "sha256": "07a64d4abac7ab8d026ed256d4e5587ba524d029b94850aff931958af1d42808"
+    },
+    {
+      "path": "files/tests/test_whatsapp_inbound_media.py",
+      "sha256": "37b6dc9fff5900e28a2365c35789098f8c6ec99d11949d9470a6fa31ba8bc98c"
+    },
+    {
+      "path": "INSTRUCOES.md",
+      "sha256": "e70dc427e04df369ee3182a918af8ca38fdf58de059627b1359f59d002af45ff"
+    }
+  ],
+  "source_commit": "1c33db96421dd077f7b54e13aa71004dd8231c6c",
+  "automatic_sql": false,
+  "automatic_storage": false
+}
