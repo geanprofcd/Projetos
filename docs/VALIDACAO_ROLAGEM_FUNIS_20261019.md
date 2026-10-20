@@ -2,12 +2,11 @@
 
 ## Estado vigente
 
-Implementado na cópia STAGING, com desenho comercial preservado: cinco colunas,
-cabeçalhos fixos, rolagem por mouse/toque/teclado e barras verticais ocultas.
-O scroll simples com 80 cards foi validado e publicado no original; a evolução
-para janelas de 120 cards depende de SQL34 e flag próprios no destino.
-SQL34 autorizado e aplicado **somente STAGING**. Promoção desse SQL ao original
-solicitada separadamente; não presumir aplicação pela presença do arquivo.
+Publicado no original/Railway na v1.62 após validação STAGING com10.000cards.
+SQL34 aplicado nos dois destinos, com autorização por ambiente. Flag de produção
+ativa;13 verificações funcionais no perfil Comercial hospedado aprovadas.
+Design comercial preservado, cabeçalhos fixos, rolagem por mouse/toque/teclado
+e barras verticais ocultas. Detalhes da publicação e backup no final deste relatório.
 
 ## Estrutura
 
@@ -64,3 +63,31 @@ e restaurar os arquivos do backup seletivo. Nunca pausar cenários originais.
 Comando já executado autonomamente; não é necessário o usuário repetir.
 
 Carga finalizada:10.000 cards, funil de cinco etapas e cliente exclusivos removidos; portal8014 próprio encerrado e flag STAGING false. Auditoria preservada. PDF real e demais clientes intactos.
+
+## Publicação da paginação no original — v1.62 — 19/10/2026
+
+Após a solicitação “continue” em resposta ao fechamento da v1.61 e ao pedido
+específico pendente, aplicada a promoção SQL34/paginação no original.
+Migration vendra_kanban_window_v1 em znkjibqcikuigfwfsbjb; função de leitura,
+SECURITY INVOKER/search_path vazio, anon/authenticated sem EXECUTE, service_role
+permitido. SQL35 não executado. Nenhuma tabela/RLS/Make/envio alterado.
+
+Sete arquivos seletivos, backup output/backups/paginacao-10000-original-20261019.
+Sete hashes original/release conferidos; env local/main/base preservados.
+KANBAN_WINDOW_ENABLED=true no Railway e perfil privado de operação; deploy
+3855a9ee-3175-49aa-b3cd-1cdf81b1930a SUCCESS.
+
+13 verificações funcionais reais Edge com perfil Comercial de Silas aprovadas:
+login, funil200/paginação ativa, DOM120 por coluna, barras ocultas/altura limitada,
+feed paginado, buscas vazia/existente, etapa inválida422, recarga/sessão,
+controles móveis, JavaScript sem erro e recepção de mídias ainda habilitada.
+Leitura somente, sem fixtures ou alteração de cards originais, zero envios.
+Medição709ms com14cards reais; totais9/4/1/0/0 conferidos em consulta independente.
+Não representa nova carga10k em produção ou garantia de concorrência/SLA.
+Os17 testes de navegador10k e74Windows anteriores não foram repetidos por esta
+promoção inalterada. Reversão somente flag+arquivos seletivos; avaliar SQL35
+apenas após desativar consumidores. Não pausar cenários originais.
+
+Solicitação de rolagem interna/paginação concluída. Pendências históricas seguem
+separadas no mapa: restauração integral isolada, Meta no portal, Auth,
+carga ampliada/concorrência e limpeza finalCODEX; não bloqueiam os serviços ativos.

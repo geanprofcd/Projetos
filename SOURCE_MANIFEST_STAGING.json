@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "dea553cd57f42925608808b3e7f4d4acd01109c284c0afab74b716dbfac8fbf1"
+      "sha256": "eff5c5af505e92aa331c8ba1f3dc3e455e1aa24ab810f1a78fa83f00017d58f4"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1215,7 +1215,7 @@
     },
     {
       "path": "docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
-      "sha256": "62c3eeea80107b99317c8d8e5c3170905db352a5969c9610d9ce6cfd6714f688"
+      "sha256": "d83df86933949d404ed23516bc6bff167fc4b7102a8ee865adfaf616e2d8e8bc"
     },
     {
       "path": "app/services/whatsapp_human_command_service.py",
@@ -1287,7 +1287,7 @@
     },
     {
       "path": "docs/OPERACAO_ORIGINAL_ONLINE.md",
-      "sha256": "61496049794383411c22a2e0ac00aad85976516fa6bb521f2025baffa2530920"
+      "sha256": "b4fe9852d3fb9657306bb5bc62a735c68a4da2253395a3020a93d35201768c15"
     },
     {
       "path": "sql/21_PREPARAR_INTEGRACAO_WHATSAPP_ORIGINAL.sql",
@@ -1411,7 +1411,7 @@
     },
     {
       "path": "docs/PARIDADE_ORIGINAL_ONLINE_20261016.md",
-      "sha256": "0e79cddb7af5a5cde41707545144569a75dabd617106cf2fcecaf537e2e00c95"
+      "sha256": "ab507b5f0642d46684997df4cda8299bf99a6bfe2f0c6eaa80e9998305f0e382"
     },
     {
       "path": "app/services/whatsapp_media_service.py",
@@ -1491,7 +1491,7 @@
     },
     {
       "path": "docs/VALIDACAO_ROLAGEM_FUNIS_20261019.md",
-      "sha256": "91b3ecbc0cf8ad5aa8572a86444c3101e71ff9db7c25d1cf8edb7f8032462169"
+      "sha256": "d2d579084587e943b3bbcd9ec7578c4c1d6547c26646ddffc9017ef00ae4dd42"
     }
   ]
 }

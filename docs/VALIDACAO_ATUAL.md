@@ -462,3 +462,31 @@ Run be3add398da242f18a94b5033408e40b, iniciado00:08:11.930Z20/10 (=21:08Brasíli
 Pacote recepcao STAGING: 29arquivos + manifesto; SHA256 bd79a2c195970ace3e9649af321fc298d604d3dbfc06025a53252da4deef327c; fontefuncional1c33db96421dd077f7b54e13aa71004dd8231c6c; entrega4a46a9cf3932e7d43ae4d68bdc600caf4277ade8; downloadimutavel/hashconferido; instaladorsimulacao/aplicacao/backupverificados emdestinoisolado.
 Instrucoes: https://github.com/geanprofcd/Projetos/blob/4a46a9cf3932e7d43ae4d68bdc600caf4277ade8/deliveries/20261019/RECEPCAO_ROLAGEM_161/INSTRUCOES.md
 Download: https://raw.githubusercontent.com/geanprofcd/Projetos/4a46a9cf3932e7d43ae4d68bdc600caf4277ade8/deliveries/20261019/RECEPCAO_ROLAGEM_161/VENDRA_RECEPCAO_ROLAGEM_161_20261019.zip
+
+## Publicação da paginação no original — v1.62 — 19/10/2026
+
+Após a solicitação “continue” em resposta ao fechamento da v1.61 e ao pedido
+específico pendente, aplicada a promoção SQL34/paginação no original.
+Migration vendra_kanban_window_v1 em znkjibqcikuigfwfsbjb; função de leitura,
+SECURITY INVOKER/search_path vazio, anon/authenticated sem EXECUTE, service_role
+permitido. SQL35 não executado. Nenhuma tabela/RLS/Make/envio alterado.
+
+Sete arquivos seletivos, backup output/backups/paginacao-10000-original-20261019.
+Sete hashes original/release conferidos; env local/main/base preservados.
+KANBAN_WINDOW_ENABLED=true no Railway e perfil privado de operação; deploy
+3855a9ee-3175-49aa-b3cd-1cdf81b1930a SUCCESS.
+
+13 verificações funcionais reais Edge com perfil Comercial de Silas aprovadas:
+login, funil200/paginação ativa, DOM120 por coluna, barras ocultas/altura limitada,
+feed paginado, buscas vazia/existente, etapa inválida422, recarga/sessão,
+controles móveis, JavaScript sem erro e recepção de mídias ainda habilitada.
+Leitura somente, sem fixtures ou alteração de cards originais, zero envios.
+Medição709ms com14cards reais; totais9/4/1/0/0 conferidos em consulta independente.
+Não representa nova carga10k em produção ou garantia de concorrência/SLA.
+Os17 testes de navegador10k e74Windows anteriores não foram repetidos por esta
+promoção inalterada. Reversão somente flag+arquivos seletivos; avaliar SQL35
+apenas após desativar consumidores. Não pausar cenários originais.
+
+Solicitação de rolagem interna/paginação concluída. Pendências históricas seguem
+separadas no mapa: restauração integral isolada, Meta no portal, Auth,
+carga ampliada/concorrência e limpeza finalCODEX; não bloqueiam os serviços ativos.
