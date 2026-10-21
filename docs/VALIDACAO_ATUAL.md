@@ -552,3 +552,11 @@ VENDAXIS separado: baseline145hashes do originalprivado,5adaptaçõestécnicasse
 Pacote ferramentas recuperacao STAGING: 13arquivos + manifesto; SHA256 bc3b4b4b42ec80012934745b9742530454eb43dff740a568f60ae58ea5728bc4; fontefuncional1c162e18cb763a646b41be030748b9de3c6e67cf; entregab111751d24015e395d3f514ee5f3cf4b47ccae6e; downloadimutavel/hashconferido; instaladorsimulacao/aplicacao/backupverificados emdestinoisolado.
 Instrucoes: https://github.com/geanprofcd/Projetos/blob/b111751d24015e395d3f514ee5f3cf4b47ccae6e/deliveries/20261020/RECUPERACAO_164/INSTRUCOES.md
 Download: https://raw.githubusercontent.com/geanprofcd/Projetos/b111751d24015e395d3f514ee5f3cf4b47ccae6e/deliveries/20261020/RECUPERACAO_164/VENDRA_RECUPERACAO_164_20261020.zip
+# Checkpoint 21/10/2026 — importação visual e carga20k
+
+Área demarcada da importação: nome selecionado, círculo durante upload/processamento e nome/arquivo persistido após sucesso confirmado. Três arquivos de interface, sem mudanças backend/SQL/Make/configurações.18 verificações Edge locais com HTTP controlado +9 HTTP/SDK reais STAGING aprovadas;8 testes existentes de listas em0,044s. Fixtures/sessão próprias limpas.
+
+Carga real STAGING:20.001linhas→limite20.000 aptos; paginação completa;8iníciosRPC concorrentes→uma fila20.000 sem duplicação, nenhumdispatch_id/envio.10checks, flags globais preservadas/desligadas, fixtures removidas. Import24,617s/leitura26,897s/concorrência1,567s são observações, não SLA nem homologação20kenvios/claims/operadores.
+
+Promovidos3arquivos para original físico/release privada, backupoutput/backups/upload-lista-original-20261021, commitprivado985fb6f2332b3a50da4674df206953118af25fe8. .env/main/base/rotas/serviços preservados porhash. Publicação Railway NÃO confirmada: CLIUnauthorized e consulta falhou; painel autenticado exibe incidenteAPI/buildspausados https://status.railway.com/incident/QH8L8B3E. Não assumir tokenexpirado nem trocarcredencial. Portal/login ecallbacks/health200. Original online ainda release anterior; Make não pausado/modificado. VerVALIDACAO_IMPORTACAO_LISTAS_20261021.md. Próximo: publicar e conferir a interface hospedada quandoRailway normalizar.
+

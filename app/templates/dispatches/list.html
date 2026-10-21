@@ -57,15 +57,15 @@
                 </div>
                 <span class="file-type-badge">{{ supported_imports }}</span>
             </div>
-            <form method="post" action="/disparos/importar" enctype="multipart/form-data" class="dispatch-upload-form">
+            <form method="post" action="/disparos/importar" enctype="multipart/form-data" class="dispatch-upload-form" data-import-form>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <label class="dispatch-dropzone" for="dispatch-file">
-                    <span class="dispatch-drop-icon">↑</span>
-                    <strong>Selecionar arquivo com tabela</strong>
-                    <small>PDF, Excel, CSV, ODS ou DOCX · até {{ max_upload_mb }} MB · máximo de 20.000 contatos por importação.</small>
-                    <input id="dispatch-file" type="file" name="arquivo" accept=".csv,.xlsx,.xls,.ods,.pdf,.docx" required>
+                <label class="dispatch-dropzone" for="dispatch-file" data-import-zone data-import-state="{{ 'ready' if selected_batch else 'empty' }}">
+                    <span class="dispatch-drop-icon" data-import-icon aria-hidden="true">{{ '▤' if selected_batch else '↑' }}</span>
+                    <strong data-import-name>{% if selected_batch %}{{ selected_batch.filename }}{% else %}Selecionar arquivo com tabela{% endif %}</strong>
+                    <small data-import-status role="status" aria-live="polite">{% if selected_batch %}Lista importada · {{ selected_batch.valid_count }} contato(s) apto(s) para disparos. Selecione outro arquivo para substituir a seleção.{% else %}PDF, Excel, CSV, ODS ou DOCX · até {{ max_upload_mb }} MB · máximo de 20.000 contatos por importação.{% endif %}</small>
+                    <input id="dispatch-file" type="file" name="arquivo" accept=".csv,.xlsx,.xls,.ods,.pdf,.docx" required aria-label="Selecionar lista de nomes e telefones" aria-describedby="dispatch-import-help">
                 </label>
-                <div class="dispatch-upload-note">
+                <div class="dispatch-upload-note" id="dispatch-import-help">
                     <strong>Como funciona</strong>
                     <span>Procure usar cabeçalhos como <b>Nome</b> e <b>Telefone</b>. Telefones inválidos e repetidos serão exibidos na lista, mas não poderão ser disparados.</span>
                 </div>
@@ -186,4 +186,6 @@
     </section>
 </div>
 <script src="/static/js/dispatches-v0.0.11.js"></script>
+<link rel="stylesheet" href="/static/css/dispatch-upload-v0.0.27.css">
+<script src="/static/js/dispatch-upload-v0.0.27.js"></script>
 {% endblock %}

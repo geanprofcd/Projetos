@@ -1,4 +1,6 @@
-# VENDRA — pendências vigentes em 20/10/2026
+# VENDRA — pendências vigentes em 21/10/2026
+
+Pendência imediata: publicar o feedback visual da importação já homologado e aplicado ao original local. Railway informou incidente oficial de API/builds pausados; tentativa de deploy recusada. Ainda não está na versão hospedada. Ver VALIDACAO_IMPORTACAO_LISTAS_20261021.md. Portal e health seguem200.
 
 Este quadro substitui as listas antigas de pendências; o histórico permanece nos
 relatórios e no Mestre. Sistema original online no Railway, sem dependência de
@@ -24,7 +26,7 @@ túnel local para as conversas/disparos. Não pausar o Make para desenvolvimento
 | 1 | Custódia independente da chave do backup | Cifrado já salvo no Drive indicado e SHA256 conferido por download. Falta guardar a chave fora deste computador em local controlado e separado do arquivo. Nenhuma recorrência criada. |
 | 2 | Recuperação integral dos serviços | Em ambiente separado autorizado, reconstituir funções/triggers/permissões, Auth e Storage gerenciado e conferir login/conversa/arquivos sem envios. O ensaio local atual cobre dados/arquivos/constraints, não o projeto Supabase completo. |
 | 3 | Gestão de modelos Meta dentro do portal | Configurar privadamente credencial com permissões apropriadas e homologar consulta/criação/status. Em20/10 o endpoint hospedado modelos.json retorna configured=false. Os templates existentes do Make continuam funcionando. |
-| 4 | Carga ampliada e concorrência | Validar importação/fila com20.000contatos e operadores simultâneos no STAGING, com transporte suprimido. Não enviar20.000mensagens como teste nem prometer SLA com base no teste10k do funil. |
+| 4 | Concorrência operacional complementar | Importação/leitura de20.000contatos e oito inícios simultâneos da mesma fila passaram no STAGING em21/10, zero envios e fixtures removidas. Falta, se necessário à homologação final, concorrência de operadores autenticados/claims e processamento prolongado com transporte suprimido. Não enviar20.000mensagens como teste ou prometer SLA. |
 | 5 | Proteção Auth contra senhas vazadas | Aviso confirmado em20/10. Conferir elegibilidade e ativação; a documentação Supabase exige Pro ou superior. Não contratar upgrade automaticamente. |
 | 6 | Limpeza final CODEX e homologação de encerramento | Quando o conjunto final estiver homologado, excluir somente contas CODEX registradas, revogar sessões e conferir evidências/fixtures. Não excluir administrador original ou contas reais. |
 
