@@ -560,3 +560,7 @@ Carga real STAGING:20.001linhas→limite20.000 aptos; paginação completa;8iní
 
 Promovidos3arquivos para original físico/release privada, backupoutput/backups/upload-lista-original-20261021, commitprivado985fb6f2332b3a50da4674df206953118af25fe8. .env/main/base/rotas/serviços preservados porhash. Publicação Railway NÃO confirmada: CLIUnauthorized e consulta falhou; painel autenticado exibe incidenteAPI/buildspausados https://status.railway.com/incident/QH8L8B3E. Não assumir tokenexpirado nem trocarcredencial. Portal/login ecallbacks/health200. Original online ainda release anterior; Make não pausado/modificado. VerVALIDACAO_IMPORTACAO_LISTAS_20261021.md. Próximo: publicar e conferir a interface hospedada quandoRailway normalizar.
 
+
+Entrega165: fonte04ecb49f9d17381f6600dffb49e0dac689e1eb25; pacote4c6ba5c97b6febc90da4cacfd80c0abf26c1be71; SHA2567ae45e56a7bcf1fb4c610b673c0d14c60949d68fab1799444d20fb02f17d7e98. Instalador simulacao/aplicacao/backup verificados emfixture; downloadHTTP/hashconferido. PublicacaoRailwaycontinuaPENDENTE.
+Instrucoes: https://github.com/geanprofcd/Projetos/blob/4c6ba5c97b6febc90da4cacfd80c0abf26c1be71/deliveries/20261021/IMPORTACAO_165/INSTRUCOES.md
+Download: https://raw.githubusercontent.com/geanprofcd/Projetos/4c6ba5c97b6febc90da4cacfd80c0abf26c1be71/deliveries/20261021/IMPORTACAO_165/VENDRA_IMPORTACAO_165_20261021.zip
