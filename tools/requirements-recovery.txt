@@ -1,0 +1,2 @@
+# Somente ambiente local de recuperacao; nao adicionar ao deploy do VENDRA.
+cryptography==50.0.2

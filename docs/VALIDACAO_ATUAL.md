@@ -494,3 +494,57 @@ carga ampliada/concorrência e limpeza finalCODEX; não bloqueiam os serviços a
 Pacote recepcao STAGING: 29arquivos + manifesto; SHA256 629632875b0cd8e0e95435c498a2b106e10b6404d83cd93330f0df50c74fa11a; fontefuncional1bf9873ed2c5801a6575d1cdb131f90b7b349cf7; entrega5a6d91448a0af93718fff53a2c5d015d07c91670; downloadimutavel/hashconferido; instaladorsimulacao/aplicacao/backupverificados emdestinoisolado.
 Instrucoes: https://github.com/geanprofcd/Projetos/blob/5a6d91448a0af93718fff53a2c5d015d07c91670/deliveries/20261019/PAGINACAO_ORIGINAL_162/INSTRUCOES.md
 Download: https://raw.githubusercontent.com/geanprofcd/Projetos/5a6d91448a0af93718fff53a2c5d015d07c91670/deliveries/20261019/PAGINACAO_ORIGINAL_162/VENDRA_PAGINACAO_ORIGINAL_162_20261019.zip
+
+## Backup privado autorizado e executado — 19/10/2026 — v1.63
+
+A pendência de autorização está encerrada para o plano descrito: usuário aprovou
+explicitamente conteúdo sensível, destino cifrado local e ensaio isolado. Após
+isso, exportação única/consistente de24tabelas/452registros, sem app_sessions,
+user_invitations ou credenciais/tokens Auth. Captura2026-10-20T00:24:08.150652Z
+(19/10 às21:24 Brasília). Dois anexos privados/23.506.730bytes baixados e
+conferidos contra tamanho/SHA256 do banco. Origem somente leitura.
+
+Estrutura26tabelas/262colunas/153constraints/51indices reconstruída no PostgreSQL
+local;452registros carregados, dump reaberto e hashes/contagens iguais. Sessões e
+convites vazios. Banco e arquivos cifrados em8arquivos de pacote AES-256-GCM,
+28.289.640bytes; chave aleatória32bytes em pasta privada separada, não publicada.
+Pacote decifrado em pasta nova, dump reaberto novamente, hashes de26tabelas e
+ambos os anexos conferidos. Sete checks reais aprovados, sem worker/callback ou
+conexão a clientes. Cópias temporárias em claro removidas após conferência.
+
+Arquivo privado: recovery-original-20261019/snapshot.vrb sob a pasta privada do
+Codex descrita no plano. SHA256c089915fcbcedb174c4ff2a039a01568126720ff2ac00a64ea31e754aebf0e50.
+Somente resultado sanitizado, ferramentas e documentação podem ir ao Git/pacote.
+Backup e chave NÃO fazem parte da entrega pública.
+
+Primeiro download encontrou limite de caminho Windows; layout corrigido para
+objetos porSHA256 e storage-map.json privado, preservando o nome/caminho original
+na captura. A primeira tentativa não completou o backup de arquivos; a rodada
+final acima completou. Um teste no sandbox falhou por permissões no Temp Windows;
+repetição autorizada fora do sandbox:5testes passaram em0,077s.
+
+Continua fora do escopo comprovado: login/Auth, funções/triggers operacionais,
+políticas daAPI, Storage gerenciado, serviços Railway/Make e recuperação de
+projeto Supabase completo. O Auth local é apenas UUID paraFK, sem senha. Arquivo
+e chave continuam no mesmo computador em pastas separadas; uma cópia fora dele
+com custódia segura da chave depende de destino/decisão específica. Nenhum
+serviço pago, armazenamento externo ou recorrência foi criado.
+
+## Auditoria de pendências —20/10/2026
+Portal/health200. Endpoint modelos.json hospedado200/configuredfalse: gestãoMeta segue sem credencial; templatesMake preservados. Advisorsoriginais:INFO26RLSbackendsemPolicies/WARNproteçãoAuth. DocumentaçãoSupabase confirma proteção de senhas vazadas exigeProoumais; nenhumupgradeautorizado/executado. Quadro vigente PENDENCIAS_ATUAIS_VENDRA.md separa6itens, domínioRailway/conviteporlink não reabertos. Destino externo de backup solicitado; chave e cifrado permanecem privados/separados noPC, semuploadexterno. Mestre163emconsolidação; ferramentasoperaçãolocais, nenhumdeploynovo.
+
+## Cópia externa do backup concluída —20/10/2026
+
+Pasta indicada pelo usuário: PROJETO - VENDRA, id18J1yxZK2WKTCl11_xqs7bWFrP__z4h8e.
+Primeiro upload recusado pelo Google com403/insufficientParentPermissions.
+Conta conectada contato@i9se.digital; após o usuário ajustar o acesso, upload
+concluído. Arquivo1TdOFGpUtgIyJVbByWwmorPGXRUBTGufS, VENDRA_Backup_Cifrado_20261019.vrb,
+28.289.640bytes. Metadados lidos e download autenticado completo conferido contra
+SHA256c089915fcbcedb174c4ff2a039a01568126720ff2ac00a64ea31e754aebf0e50.
+URL:https://drive.google.com/file/d/1TdOFGpUtgIyJVbByWwmorPGXRUBTGufS/view
+Somente cifrado foi enviado; chave NÃO enviada e permanece em pasta privada
+separada noPC. Falta custódia independente da chave para sobreviver à perda do
+computador. Nenhuma recorrência criada nem estado de compartilhamento alterado
+pela automação. Não publicar a chave junto do arquivo.
+
+VENDAXIS separado: baseline145hashes do originalprivado,5adaptaçõestécnicassemUI,8testesisolamento/6checksSQLlocal26tabelas25funções. Supabasecriação$0recusadaporquota2; usuáriodecidiucópialocalapenas. Nenhumprojetocriado,nenhumpauseSTAGING/original,nenhumupgrade. Adminmesmaemail/senhapreparadoprivado,nãoprovisionado. ZIP155arquivoslocalc7eb36e31e22e3993e86051c6f2fc630ff6fc0d0508e14a978162559f6721226; nãopublicarfontesprivadasemGitpúblico. VerCOPIA_LOCAL_VENDAXIS_20261020.md.

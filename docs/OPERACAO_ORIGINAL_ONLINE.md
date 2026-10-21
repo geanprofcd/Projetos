@@ -116,3 +116,52 @@ apenas após desativar consumidores. Não pausar cenários originais.
 Solicitação de rolagem interna/paginação concluída. Pendências históricas seguem
 separadas no mapa: restauração integral isolada, Meta no portal, Auth,
 carga ampliada/concorrência e limpeza finalCODEX; não bloqueiam os serviços ativos.
+
+## Backup privado autorizado e executado — 19/10/2026 — v1.63
+
+A pendência de autorização está encerrada para o plano descrito: usuário aprovou
+explicitamente conteúdo sensível, destino cifrado local e ensaio isolado. Após
+isso, exportação única/consistente de24tabelas/452registros, sem app_sessions,
+user_invitations ou credenciais/tokens Auth. Captura2026-10-20T00:24:08.150652Z
+(19/10 às21:24 Brasília). Dois anexos privados/23.506.730bytes baixados e
+conferidos contra tamanho/SHA256 do banco. Origem somente leitura.
+
+Estrutura26tabelas/262colunas/153constraints/51indices reconstruída no PostgreSQL
+local;452registros carregados, dump reaberto e hashes/contagens iguais. Sessões e
+convites vazios. Banco e arquivos cifrados em8arquivos de pacote AES-256-GCM,
+28.289.640bytes; chave aleatória32bytes em pasta privada separada, não publicada.
+Pacote decifrado em pasta nova, dump reaberto novamente, hashes de26tabelas e
+ambos os anexos conferidos. Sete checks reais aprovados, sem worker/callback ou
+conexão a clientes. Cópias temporárias em claro removidas após conferência.
+
+Arquivo privado: recovery-original-20261019/snapshot.vrb sob a pasta privada do
+Codex descrita no plano. SHA256c089915fcbcedb174c4ff2a039a01568126720ff2ac00a64ea31e754aebf0e50.
+Somente resultado sanitizado, ferramentas e documentação podem ir ao Git/pacote.
+Backup e chave NÃO fazem parte da entrega pública.
+
+Primeiro download encontrou limite de caminho Windows; layout corrigido para
+objetos porSHA256 e storage-map.json privado, preservando o nome/caminho original
+na captura. A primeira tentativa não completou o backup de arquivos; a rodada
+final acima completou. Um teste no sandbox falhou por permissões no Temp Windows;
+repetição autorizada fora do sandbox:5testes passaram em0,077s.
+
+Continua fora do escopo comprovado: login/Auth, funções/triggers operacionais,
+políticas daAPI, Storage gerenciado, serviços Railway/Make e recuperação de
+projeto Supabase completo. O Auth local é apenas UUID paraFK, sem senha. Arquivo
+e chave continuam no mesmo computador em pastas separadas; uma cópia fora dele
+com custódia segura da chave depende de destino/decisão específica. Nenhum
+serviço pago, armazenamento externo ou recorrência foi criado.
+
+## Cópia externa do backup concluída —20/10/2026
+
+Pasta indicada pelo usuário: PROJETO - VENDRA, id18J1yxZK2WKTCl11_xqs7bWFrP__z4h8e.
+Primeiro upload recusado pelo Google com403/insufficientParentPermissions.
+Conta conectada contato@i9se.digital; após o usuário ajustar o acesso, upload
+concluído. Arquivo1TdOFGpUtgIyJVbByWwmorPGXRUBTGufS, VENDRA_Backup_Cifrado_20261019.vrb,
+28.289.640bytes. Metadados lidos e download autenticado completo conferido contra
+SHA256c089915fcbcedb174c4ff2a039a01568126720ff2ac00a64ea31e754aebf0e50.
+URL:https://drive.google.com/file/d/1TdOFGpUtgIyJVbByWwmorPGXRUBTGufS/view
+Somente cifrado foi enviado; chave NÃO enviada e permanece em pasta privada
+separada noPC. Falta custódia independente da chave para sobreviver à perda do
+computador. Nenhuma recorrência criada nem estado de compartilhamento alterado
+pela automação. Não publicar a chave junto do arquivo.
