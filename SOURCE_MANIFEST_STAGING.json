@@ -691,7 +691,7 @@
     },
     {
       "path": "docs/VALIDACAO_ATUAL.md",
-      "sha256": "b07b417fc5aea9b7ff200a8cb339538a25be5e57a36ce5f4e45ab115f2d32298"
+      "sha256": "2b364d0934b42cd976e2204ba9d2004cb8b3d279691e68f7b4e7455c8a0f2e7c"
     },
     {
       "path": "docs/VALIDACAO_CONCORRENCIA_COPIA_STAGING.md",
@@ -1519,7 +1519,7 @@
     },
     {
       "path": "docs/PENDENCIAS_ATUAIS_VENDRA.md",
-      "sha256": "70e68a13a9dc7a67fbabfef577a110ad58ea74c9326bb6e422fec30cdcf3d277"
+      "sha256": "157221c6f775d6b41fb6cdd9908dec7d797a344c9a85620355813498beab0bb1"
     },
     {
       "path": "docs/COPIA_LOCAL_VENDAXIS_20261020.md",
@@ -1535,7 +1535,7 @@
     },
     {
       "path": "docs/VALIDACAO_IMPORTACAO_LISTAS_20261021.md",
-      "sha256": "6f92e4ca62774f248e4c9f54e944b4270db43f74cec1f9831fe49199de890d07"
+      "sha256": "c6b1cd84f3439f888371ac9a1370f1dbf52172d43048cd4d4ba68f5fb8ceabbc"
     }
   ]
 }

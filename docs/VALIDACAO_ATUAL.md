@@ -554,6 +554,8 @@ Instrucoes: https://github.com/geanprofcd/Projetos/blob/b111751d24015e395d3f514e
 Download: https://raw.githubusercontent.com/geanprofcd/Projetos/b111751d24015e395d3f514ee5f3cf4b47ccae6e/deliveries/20261020/RECUPERACAO_164/VENDRA_RECUPERACAO_164_20261020.zip
 # Checkpoint 21/10/2026 — importação visual e carga20k
 
+Continuidade v1.66: 11 verificações reais STAGING da reserva concorrente da mesma linha aprovadas. Oito conexões/mesmo ator CODEX→um dispatch_id, um created=true, um cliente/ticket/mensagem/card; repetição posterior idempotente. Zero outbox/WAMID/envios. dispatch_bridge temporariamente habilitada somente STAGING para o contrato, restaurada exatamente; transporte/fila/worker desligados. Fixtures próprias removidas. Sem código/SQL novo. Não confundir com múltiplos usuários/claims de fila. Nova consultaRailway InvalidRAILWAY_TOKEN; incidente oficial continua builds pausados. Publicação visual permanece PENDENTE, nenhumdeploynovo/rotacaocredencial. Veradendov166emVALIDACAO_IMPORTACAO_LISTAS_20261021.md.
+
 Área demarcada da importação: nome selecionado, círculo durante upload/processamento e nome/arquivo persistido após sucesso confirmado. Três arquivos de interface, sem mudanças backend/SQL/Make/configurações.18 verificações Edge locais com HTTP controlado +9 HTTP/SDK reais STAGING aprovadas;8 testes existentes de listas em0,044s. Fixtures/sessão próprias limpas.
 
 Carga real STAGING:20.001linhas→limite20.000 aptos; paginação completa;8iníciosRPC concorrentes→uma fila20.000 sem duplicação, nenhumdispatch_id/envio.10checks, flags globais preservadas/desligadas, fixtures removidas. Import24,617s/leitura26,897s/concorrência1,567s são observações, não SLA nem homologação20kenvios/claims/operadores.

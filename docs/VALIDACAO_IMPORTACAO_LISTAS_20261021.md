@@ -30,6 +30,16 @@ Não houve novo deployment confirmado. O site hospedado continua na release ante
 
 ## Comandos de referência
 
+### Continuidade v1.66: reserva concorrente da mesma linha
+
+Onze verificações adicionais reais no STAGING passaram. Oito conexões independentes, usando o mesmo ator CODEX ativo, chamaram simultaneamente vendra_dispatch_list_item_v1 para a mesma linha de uma lista exclusiva. Todas retornaram o mesmo dispatch_id; exatamente uma criou o conjunto. Conferidos: um cliente, um atendimento, uma mensagem pendente, um card e uma chave idempotente. Repetição posterior retornou created=false e o mesmo pedido. Nenhuma outbox ou WAMID, nenhum transporte/Make chamado.
+
+Pré-condições: transportes, wake, worker local e fila global desligados. Somente a configuração de reserva dispatch_bridge foi habilitada temporariamente no STAGING para exercitar o contrato existente e restaurada exatamente ao fim. Nenhuma flag original modificada. Cliente/atendimento/card/mensagem/disparo/auditoria/lista exclusivos removidos e ausência de cliente/lista conferida. Sem SQL novo ou mudança no código do produto.
+
+Esse teste cobre concorrência de chamadas do mesmo ator sobre a mesma linha; não equivale a múltiplos usuários autenticados, claims paralelos da fila ou entregas WhatsApp em escala. Os testes de importação20k anteriores não foram repetidos.
+
+Railway continua impedindo a publicação: nova consulta CLI retornou Invalid RAILWAY_TOKEN, enquanto o incidente oficial ainda informa builds pausados. Não foi criado deployment novo, rotacionada credencial ou acionado redeploy da versão antiga. Não concluir validade da credencial com base apenas na API durante o incidente. A interface continua preparada no original local e release privada, mas ainda não confirmada online.
+
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 -m unittest tests.test_dispatch_lists
 ```
