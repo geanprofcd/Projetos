@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "path": "aplicar.py",
+      "sha256": "9b2bf1545bb7af464f2de9d7b36f30eb3690c2225830e34b66c7d883539ad78d"
+    },
+    {
+      "path": "files/app/static/css/dispatch-upload-v0.0.27.css",
+      "sha256": "a7d019fd52ddc7e7a01f572d8771084aa3cc74f55c124abe50d4f82662645a60"
+    },
+    {
+      "path": "files/app/static/js/dispatch-upload-v0.0.27.js",
+      "sha256": "1c86fba45bf2589aa493c5f4d6c26427c32b3f67fd5405a45ff74d8dbdc9489a"
+    },
+    {
+      "path": "files/app/templates/dispatches/list.html",
+      "sha256": "e2d8eb98dee93355efbbf79e5686a8064ca44f1ac2a78bb4158bf88a43597125"
+    },
+    {
+      "path": "files/docs/PENDENCIAS_ATUAIS_VENDRA.md",
+      "sha256": "70e68a13a9dc7a67fbabfef577a110ad58ea74c9326bb6e422fec30cdcf3d277"
+    },
+    {
+      "path": "files/docs/VALIDACAO_ATUAL.md",
+      "sha256": "4d44958d4c2e66210eb286c4f3fb7d8fdb4bed75405b883a035f02af2095e17b"
+    },
+    {
+      "path": "files/docs/VALIDACAO_IMPORTACAO_LISTAS_20261021.md",
+      "sha256": "6f92e4ca62774f248e4c9f54e944b4270db43f74cec1f9831fe49199de890d07"
+    },
+    {
+      "path": "INSTRUCOES.md",
+      "sha256": "06a09358be5a0f2e371df1e2d8de8eedef1217a4f31e4db579b3f87275d45d84"
+    }
+  ],
+  "source_commit": "04ecb49f9d17381f6600dffb49e0dac689e1eb25",
+  "automatic_sql": false,
+  "hosted_deployment_confirmed": false
+}
