@@ -1,0 +1,59 @@
+{
+  "files": [
+    {
+      "path": "aplicar.py",
+      "sha256": "5bd9597ff6896ce81fa306266143aa837acf1f5844fd52aef4b4e61737f45170"
+    },
+    {
+      "path": "files/docs/COPIA_LOCAL_VENDAXIS_20261020.md",
+      "sha256": "e7fd04a3e31301f234e261cd7446122d033ced4125562dd91cea26b25afdf8de"
+    },
+    {
+      "path": "files/docs/MAPA_HOMOLOGACAO_ORIGINAL.md",
+      "sha256": "d4935c24bebf4c1476f00022b47c1af7d33f7bcf442bd6f85c7bcacab4389b04"
+    },
+    {
+      "path": "files/docs/OPERACAO_ORIGINAL_ONLINE.md",
+      "sha256": "564cc88c6e793e6891223a7d22b07cdc619a47f55f7bdee0914731b43edf081f"
+    },
+    {
+      "path": "files/docs/PARIDADE_ORIGINAL_ONLINE_20261016.md",
+      "sha256": "599762e96cbb70c814913d7f1774c02ee77c8e3bb92b4fcf68b475eff67c8d41"
+    },
+    {
+      "path": "files/docs/PENDENCIAS_ATUAIS_VENDRA.md",
+      "sha256": "b36ffab23935a4ca8f0f2890f36736f093c4cab1b916b3719229bb0795282371"
+    },
+    {
+      "path": "files/docs/PLANO_BACKUP_PRIVADO_ORIGINAL.md",
+      "sha256": "198b6fe74252427de2b86e12b1b91bdd9c7a13653dc6895265063a3a8793ed82"
+    },
+    {
+      "path": "files/docs/VALIDACAO_RECUPERACAO_20261019.md",
+      "sha256": "a0ec59c20bb870d4b5aab4e22fad3158fd023e7de8cd4fc717e7c3dda1345482"
+    },
+    {
+      "path": "files/tests/test_recovery_bundle.py",
+      "sha256": "be0c97d530765f6c3b9d95447eb55af19440ee76beb9125fb43ee973b698f3a0"
+    },
+    {
+      "path": "files/tools/recovery_bundle.py",
+      "sha256": "32d1888ec894651dd17e2d61fb0b4545d880f01af56626b892b97ebc5a4b97dd"
+    },
+    {
+      "path": "files/tools/recovery_postgres_local.cjs",
+      "sha256": "6cf529bac6b4d774cc03b850d4e97dfb3580f5a2164e5c3cf6329711292fc177"
+    },
+    {
+      "path": "files/tools/requirements-recovery.txt",
+      "sha256": "f7d53515fff013066ed6fff085d22995adadcc780aeca17178634e215746b612"
+    },
+    {
+      "path": "INSTRUCOES.md",
+      "sha256": "580a2cd4f439cb2a6a7288e38c09139e82a780a92a80c5b35f0ab351317bcb67"
+    }
+  ],
+  "source_commit": "1c162e18cb763a646b41be030748b9de3c6e67cf",
+  "automatic_sql": false,
+  "automatic_storage": false
+}
